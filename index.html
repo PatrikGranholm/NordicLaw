@@ -31,23 +31,29 @@
       .then(response => response.json())
       .then(data => {
         // Transform data into a tree structure for Tabulator's dataTree
+        // Strip whitespace from Shelf mark values
         const treeRows = data.map(item => {
-          if (Array.isArray(item["Production Units"])) {
+          const cleanItem = { ...item };
+          if (typeof cleanItem["Shelf mark"] === "string") {
+            cleanItem["Shelf mark"] = cleanItem["Shelf mark"].trim();
+          }
+          if (Array.isArray(cleanItem["Production Units"])) {
             return {
-              ...item,
-              _children: item["Production Units"].map(unit => {
-                if (Array.isArray(unit["Contents"])) {
+              ...cleanItem,
+              _children: cleanItem["Production Units"].map(unit => {
+                const cleanUnit = { ...unit };
+                if (Array.isArray(cleanUnit["Contents"])) {
                   return {
-                    ...unit,
-                    _children: unit["Contents"].map(content => ({ ...content }))
+                    ...cleanUnit,
+                    _children: cleanUnit["Contents"].map(content => ({ ...content }))
                   };
                 } else {
-                  return { ...unit };
+                  return { ...cleanUnit };
                 }
               })
             };
           } else {
-            return { ...item };
+            return { ...cleanItem };
           }
         });
 
@@ -66,42 +72,63 @@
         // Build columns with header filters, freeze the first column, and exclude 'Production Units' and 'Contents'
         const fieldsArr = Array.from(allFields).filter(f => f !== 'Production Units' && f !== 'Contents');
 
+        const narrowCols = [
+          "Depository", "Object", "Size", "Production Unit", "Leaves/Pages", "Columns", "Rubric", "Pricking", "Ruling"
+        ];
         const columns = fieldsArr.map((field, idx) => {
+          const colDef = {
+            title: field,
+            field: field,
+            headerFilter: true,
+            width: narrowCols.includes(field) ? 100 : 200,
+          };
           if (idx === 0) {
-            return {
-              title: field,
-              field: field,
-              headerFilter: true,
-              frozen: true,
-              formatter: function(cell) {
-                const data = cell.getData();
-                // Show Leaves/Pages if present (lowest level), else Production Unit, else the field value
-                if (data["Leaves/Pages"]) {
-                  return data["Leaves/Pages"];
-                } else if (data["Production Unit"]) {
-                  return data["Production Unit"];
-                }
-                return cell.getValue();
+            colDef.frozen = true;
+            colDef.formatter = function(cell) {
+              const data = cell.getData();
+              // Show Leaves/Pages if present (lowest level), else Production Unit, else the field value
+              if (data["Leaves/Pages"]) {
+                return data["Leaves/Pages"];
+              } else if (data["Production Unit"]) {
+                return data["Production Unit"];
               }
+              return cell.getValue();
             };
+            // Enable custom natural sort for Shelf mark
+            if (field === "Shelf mark") {
+              // Custom natural sort function
+              colDef.sorter = function(a, b) {
+                // Remove whitespace and use localeCompare with numeric option
+                return String(a || "").trim().localeCompare(String(b || "").trim(), undefined, { numeric: true, sensitivity: 'base' });
+              };
+            }
           } else {
-            return {
-              title: field,
-              field: field,
-              headerFilter: true,
-              frozen: false
-            };
+            colDef.frozen = false;
           }
+          return colDef;
         });
 
-        new Tabulator("#table", {
+        // Dynamically set Tabulator height based on viewport
+        function getTableHeight() {
+          // Subtract header, margins, and some padding (adjust as needed)
+          return Math.max(window.innerHeight - 180, 300) + "px";
+        }
+
+        const table = new Tabulator("#table", {
           data: treeRows,
-          layout: "fitData",
+          layout: "fitColumns",
           columns: columns,
           dataTree: true,
           dataTreeChildField: "_children",
           dataTreeStartExpanded: false,
-          height: "600px", // enable vertical scroll and header freeze
+          height: getTableHeight(),
+          initialSort: [
+            { column: "Shelf mark", dir: "asc" }
+          ],
+        });
+
+        window.addEventListener('resize', () => {
+          table.setHeight(getTableHeight());
         });
       });
   </script>
