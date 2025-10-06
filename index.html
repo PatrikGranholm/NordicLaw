@@ -19,35 +19,46 @@
     fetch('metadata.json')
       .then(response => response.json())
       .then(data => {
-        // Flatten nested Production Units for display
+        // Flatten all fields, including nested Production Units and Contents
         const rows = [];
         data.forEach(item => {
-          (item["Production Units"] || []).forEach(unit => {
-            rows.push({
-              "Shelf mark": item["Shelf mark"],
-              "Depository": item["Depository"],
-              "Object": item["Object"],
-              "Size": item["Size"],
-              "Production Unit": unit["Production Unit"],
-              "Material": unit["Material"],
-              "Physical Size (mm)": unit["Physical Size (mm)"],
-              // Add more fields as needed
+          if (Array.isArray(item["Production Units"])) {
+            item["Production Units"].forEach(unit => {
+              if (Array.isArray(unit["Contents"])) {
+                unit["Contents"].forEach(content => {
+                  rows.push({
+                    ...item,
+                    ...unit,
+                    ...content
+                  });
+                });
+              } else {
+                rows.push({
+                  ...item,
+                  ...unit
+                });
+              }
             });
-          });
+          } else {
+            rows.push(item);
+          }
         });
+
+        // Get all unique fields for columns
+        const allFields = new Set();
+        rows.forEach(row => Object.keys(row).forEach(key => allFields.add(key)));
+
+        // Build columns with header filters
+        const columns = Array.from(allFields).map(field => ({
+          title: field,
+          field: field,
+          headerFilter: true
+        }));
 
         new Tabulator("#table", {
           data: rows,
           layout: "fitData",
-          columns: [
-            {title: "Shelf mark", field: "Shelf mark"},
-            {title: "Depository", field: "Depository"},
-            {title: "Object", field: "Object"},
-            {title: "Size", field: "Size"},
-            {title: "Production Unit", field: "Production Unit"},
-            {title: "Material", field: "Material"},
-            {title: "Physical Size (mm)", field: "Physical Size (mm)"},
-          ],
+          columns: columns,
         });
       });
   </script>
