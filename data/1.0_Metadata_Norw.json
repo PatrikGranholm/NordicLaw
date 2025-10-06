@@ -34,7 +34,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "238 x 177",
+                "Leaf size": "238 x 177",
                 "Material": "Parchment"
             }
         ]
@@ -74,7 +74,7 @@
                         "Scribe": "Hand a (Seip 1954:6: a & b)"
                     }
                 ],
-                "Physical Size (mm)": "274 x 204",
+                "Leaf size": "274 x 204",
                 "Material": "Parchment"
             }
         ]
@@ -114,7 +114,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "203 x 100",
+                "Leaf size": "203 x 100",
                 "Material": "Parchment"
             }
         ]
@@ -154,7 +154,7 @@
                         "Scribe": ""
                     }
                 ],
-                "Physical Size (mm)": "240 x 180",
+                "Leaf size": "240 x 180",
                 "Material": "Parchment"
             }
         ]
@@ -194,7 +194,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "175 x 130",
+                "Leaf size": "175 x 130",
                 "Material": "Parchment"
             }
         ]
@@ -234,7 +234,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "188 x 146",
+                "Leaf size": "188 x 146",
                 "Material": "Parchment"
             }
         ]
@@ -274,7 +274,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "Unknown",
+                "Leaf size": "Unknown",
                 "Material": "Parchment"
             }
         ]
@@ -335,7 +335,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "267 x 200",
+                "Leaf size": "267 x 200",
                 "Material": "Parchment"
             }
         ]
@@ -375,7 +375,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "235 x 183",
+                "Leaf size": "235 x 183",
                 "Material": "Parchment"
             }
         ]
@@ -415,7 +415,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "260 x 180",
+                "Leaf size": "260 x 180",
                 "Material": "Parchment"
             }
         ]
@@ -455,7 +455,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "215 x 250",
+                "Leaf size": "215 x 250",
                 "Material": "Parchment"
             }
         ]
@@ -495,7 +495,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "200 x 250",
+                "Leaf size": "200 x 250",
                 "Material": "Parchment"
             }
         ]
@@ -535,7 +535,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "260 x 200",
+                "Leaf size": "260 x 200",
                 "Material": "Parchment"
             }
         ]
@@ -575,7 +575,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "Unknown",
+                "Leaf size": "Unknown",
                 "Material": "Parchment"
             }
         ]
@@ -615,7 +615,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "155 x 180",
+                "Leaf size": "155 x 180",
                 "Material": "Parchment"
             }
         ]
@@ -886,7 +886,7 @@
                         "Scribe": "Hand a (Pros Lauritsson)"
                     }
                 ],
-                "Physical Size (mm)": "248 x 182",
+                "Leaf size": "248 x 182",
                 "Material": "Paper"
             },
             {
@@ -956,7 +956,7 @@
                         "Scribe": "Hand e"
                     }
                 ],
-                "Physical Size (mm)": "248 x 182",
+                "Leaf size": "248 x 182",
                 "Material": "Parchment"
             },
             {
@@ -1026,7 +1026,7 @@
                         "Scribe": "Hand f (Eiríkr Þrondarson)"
                     }
                 ],
-                "Physical Size (mm)": "248 x 182",
+                "Leaf size": "248 x 182",
                 "Material": "Parchment"
             },
             {
@@ -1852,7 +1852,7 @@
                         "Scribe": "Hand g"
                     }
                 ],
-                "Physical Size (mm)": "248 x 182",
+                "Leaf size": "248 x 182",
                 "Material": "Parchment"
             }
         ]
@@ -1892,7 +1892,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "Unknown",
+                "Leaf size": "Unknown",
                 "Material": "Parchment"
             }
         ]
@@ -1953,7 +1953,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "ca. 270 x 180",
+                "Leaf size": "ca. 270 x 180",
                 "Material": "Parchment"
             }
         ]
@@ -1993,7 +1993,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "Unknown",
+                "Leaf size": "Unknown",
                 "Material": "Parchment"
             }
         ]
@@ -2033,7 +2033,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "Unknown",
+                "Leaf size": "Unknown",
                 "Material": "Parchment"
             }
         ]
@@ -2094,7 +2094,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "238 x 170",
+                "Leaf size": "238 x 170",
                 "Material": "Parchment"
             },
             {
@@ -2122,7 +2122,7 @@
                         "Scribe": "Hand d"
                     }
                 ],
-                "Physical Size (mm)": "238 x 170",
+                "Leaf size": "238 x 170",
                 "Material": "Parchment"
             },
             {
@@ -2171,7 +2171,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "238 x 170",
+                "Leaf size": "238 x 170",
                 "Material": "Parchment"
             }
         ]
@@ -2211,7 +2211,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "280 x 200",
+                "Leaf size": "280 x 200",
                 "Material": "Parchment"
             }
         ]
@@ -2251,7 +2251,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "280 x 200",
+                "Leaf size": "280 x 200",
                 "Material": "Parchment"
             }
         ]
@@ -2291,7 +2291,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "190 x 250",
+                "Leaf size": "190 x 250",
                 "Material": "Parchment"
             }
         ]
@@ -2331,7 +2331,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "200 x 280 mm",
+                "Leaf size": "200 x 280 mm",
                 "Material": "Parchment"
             }
         ]
@@ -2371,7 +2371,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "220 x 170 mm",
+                "Leaf size": "220 x 170 mm",
                 "Material": "Parchment"
             }
         ]
@@ -2411,7 +2411,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "Various",
+                "Leaf size": "Various",
                 "Material": "Parchment"
             }
         ]
@@ -2451,7 +2451,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "260 x 200 mm",
+                "Leaf size": "260 x 200 mm",
                 "Material": "Parchment"
             }
         ]
@@ -2491,7 +2491,7 @@
                         "Scribe": "Hand a (Þorgeirr Hákonarson)"
                     }
                 ],
-                "Physical Size (mm)": "275 x 207 mm",
+                "Leaf size": "275 x 207 mm",
                 "Material": "Parchment"
             }
         ]
@@ -2552,7 +2552,7 @@
                         "Scribe": "Hand a (Þorgeirr Hákonarson)"
                     }
                 ],
-                "Physical Size (mm)": "285 x 205 mm",
+                "Leaf size": "285 x 205 mm",
                 "Material": "Parchment"
             }
         ]
@@ -2760,7 +2760,7 @@
                         "Scribe": "Hand a (Þorgeirr Hákonarson)"
                     }
                 ],
-                "Physical Size (mm)": "276 x 205",
+                "Leaf size": "276 x 205",
                 "Material": "Parchment"
             }
         ]
@@ -2905,7 +2905,7 @@
                         "Scribe": "Hand b"
                     }
                 ],
-                "Physical Size (mm)": "307 x 214",
+                "Leaf size": "307 x 214",
                 "Material": "Parchment"
             },
             {
@@ -2975,7 +2975,7 @@
                         "Scribe": "Hand e"
                     }
                 ],
-                "Physical Size (mm)": "307 x 214",
+                "Leaf size": "307 x 214",
                 "Material": "Parchment"
             }
         ]
@@ -3015,7 +3015,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "255 x 175",
+                "Leaf size": "255 x 175",
                 "Material": "Parchment"
             }
         ]
@@ -3055,7 +3055,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "Unknown",
+                "Leaf size": "Unknown",
                 "Material": "Parchment"
             }
         ]
@@ -3095,7 +3095,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "Unknown",
+                "Leaf size": "Unknown",
                 "Material": "Parchment"
             }
         ]
@@ -3135,7 +3135,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "Unknown",
+                "Leaf size": "Unknown",
                 "Material": "Parchment"
             }
         ]
@@ -3217,7 +3217,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "235 x 150",
+                "Leaf size": "235 x 150",
                 "Material": "Parchment"
             },
             {
@@ -3266,7 +3266,7 @@
                         "Scribe": "Hand b"
                     }
                 ],
-                "Physical Size (mm)": "235 x 150",
+                "Leaf size": "235 x 150",
                 "Material": "Parchment"
             }
         ]
@@ -3873,7 +3873,7 @@
                         "Scribe": "Hand i (+ marg.); with ten further hands"
                     }
                 ],
-                "Physical Size (mm)": "283 x 203",
+                "Leaf size": "283 x 203",
                 "Material": "Parchment"
             },
             {
@@ -3901,7 +3901,7 @@
                         "Scribe": "Hand k"
                     }
                 ],
-                "Physical Size (mm)": "283 x 203",
+                "Leaf size": "283 x 203",
                 "Material": "Parchment"
             }
         ]
@@ -4088,7 +4088,7 @@
                         "Scribe": "Hand c"
                     }
                 ],
-                "Physical Size (mm)": "195 x 145",
+                "Leaf size": "195 x 145",
                 "Material": "Parchment"
             }
         ]
@@ -4233,7 +4233,7 @@
                         "Scribe": "Hand e"
                     }
                 ],
-                "Physical Size (mm)": "265 x 190",
+                "Leaf size": "265 x 190",
                 "Material": "Parchment"
             },
             {
@@ -4261,7 +4261,7 @@
                         "Scribe": "Sira Teitr (Hand c)"
                     }
                 ],
-                "Physical Size (mm)": "255 x 180",
+                "Leaf size": "255 x 180",
                 "Material": "Parchment"
             },
             {
@@ -4310,7 +4310,7 @@
                         "Scribe": "Unknown"
                     }
                 ],
-                "Physical Size (mm)": "255 x 180",
+                "Leaf size": "255 x 180",
                 "Material": "Parchment"
             }
         ]
@@ -4371,7 +4371,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "250 x 182",
+                "Leaf size": "250 x 182",
                 "Material": "Parchment"
             }
         ]
@@ -4453,7 +4453,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "243 x 170",
+                "Leaf size": "243 x 170",
                 "Material": "Parchment"
             }
         ]
@@ -4493,7 +4493,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "260 x 175",
+                "Leaf size": "260 x 175",
                 "Material": "Parchment"
             },
             {
@@ -4521,7 +4521,7 @@
                         "Scribe": "Hand b (Páll Styrkársson)"
                     }
                 ],
-                "Physical Size (mm)": "260 x 175",
+                "Leaf size": "260 x 175",
                 "Material": "Parchment"
             },
             {
@@ -4570,7 +4570,7 @@
                         "Scribe": "Hand e"
                     }
                 ],
-                "Physical Size (mm)": "260 x 175",
+                "Leaf size": "260 x 175",
                 "Material": "Parchment"
             }
         ]
@@ -4652,7 +4652,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "253 x 198",
+                "Leaf size": "253 x 198",
                 "Material": "Parchment"
             }
         ]
@@ -4755,7 +4755,7 @@
                         "Scribe": "Hand c (ff. 60vb–61rb)"
                     }
                 ],
-                "Physical Size (mm)": "238 x 180",
+                "Leaf size": "238 x 180",
                 "Material": "Parchment"
             }
         ]
@@ -4858,7 +4858,7 @@
                         "Scribe": "Hand b"
                     }
                 ],
-                "Physical Size (mm)": "203 x 157",
+                "Leaf size": "203 x 157",
                 "Material": "Parchment"
             },
             {
@@ -4907,7 +4907,7 @@
                         "Scribe": "Hand c"
                     }
                 ],
-                "Physical Size (mm)": "203 x 157",
+                "Leaf size": "203 x 157",
                 "Material": "Paper"
             }
         ]
@@ -5094,7 +5094,7 @@
                         "Scribe": "Hand e"
                     }
                 ],
-                "Physical Size (mm)": "Unknown",
+                "Leaf size": "Unknown",
                 "Material": "Parchment"
             },
             {
@@ -5395,7 +5395,7 @@
                         "Scribe": "Hand h"
                     }
                 ],
-                "Physical Size (mm)": "Unknown",
+                "Leaf size": "Unknown",
                 "Material": "Parchment"
             }
         ]
@@ -5435,7 +5435,7 @@
                         "Scribe": "Hand a (ff. 1r–31r; ff. 34r–53v)"
                     }
                 ],
-                "Physical Size (mm)": "260 x 195",
+                "Leaf size": "260 x 195",
                 "Material": "Parchment"
             },
             {
@@ -5484,7 +5484,7 @@
                         "Scribe": "Hand a (ff. 53v–57r"
                     }
                 ],
-                "Physical Size (mm)": "260 x 195",
+                "Leaf size": "260 x 195",
                 "Material": "Parchment"
             }
         ]
@@ -5608,7 +5608,7 @@
                         "Scribe": "Hand b"
                     }
                 ],
-                "Physical Size (mm)": "180 x 135",
+                "Leaf size": "180 x 135",
                 "Material": "Parchment"
             }
         ]
@@ -5984,7 +5984,7 @@
                         "Scribe": "Hand i"
                     }
                 ],
-                "Physical Size (mm)": "242 x 190",
+                "Leaf size": "242 x 190",
                 "Material": "Parchment"
             },
             {
@@ -6138,7 +6138,7 @@
                         "Scribe": "Hand p"
                     }
                 ],
-                "Physical Size (mm)": "242 x 190",
+                "Leaf size": "242 x 190",
                 "Material": "Parchment"
             },
             {
@@ -6187,7 +6187,7 @@
                         "Scribe": "Hand o (Engel Johnsson)"
                     }
                 ],
-                "Physical Size (mm)": "242 x 190",
+                "Leaf size": "242 x 190",
                 "Material": "Paper"
             }
         ]
@@ -6248,7 +6248,7 @@
                         "Scribe": "Hand b"
                     }
                 ],
-                "Physical Size (mm)": "Unknown",
+                "Leaf size": "Unknown",
                 "Material": "Parchment"
             },
             {
@@ -6276,7 +6276,7 @@
                         "Scribe": "Hand d"
                     }
                 ],
-                "Physical Size (mm)": "Unknown",
+                "Leaf size": "Unknown",
                 "Material": "Parchment"
             },
             {
@@ -6304,7 +6304,7 @@
                         "Scribe": "Hand e"
                     }
                 ],
-                "Physical Size (mm)": "Unknown",
+                "Leaf size": "Unknown",
                 "Material": "Paper"
             }
         ]
@@ -6344,7 +6344,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "255 x 180",
+                "Leaf size": "255 x 180",
                 "Material": "Parchment"
             }
         ]
@@ -6384,7 +6384,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "285 x 208",
+                "Leaf size": "285 x 208",
                 "Material": "Parchment"
             }
         ]
@@ -6466,7 +6466,7 @@
                         "Scribe": "Hand b"
                     }
                 ],
-                "Physical Size (mm)": "160 x 200",
+                "Leaf size": "160 x 200",
                 "Material": "Parchment"
             }
         ]
@@ -6506,7 +6506,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "250 x 160",
+                "Leaf size": "250 x 160",
                 "Material": "Parchment"
             }
         ]
@@ -6567,7 +6567,7 @@
                         "Scribe": "Hand b"
                     }
                 ],
-                "Physical Size (mm)": "140 x 200",
+                "Leaf size": "140 x 200",
                 "Material": "Parchment"
             }
         ]
@@ -6607,7 +6607,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "Unknown",
+                "Leaf size": "Unknown",
                 "Material": "Parchment"
             }
         ]
@@ -6647,7 +6647,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "Unknown",
+                "Leaf size": "Unknown",
                 "Material": "Parchment"
             }
         ]
@@ -6687,7 +6687,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "Unknown",
+                "Leaf size": "Unknown",
                 "Material": "Parchment"
             }
         ]
@@ -6727,7 +6727,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "Unknown",
+                "Leaf size": "Unknown",
                 "Material": "Parchment"
             }
         ]
@@ -6767,7 +6767,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "Unknown",
+                "Leaf size": "Unknown",
                 "Material": "Parchment"
             }
         ]
@@ -6807,7 +6807,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "Unknown",
+                "Leaf size": "Unknown",
                 "Material": "Parchment"
             }
         ]
@@ -6889,7 +6889,7 @@
                         "Scribe": "Hand a (Haukr Erlendsson)"
                     }
                 ],
-                "Physical Size (mm)": "260 x 175",
+                "Leaf size": "260 x 175",
                 "Material": "Parchment"
             }
         ]
@@ -7559,7 +7559,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "295x210",
+                "Leaf size": "295x210",
                 "Material": "Parchment"
             }
         ]
@@ -7599,7 +7599,7 @@
                         "Scribe": "Various hands"
                     }
                 ],
-                "Physical Size (mm)": "260 x 177",
+                "Leaf size": "260 x 177",
                 "Material": "Parchment"
             },
             {
@@ -7900,7 +7900,7 @@
                         "Scribe": "Hand g"
                     }
                 ],
-                "Physical Size (mm)": "260 x 177",
+                "Leaf size": "260 x 177",
                 "Material": "Parchment"
             }
         ]
@@ -8066,7 +8066,7 @@
                         "Scribe": "Hand a (NgL scribe)"
                     }
                 ],
-                "Physical Size (mm)": "240 x 160",
+                "Leaf size": "240 x 160",
                 "Material": "Parchment"
             }
         ]
@@ -8232,7 +8232,7 @@
                         "Scribe": "Hand a (NgL scribe)"
                     }
                 ],
-                "Physical Size (mm)": "300 x 190",
+                "Leaf size": "300 x 190",
                 "Material": "Parchment"
             },
             {
@@ -8281,7 +8281,7 @@
                         "Scribe": "Hand c"
                     }
                 ],
-                "Physical Size (mm)": "300 x 190",
+                "Leaf size": "300 x 190",
                 "Material": "Parchment"
             }
         ]
@@ -8342,7 +8342,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "210 x 156",
+                "Leaf size": "210 x 156",
                 "Material": "Parchment"
             },
             {
@@ -8580,7 +8580,7 @@
                         "Scribe": "Hand d (Hans Jacobsen Loe)"
                     }
                 ],
-                "Physical Size (mm)": "210 x 156",
+                "Leaf size": "210 x 156",
                 "Material": "Parchment"
             }
         ]
@@ -8809,7 +8809,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "235 x 160",
+                "Leaf size": "235 x 160",
                 "Material": "Parchment"
             },
             {
@@ -8858,7 +8858,7 @@
                         "Scribe": "Hand c"
                     }
                 ],
-                "Physical Size (mm)": "235 x 160",
+                "Leaf size": "235 x 160",
                 "Material": "Parchment"
             }
         ]
@@ -8919,7 +8919,7 @@
                         "Scribe": "Hand b (Jørgen Claussøn)"
                     }
                 ],
-                "Physical Size (mm)": "240 x 200",
+                "Leaf size": "240 x 200",
                 "Material": "Paper"
             },
             {
@@ -8947,7 +8947,7 @@
                         "Scribe": "Hand c"
                     }
                 ],
-                "Physical Size (mm)": "240 x 200",
+                "Leaf size": "240 x 200",
                 "Material": "Parchment"
             },
             {
@@ -9962,7 +9962,7 @@
                         "Scribe": "Hand f"
                     }
                 ],
-                "Physical Size (mm)": "240 x 200",
+                "Leaf size": "240 x 200",
                 "Material": "Parchment"
             },
             {
@@ -10221,7 +10221,7 @@
                         "Scribe": "Hand a, Hand m, Hand b"
                     }
                 ],
-                "Physical Size (mm)": "240 x 200",
+                "Leaf size": "240 x 200",
                 "Material": "Parchment"
             }
         ]
@@ -10261,7 +10261,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "250 x 175",
+                "Leaf size": "250 x 175",
                 "Material": "Parchment"
             }
         ]
@@ -10301,7 +10301,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "Unknown",
+                "Leaf size": "Unknown",
                 "Material": "Parchment"
             }
         ]
@@ -10467,7 +10467,7 @@
                         "Scribe": "Hand b"
                     }
                 ],
-                "Physical Size (mm)": "185 x 155",
+                "Leaf size": "185 x 155",
                 "Material": "Parchment"
             }
         ]
@@ -10507,7 +10507,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "205 x 145",
+                "Leaf size": "205 x 145",
                 "Material": "Parchment"
             }
         ]
@@ -10568,7 +10568,7 @@
                         "Scribe": "Hand b"
                     }
                 ],
-                "Physical Size (mm)": "Unknown",
+                "Leaf size": "Unknown",
                 "Material": "Parchment"
             }
         ]
@@ -10608,7 +10608,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "Unknown",
+                "Leaf size": "Unknown",
                 "Material": "Parchment"
             }
         ]
@@ -10648,7 +10648,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "180 x 250",
+                "Leaf size": "180 x 250",
                 "Material": "Parchment"
             }
         ]
@@ -10688,7 +10688,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "280 x 160",
+                "Leaf size": "280 x 160",
                 "Material": "Parchment"
             }
         ]
@@ -10728,7 +10728,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "160 x 130",
+                "Leaf size": "160 x 130",
                 "Material": "Parchment"
             }
         ]
@@ -10768,7 +10768,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "290 x 200",
+                "Leaf size": "290 x 200",
                 "Material": "Parchment"
             }
         ]
@@ -10808,7 +10808,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "230 x 180",
+                "Leaf size": "230 x 180",
                 "Material": "Parchment"
             }
         ]
@@ -10848,7 +10848,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "250 x 180",
+                "Leaf size": "250 x 180",
                 "Material": "Parchment"
             }
         ]
@@ -10888,7 +10888,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "Unknown",
+                "Leaf size": "Unknown",
                 "Material": "Parchment"
             }
         ]
@@ -10928,7 +10928,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "Unknown",
+                "Leaf size": "Unknown",
                 "Material": "Parchment"
             }
         ]
@@ -10968,7 +10968,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "240 x 170",
+                "Leaf size": "240 x 170",
                 "Material": "Parchment"
             }
         ]
@@ -11008,7 +11008,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "Unknown",
+                "Leaf size": "Unknown",
                 "Material": "Parchment"
             }
         ]
@@ -11048,7 +11048,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "290 x 203",
+                "Leaf size": "290 x 203",
                 "Material": "Parchment"
             }
         ]
@@ -11088,7 +11088,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "80 x 68",
+                "Leaf size": "80 x 68",
                 "Material": "Parchment"
             }
         ]
@@ -11128,7 +11128,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "280 x 182",
+                "Leaf size": "280 x 182",
                 "Material": "Parchment"
             }
         ]
@@ -11168,7 +11168,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "235 x 170",
+                "Leaf size": "235 x 170",
                 "Material": "Parchment"
             }
         ]
@@ -11355,7 +11355,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "270 x 230",
+                "Leaf size": "270 x 230",
                 "Material": "Parchment"
             }
         ]
@@ -11542,7 +11542,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "115 x 97",
+                "Leaf size": "115 x 97",
                 "Material": "Parchment"
             }
         ]
@@ -11666,7 +11666,7 @@
                         "Scribe": "Hand b (Guðormr Guðbrandsson)"
                     }
                 ],
-                "Physical Size (mm)": "270 x 193",
+                "Leaf size": "270 x 193",
                 "Material": "Parchment"
             },
             {
@@ -11820,7 +11820,7 @@
                         "Scribe": "Hand d (G. Sparfwenfeldt)"
                     }
                 ],
-                "Physical Size (mm)": "270 x 193",
+                "Leaf size": "270 x 193",
                 "Material": "Paper"
             }
         ]
@@ -11923,7 +11923,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "280 x 200",
+                "Leaf size": "280 x 200",
                 "Material": "Parchment"
             }
         ]
@@ -11963,7 +11963,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "200 x 145",
+                "Leaf size": "200 x 145",
                 "Material": "Parchment"
             }
         ]
@@ -12045,7 +12045,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "260 x 180",
+                "Leaf size": "260 x 180",
                 "Material": "Parchment"
             }
         ]
@@ -12253,7 +12253,7 @@
                         "Scribe": "Hand f"
                     }
                 ],
-                "Physical Size (mm)": "183 x 130",
+                "Leaf size": "183 x 130",
                 "Material": "Parchment"
             },
             {
@@ -12932,7 +12932,7 @@
                         "Scribe": "Hand g"
                     }
                 ],
-                "Physical Size (mm)": "183 x 130",
+                "Leaf size": "183 x 130",
                 "Material": "Parchment"
             }
         ]
@@ -13014,7 +13014,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "255 x 183",
+                "Leaf size": "255 x 183",
                 "Material": "Parchment"
             }
         ]
@@ -13054,7 +13054,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "193 x 160",
+                "Leaf size": "193 x 160",
                 "Material": "Parchment"
             }
         ]
@@ -13346,7 +13346,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "260 x 185",
+                "Leaf size": "260 x 185",
                 "Material": "Parchment"
             },
             {
@@ -13395,7 +13395,7 @@
                         "Scribe": "Hand c"
                     }
                 ],
-                "Physical Size (mm)": "Unknown",
+                "Leaf size": "Unknown",
                 "Material": "Parchment"
             }
         ]
@@ -13540,7 +13540,7 @@
                         "Scribe": "Hand f"
                     }
                 ],
-                "Physical Size (mm)": "220 x 165",
+                "Leaf size": "220 x 165",
                 "Material": "Parchment"
             },
             {
@@ -13694,7 +13694,7 @@
                         "Scribe": "Hand k"
                     }
                 ],
-                "Physical Size (mm)": "220 x 165",
+                "Leaf size": "220 x 165",
                 "Material": "Parchment"
             }
         ]
@@ -13776,7 +13776,7 @@
                         "Scribe": "Hand b"
                     }
                 ],
-                "Physical Size (mm)": "250 x 160",
+                "Leaf size": "250 x 160",
                 "Material": "Parchment"
             }
         ]
@@ -13816,7 +13816,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "Unknown",
+                "Leaf size": "Unknown",
                 "Material": "Parchment"
             }
         ]
@@ -13877,7 +13877,7 @@
                         "Scribe": "Hand a "
                     }
                 ],
-                "Physical Size (mm)": "220 x 165",
+                "Leaf size": "220 x 165",
                 "Material": "Parchment"
             }
         ]
@@ -14001,7 +14001,7 @@
                         "Scribe": "Hand e"
                     }
                 ],
-                "Physical Size (mm)": "259 x 185",
+                "Leaf size": "259 x 185",
                 "Material": "Parchment"
             },
             {
@@ -14197,7 +14197,7 @@
                         "Scribe": "Hand i"
                     }
                 ],
-                "Physical Size (mm)": "259 x 185",
+                "Leaf size": "259 x 185",
                 "Material": "Parchment"
             },
             {
@@ -14582,7 +14582,7 @@
                         "Scribe": "Hand k"
                     }
                 ],
-                "Physical Size (mm)": "259 x 185",
+                "Leaf size": "259 x 185",
                 "Material": "Parchment"
             }
         ]
@@ -14643,7 +14643,7 @@
                         "Scribe": "Hand a (Michael Jensson). Throughout the manuscript small paper slips are added to various sections of the first production unit"
                     }
                 ],
-                "Physical Size (mm)": "226 x 175",
+                "Leaf size": "226 x 175",
                 "Material": "Paper"
             },
             {
@@ -14818,7 +14818,7 @@
                         "Scribe": "Hand b"
                     }
                 ],
-                "Physical Size (mm)": "226 x 175",
+                "Leaf size": "226 x 175",
                 "Material": "Parchment"
             }
         ]
@@ -14900,7 +14900,7 @@
                         "Scribe": "Hand c (Halvard Ruffe)"
                     }
                 ],
-                "Physical Size (mm)": "278 x 205",
+                "Leaf size": "278 x 205",
                 "Material": "Parchment"
             }
         ]
@@ -15003,7 +15003,7 @@
                         "Scribe": "Hand d"
                     }
                 ],
-                "Physical Size (mm)": "246 x 195",
+                "Leaf size": "246 x 195",
                 "Material": "Paper"
             },
             {
@@ -15031,7 +15031,7 @@
                         "Scribe": "Hand b (apart from f. 40, which was written by Hand c in 1599)"
                     }
                 ],
-                "Physical Size (mm)": "246 x 195",
+                "Leaf size": "246 x 195",
                 "Material": "Parchment"
             }
         ]
@@ -15134,7 +15134,7 @@
                         "Scribe": "Hand b"
                     }
                 ],
-                "Physical Size (mm)": "Unknown",
+                "Leaf size": "Unknown",
                 "Material": "Parchment"
             }
         ]
@@ -15216,7 +15216,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "130 x 105",
+                "Leaf size": "130 x 105",
                 "Material": "Parchment"
             },
             {
@@ -15328,7 +15328,7 @@
                         "Scribe": "Hand b"
                     }
                 ],
-                "Physical Size (mm)": "130 x 105",
+                "Leaf size": "130 x 105",
                 "Material": "Parchment"
             }
         ]
@@ -15431,7 +15431,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "160 x unknown",
+                "Leaf size": "160 x unknown",
                 "Material": "Parchment"
             }
         ]
@@ -15492,7 +15492,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "250 x 180",
+                "Leaf size": "250 x 180",
                 "Material": "Parchment"
             }
         ]
@@ -15532,7 +15532,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "Unknown",
+                "Leaf size": "Unknown",
                 "Material": "Parchment"
             }
         ]
@@ -15572,7 +15572,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "220 x 165",
+                "Leaf size": "220 x 165",
                 "Material": "Parchment"
             }
         ]
@@ -15633,7 +15633,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "Unknown",
+                "Leaf size": "Unknown",
                 "Material": "Parchment"
             }
         ]
@@ -15673,7 +15673,7 @@
                         "Scribe": "Unknown"
                     }
                 ],
-                "Physical Size (mm)": "Unknown",
+                "Leaf size": "Unknown",
                 "Material": "Paper"
             }
         ]
@@ -15713,7 +15713,7 @@
                         "Scribe": "Hand a"
                     }
                 ],
-                "Physical Size (mm)": "110x80",
+                "Leaf size": "110x80",
                 "Material": "Parchment"
             }
         ]
