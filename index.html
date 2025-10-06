@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Manuscript Metadata Viewer</title>
+  <title>NordicLaw Norwegian Manuscripts Metadata Viewer</title>
   <!-- Tabulator CSS -->
   <link href="https://unpkg.com/tabulator-tables@5.5.2/dist/css/tabulator.min.css" rel="stylesheet">
   <style>
@@ -22,7 +22,7 @@
   </style>
 </head>
 <body>
-  <h1>Manuscript Metadata</h1>
+  <h1>NordicLaw Norwegian Manuscripts Metadata</h1>
   <div id="table-wrapper"><div id="table"></div></div>
   <!-- Tabulator JS -->
   <script src="https://unpkg.com/tabulator-tables@5.5.2/dist/js/tabulator.min.js"></script>
@@ -30,46 +30,78 @@
     fetch('metadata.json')
       .then(response => response.json())
       .then(data => {
-        // Flatten all fields, including nested Production Units and Contents
-        const rows = [];
-        data.forEach(item => {
+        // Transform data into a tree structure for Tabulator's dataTree
+        const treeRows = data.map(item => {
           if (Array.isArray(item["Production Units"])) {
-            item["Production Units"].forEach(unit => {
-              if (Array.isArray(unit["Contents"])) {
-                unit["Contents"].forEach(content => {
-                  rows.push({
-                    ...item,
+            return {
+              ...item,
+              _children: item["Production Units"].map(unit => {
+                if (Array.isArray(unit["Contents"])) {
+                  return {
                     ...unit,
-                    ...content
-                  });
-                });
-              } else {
-                rows.push({
-                  ...item,
-                  ...unit
-                });
-              }
-            });
+                    _children: unit["Contents"].map(content => ({ ...content }))
+                  };
+                } else {
+                  return { ...unit };
+                }
+              })
+            };
           } else {
-            rows.push(item);
+            return { ...item };
           }
         });
 
         // Get all unique fields for columns
         const allFields = new Set();
-        rows.forEach(row => Object.keys(row).forEach(key => allFields.add(key)));
+        function collectFields(obj) {
+          Object.keys(obj).forEach(key => {
+            if (key !== '_children') allFields.add(key);
+          });
+          if (Array.isArray(obj._children)) {
+            obj._children.forEach(child => collectFields(child));
+          }
+        }
+        treeRows.forEach(row => collectFields(row));
 
-        // Build columns with header filters
-        const columns = Array.from(allFields).map(field => ({
-          title: field,
-          field: field,
-          headerFilter: true
-        }));
+        // Build columns with header filters, freeze the first column, and exclude 'Production Units' and 'Contents'
+        const fieldsArr = Array.from(allFields).filter(f => f !== 'Production Units' && f !== 'Contents');
+
+        const columns = fieldsArr.map((field, idx) => {
+          if (idx === 0) {
+            return {
+              title: field,
+              field: field,
+              headerFilter: true,
+              frozen: true,
+              formatter: function(cell) {
+                const data = cell.getData();
+                // Show Leaves/Pages if present (lowest level), else Production Unit, else the field value
+                if (data["Leaves/Pages"]) {
+                  return data["Leaves/Pages"];
+                } else if (data["Production Unit"]) {
+                  return data["Production Unit"];
+                }
+                return cell.getValue();
+              }
+            };
+          } else {
+            return {
+              title: field,
+              field: field,
+              headerFilter: true,
+              frozen: false
+            };
+          }
+        });
 
         new Tabulator("#table", {
-          data: rows,
+          data: treeRows,
           layout: "fitData",
           columns: columns,
+          dataTree: true,
+          dataTreeChildField: "_children",
+          dataTreeStartExpanded: false,
+          height: "600px", // enable vertical scroll and header freeze
         });
       });
   </script>
