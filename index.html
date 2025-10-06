@@ -2,135 +2,70 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>NordicLaw Norwegian Manuscripts Metadata Viewer</title>
-  <!-- Tabulator CSS -->
-  <link href="https://unpkg.com/tabulator-tables@5.5.2/dist/css/tabulator.min.css" rel="stylesheet">
+  <title>Manuscript Tree Explorer</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jstree@3.3.15/dist/themes/default/style.min.css">
   <style>
-    body { font-family: sans-serif; margin: 2em; }
-    #table-wrapper {
-      margin-top: 2em;
+    body {
+      font-family: system-ui, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+    #left {
+      width: 35%;
+      border-right: 1px solid #ccc;
+      padding: 20px;
+      box-sizing: border-box;
+      overflow-y: auto;
+    }
+    #right {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    h1 {
+      font-size: 1.4em;
+      margin-bottom: 10px;
+    }
+    #search {
       width: 100%;
-      overflow-x: auto;
-      border-bottom: 1px solid #ccc;
+      padding: 5px;
+      margin-bottom: 15px;
     }
-    #table {
-      min-width: 1200px;
+    #details h2 {
+      margin-top: 0;
     }
-    .tabulator {
-      min-width: 1200px;
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 10px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 6px;
+      text-align: left;
+    }
+    th {
+      background: #f9f9f9;
     }
   </style>
 </head>
 <body>
-  <h1>NordicLaw Norwegian Manuscripts Metadata</h1>
-  <div id="table-wrapper"><div id="table"></div></div>
-  <!-- Tabulator JS -->
-  <script src="https://unpkg.com/tabulator-tables@5.5.2/dist/js/tabulator.min.js"></script>
-  <script>
-    fetch('metadata.json')
-      .then(response => response.json())
-      .then(data => {
-        // Transform data into a tree structure for Tabulator's dataTree
-        // Strip whitespace from Shelf mark values
-        const treeRows = data.map(item => {
-          const cleanItem = { ...item };
-          if (typeof cleanItem["Shelf mark"] === "string") {
-            cleanItem["Shelf mark"] = cleanItem["Shelf mark"].trim();
-          }
-          if (Array.isArray(cleanItem["Production Units"])) {
-            return {
-              ...cleanItem,
-              _children: cleanItem["Production Units"].map(unit => {
-                const cleanUnit = { ...unit };
-                if (Array.isArray(cleanUnit["Contents"])) {
-                  return {
-                    ...cleanUnit,
-                    _children: cleanUnit["Contents"].map(content => ({ ...content }))
-                  };
-                } else {
-                  return { ...cleanUnit };
-                }
-              })
-            };
-          } else {
-            return { ...cleanItem };
-          }
-        });
+  <div id="left">
+    <h1>Manuscripts</h1>
+    <input type="text" id="search" placeholder="Search manuscripts...">
+    <div id="tree"></div>
+  </div>
 
-        // Get all unique fields for columns
-        const allFields = new Set();
-        function collectFields(obj) {
-          Object.keys(obj).forEach(key => {
-            if (key !== '_children') allFields.add(key);
-          });
-          if (Array.isArray(obj._children)) {
-            obj._children.forEach(child => collectFields(child));
-          }
-        }
-        treeRows.forEach(row => collectFields(row));
+  <div id="right">
+    <h1>Details</h1>
+    <div id="details">Select a node to view details.</div>
+  </div>
 
-        // Build columns with header filters, freeze the first column, and exclude 'Production Units' and 'Contents'
-        const fieldsArr = Array.from(allFields).filter(f => f !== 'Production Units' && f !== 'Contents');
-
-        const narrowCols = [
-          "Depository", "Object", "Size", "Production Unit", "Leaves/Pages", "Columns", "Rubric", "Pricking", "Ruling"
-        ];
-        const columns = fieldsArr.map((field, idx) => {
-          const colDef = {
-            title: field,
-            field: field,
-            headerFilter: true,
-            width: narrowCols.includes(field) ? 100 : 200,
-          };
-          if (idx === 0) {
-            colDef.frozen = true;
-            colDef.formatter = function(cell) {
-              const data = cell.getData();
-              // Show Leaves/Pages if present (lowest level), else Production Unit, else the field value
-              if (data["Leaves/Pages"]) {
-                return data["Leaves/Pages"];
-              } else if (data["Production Unit"]) {
-                return data["Production Unit"];
-              }
-              return cell.getValue();
-            };
-            // Enable custom natural sort for Shelf mark
-            if (field === "Shelf mark") {
-              // Custom natural sort function
-              colDef.sorter = function(a, b) {
-                // Remove whitespace and use localeCompare with numeric option
-                return String(a || "").trim().localeCompare(String(b || "").trim(), undefined, { numeric: true, sensitivity: 'base' });
-              };
-            }
-          } else {
-            colDef.frozen = false;
-          }
-          return colDef;
-        });
-
-        // Dynamically set Tabulator height based on viewport
-        function getTableHeight() {
-          // Subtract header, margins, and some padding (adjust as needed)
-          return Math.max(window.innerHeight - 180, 300) + "px";
-        }
-
-        const table = new Tabulator("#table", {
-          data: treeRows,
-          layout: "fitColumns",
-          columns: columns,
-          dataTree: true,
-          dataTreeChildField: "_children",
-          dataTreeStartExpanded: false,
-          height: getTableHeight(),
-          initialSort: [
-            { column: "Shelf mark", dir: "asc" }
-          ],
-        });
-
-        window.addEventListener('resize', () => {
-          table.setHeight(getTableHeight());
-        });
-      });
-  </script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jstree@3.3.15/dist/jstree.min.js"></script>
+  <script src="tree.js"></script>
 </body>
 </html>
