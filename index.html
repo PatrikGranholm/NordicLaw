@@ -2,170 +2,36 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>NordicLaw Norwegian Manuscripts Metadata Viewer</title>
-  <!-- Tabulator CSS -->
-  <link href="https://unpkg.com/tabulator-tables@5.5.2/dist/css/tabulator.min.css" rel="stylesheet">
+  <title>Manuscript Metadata (Tree View with File Selector)</title>
+  <link href="https://unpkg.com/tabulator-tables@6.2.5/dist/css/tabulator.min.css" rel="stylesheet">
   <style>
-    body { font-family: sans-serif; margin: 2em; }
-    #table-wrapper {
-      margin-top: 2em;
-      width: 100%;
-      overflow-x: auto;
-      border-bottom: 1px solid #ccc;
-    }
-    #table {
-      min-width: 1200px;
-    }
-    .tabulator {
-      min-width: 1200px;
-    }
+    body { font-family: system-ui, sans-serif; margin: 20px; }
+    #controls { margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+    #search { width: 300px; padding: 6px; }
+    #table { height: 700px; }
+    select { padding: 6px; }
+    .tabulator-group-level-0 { background: #f5f5f5; font-weight: bold; }
+    .tabulator-group-level-1 { background: #fafafa; }
   </style>
 </head>
 <body>
-  <h1>NordicLaw Data Viewer</h1>
+  <h1>NordicLaw Manuscript Metadata Browser</h1>
 
-  <label for="json-select"><strong>Select a file to view:</strong></label>
-  <select id="json-select" class="json-select">
-    <option value="1.0_Metadata_Dan.json">Danish Manuscripts</option>
-    <option value="1.0_Metadata_Isl.json">Icelandic Manuscripts</option>
-    <option value="1.0_Metadata_Norw.json">Norwegian Manuscripts</option>
-    <option value="1.0_Metadata_Swe.json">Swedish Manuscripts</option>
-  </select>
+  <div id="controls">
+    <label for="dataset"><strong>Choose dataset:</strong></label>
+    <select id="dataset">
+      <option value="data/1.0_Metadata_Dan.json">Danish Manuscripts</option>
+      <option value="data/1.0_Metadata_Isl.json">Icelandic Manuscripts</option>
+      <option value="data/1.0_Metadata_Norw.json" selected>Norwegian Manuscripts</option>
+      <option value="data/1.0_Metadata_Swe.json">Swedish Manuscripts</option>
+    </select>
 
-  <div id="table-wrapper"><div id="table"></div></div>
+    <input type="text" id="search" placeholder="Search all fields...">
+  </div>
 
-  <footer style="margin-top:3em;color:#888;font-size:0.9em;">
-    NordicLaw Manuscripts Metadata Viewer
-  </footer>
+  <div id="table"></div>
 
-  <script src="https://unpkg.com/tabulator-tables@5.5.2/dist/js/tabulator.min.js"></script>
-  <script>
-    const select = document.getElementById('json-select');
-    let tableInstance = null;
-
-    function getTableHeight() {
-      return Math.max(window.innerHeight - 220, 300) + "px";
-    }
-
-
-    function renderTable(jsonFile) {
-      // Edit this array to control the preferred column order:
-      const preferredOrder = [
-        "Shelf mark", "Depository", "Name", "Related Shelfmarks", "Object", "Size", "Literature", "Links to Database",
-        "Production Unit", "Leaves/Pages", "Main text", "Minor text", "Dating", "Gatherings", "Columns", "Rubric", "Production", "Style", "Colours", "Form of Initials", "Size of Initials", "Iconography", "Place", "Pricking", "Ruling", "Lines", "Script", "Scribe", "Physical Size (mm)", "Material"
-      ];
-      fetch('data/' + jsonFile)
-        .then(response => response.json())
-        .then(data => {
-          // Transform data into a tree structure for Tabulator's dataTree
-          const treeRows = data.map(item => {
-            const cleanItem = { ...item };
-            if (typeof cleanItem["Shelf mark"] === "string") {
-              cleanItem["Shelf mark"] = cleanItem["Shelf mark"].trim();
-            }
-            if (Array.isArray(cleanItem["Production Units"])) {
-              return {
-                ...cleanItem,
-                _children: cleanItem["Production Units"].map(unit => {
-                  const cleanUnit = { ...unit };
-                  if (Array.isArray(cleanUnit["Contents"])) {
-                    return {
-                      ...cleanUnit,
-                      _children: cleanUnit["Contents"].map(content => ({ ...content }))
-                    };
-                  } else {
-                    return { ...cleanUnit };
-                  }
-                })
-              };
-            } else {
-              return { ...cleanItem };
-            }
-          });
-
-          // Get all unique fields for columns
-          const allFields = new Set();
-          function collectFields(obj) {
-            Object.keys(obj).forEach(key => {
-              if (key !== '_children') allFields.add(key);
-            });
-            if (Array.isArray(obj._children)) {
-              obj._children.forEach(child => collectFields(child));
-            }
-          }
-          treeRows.forEach(row => collectFields(row));
-
-          // Build columns, freeze the first column, and exclude 'Production Units' and 'Contents'
-          let fieldsArr = Array.from(allFields).filter(f => f !== 'Production Units' && f !== 'Contents');
-          // Sort fieldsArr by preferredOrder, unknowns at the end
-          fieldsArr.sort((a, b) => {
-            const ia = preferredOrder.indexOf(a);
-            const ib = preferredOrder.indexOf(b);
-            if (ia === -1 && ib === -1) return a.localeCompare(b);
-            if (ia === -1) return 1;
-            if (ib === -1) return -1;
-            return ia - ib;
-          });
-
-          const narrowCols = [
-            "Depository", "Object", "Size", "Production Unit", "Leaves/Pages", "Columns", "Rubric", "Pricking", "Ruling"
-          ];
-          const columns = fieldsArr.map((field, idx) => {
-            const colDef = {
-              title: field,
-              field: field,
-              width: narrowCols.includes(field) ? 100 : 200,
-            };
-            if (idx === 0) {
-              colDef.frozen = true;
-              colDef.formatter = function(cell) {
-                const data = cell.getData();
-                if (data["Leaves/Pages"]) {
-                  return data["Leaves/Pages"];
-                } else if (data["Production Unit"]) {
-                  return data["Production Unit"];
-                }
-                return cell.getValue();
-              };
-              if (field === "Shelf mark") {
-                colDef.sorter = function(a, b) {
-                  return String(a || "").trim().localeCompare(String(b || "").trim(), undefined, { numeric: true, sensitivity: 'base' });
-                };
-              }
-            } else {
-              colDef.frozen = false;
-            }
-            return colDef;
-          });
-
-          // Destroy previous table instance if exists
-          if (tableInstance) {
-            tableInstance.destroy();
-          }
-
-          tableInstance = new Tabulator("#table", {
-            data: treeRows,
-            layout: "fitColumns",
-            columns: columns,
-            dataTree: true,
-            dataTreeChildField: "_children",
-            dataTreeStartExpanded: false,
-            height: getTableHeight(),
-            initialSort: [
-              { column: "Shelf mark", dir: "asc" }
-            ],
-          });
-        });
-    }
-
-    // Initial render
-    renderTable(select.value);
-    // Update table on selection change
-    select.addEventListener('change', () => renderTable(select.value));
-    // Responsive height
-    window.addEventListener('resize', () => {
-      if (tableInstance) tableInstance.setHeight(getTableHeight());
-    });
-  </script>
+  <script src="https://unpkg.com/tabulator-tables@6.2.5/dist/js/tabulator.min.js"></script>
+  <script src="table.js"></script>
 </body>
 </html>
