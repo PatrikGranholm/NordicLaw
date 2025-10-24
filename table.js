@@ -96,7 +96,7 @@ async function loadData(fileName) {
     rows.forEach(r => Object.keys(r).forEach(k => fieldSet.add(k)));
 
     // Preferred column order for familiarity
-    const preferred = ["Shelf mark", "Depository", "Production Unit", "Leaves/Pages", "Main text", "Minor text", "Dating", "Scribe", "Script", "Material", "Object", "Size", "Literature", "Links to Database"];
+    const preferred = ["Depository", "Shelf mark", "Production Unit", "Leaves/Pages", "Main text", "Minor text", "Dating", "Scribe", "Script", "Material", "Object", "Size", "Literature", "Links to Database"];
 
     const columns = [];
     // Add preferred fields first (if present)
@@ -129,7 +129,10 @@ async function loadData(fileName) {
         groupBy: ["Shelf mark", "Production Unit", "Leaves/Pages"],
         groupStartOpen: [true, false, false],
         groupHeader: [
-          value => `<strong>${value}</strong>`,
+          function(value, count, data) {
+            const depository = data[0]?.Depository || "Unknown Depository";
+            return `<strong>${depository}, ${value}</strong>`;
+          },
           value => `Unit ${value}`,
           value => `${value}`,
         ],
