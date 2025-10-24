@@ -86,6 +86,19 @@ async function loadData(fileName) {
             "Dating": content["Dating"] || "",
             "Scribe": content["Scribe"] || "",
             "Script": content["Script"] || "",
+            "Gatherings": content["Gatherings"] || "",
+            "Columns": content["Columns"] || "",
+            "Rubric": content["Rubric"] || "",
+            "Production": content["Production"] || "",
+            "Style": content["Style"] || "",
+            "Colours": content["Colours"] || "",
+            "Form of Initials": content["Form of Initials"] || "",
+            "Size of Initials": content["Size of Initials"] || "",
+            "Iconography": content["Iconography"] || "",
+            "Place": content["Place"] || "",
+            "Pricking": content["Pricking"] || "",
+            "Ruling": content["Ruling"] || "",
+            "Lines": content["Lines"] || ""
           });
         });
       });
@@ -96,33 +109,42 @@ async function loadData(fileName) {
     rows.forEach(r => Object.keys(r).forEach(k => fieldSet.add(k)));
 
     // Preferred column order for familiarity
-    const preferred = ["Depository", "Shelf mark", "Production Unit", "Leaves/Pages", "Main text", "Minor text", "Dating", "Scribe", "Script", "Material", "Object", "Size", "Literature", "Links to Database"];
+    const preferred = ["Depository", "Shelf mark", "Production Unit", "Leaves/Pages", "Main text", "Minor text", "Dating",
+       "Scribe", "Script", "Material", "Object", "Size", "Gatherings", "Columns", "Rubric",
+        "Production", "Style", "Colours", "Form of Initials", "Size of Initials", "Iconography", "Place", "Pricking", "Ruling",
+         "Lines", "Literature", "Links to Database"];
 
     const columns = [];
     // Add preferred fields first (if present)
     preferred.forEach(f => {
       if (fieldSet.has(f)) {
-        columns.push({ title: f, field: f, sorter: f === 'Shelf mark' ? 'natural' : 'string', headerFilter: 'input', visible: true, hozAlign: 'left' });
+        columns.push({
+          title: f,
+          field: f,
+          sorter: f === 'Shelf mark' ? 'natural' : 'string',
+          headerFilter: 'input',
+          visible: true,
+          hozAlign: 'left',
+          width: ["Depository", "Shelf mark", "Production Unit"].includes(f) ? 150 : 100 // Set specific columns to 200px
+        });
         fieldSet.delete(f);
       }
     });
     // Add remaining fields alphabetically
     Array.from(fieldSet).sort().forEach(f => {
-      columns.push({ title: f, field: f, headerFilter: 'input', visible: true, hozAlign: 'left' });
+      columns.push({ title: f, field: f, headerFilter: 'input', visible: true, hozAlign: 'left', width: 100 });
     });
-
-      // use the top-level expandGroupsGlobal helper instead of duplicating logic here
 
     // If table exists, update columns and data; otherwise create it
     if (table) {
       table.setColumns(columns);
-        await table.replaceData(rows);
-  // ensure groups reflect current filters/search after render
-  setTimeout(() => expandGroupsGlobal(), 150);
+      await table.replaceData(rows);
+      // ensure groups reflect current filters/search after render
+      setTimeout(() => expandGroupsGlobal(), 150);
     } else {
       table = new Tabulator("#table", {
         data: rows,
-        layout: "fitColumns",
+        layout: "fitDataTable",
         pagination: true,
         paginationSize: 50,
         placeholder: "No data available",
@@ -138,21 +160,24 @@ async function loadData(fileName) {
         ],
         responsiveLayout: false, // prevent Tabulator from hiding columns responsively
         columns: columns,
+        movableColumns: true, // Allow users to reorder columns
+        autoResize: false, // Disable auto-resizing to maintain fixed widths
+        height: "100%", // Ensure table fills the container
       });
 
-        // Ensure groups expand/restore after rendering and filtering
-        if (table) {
-          table.on("dataFiltered", function(filters, rows){
-            // give Tabulator time to update groups then expand
-            setTimeout(() => expandGroupsGlobal(), 150);
-          });
-          // also call after render completes to ensure groups exist
-          table.on("renderComplete", function(){
-            setTimeout(() => expandGroupsGlobal(), 150);
-          });
-          // initial expand call after creation
+      // Ensure groups expand/restore after rendering and filtering
+      if (table) {
+        table.on("dataFiltered", function(filters, rows){
+          // give Tabulator time to update groups then expand
           setTimeout(() => expandGroupsGlobal(), 150);
-        }
+        });
+        // also call after render completes to ensure groups exist
+        table.on("renderComplete", function(){
+          setTimeout(() => expandGroupsGlobal(), 150);
+        });
+        // initial expand call after creation
+        setTimeout(() => expandGroupsGlobal(), 150);
+      }
     }
 
   } catch (err) {
