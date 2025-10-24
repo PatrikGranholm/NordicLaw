@@ -124,7 +124,7 @@ async function loadData(fileName) {
         data: rows,
         layout: "fitColumns",
         pagination: true,
-        paginationSize: 20,
+        paginationSize: 50,
         placeholder: "No data available",
         groupBy: ["Shelf mark", "Production Unit", "Leaves/Pages"],
         groupStartOpen: [true, false, false],
@@ -164,6 +164,7 @@ async function loadData(fileName) {
 function setupControls() {
   const datasetSelect = document.getElementById("dataset");
   const searchInput = document.getElementById("search");
+  const paginationSizeSelect = document.getElementById("pagination-size");
 
   // Load default selection
   loadData(datasetSelect.value);
@@ -183,6 +184,17 @@ function setupControls() {
         String(val).toLowerCase().includes(query)
       );
     });
+  });
+
+  // Handle pagination size change
+  paginationSizeSelect.addEventListener("change", function () {
+    const value = this.value;
+    if (!table) return;
+    if (value === "all") {
+      table.setPageSize(true); // Show all rows
+    } else {
+      table.setPageSize(parseInt(value, 10));
+    }
   });
 }
 

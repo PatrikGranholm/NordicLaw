@@ -5,13 +5,39 @@
   <title>Manuscript Metadata (Tree View with File Selector)</title>
   <link href="https://unpkg.com/tabulator-tables@6.2.5/dist/css/tabulator.min.css" rel="stylesheet">
   <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
     body { font-family: system-ui, sans-serif; margin: 20px; }
-    #controls { margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
-    #search { width: 300px; padding: 6px; }
-    #table { height: 700px; }
-    select { padding: 6px; }
-    .tabulator-group-level-0 { background: #f5f5f5; font-weight: bold; }
-    .tabulator-group-level-1 { background: #fafafa; }
+    #controls {
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    #search {
+      width: 300px;
+      padding: 6px;
+    }
+    #table {
+      flex-grow: 1;
+      height: 100%;
+      padding-bottom: 20px; /* Add padding to the lower margin */
+    }
+    select {
+      padding: 6px;
+    }
+    .tabulator-group-level-0 {
+      background: #f5f5f5;
+      font-weight: bold;
+    }
+    .tabulator-group-level-1 {
+      background: #fafafa;
+    }
   </style>
 </head>
 <body>
@@ -27,6 +53,13 @@
     </select>
 
     <input type="text" id="search" placeholder="Search all fields...">
+
+    <label for="pagination-size"><strong>Records per page:</strong></label>
+    <select id="pagination-size">
+      <option value="50" selected>50</option>
+      <option value="100">100</option>
+      <option value="all">All</option>
+    </select>
   </div>
 
   <div id="table"></div>
