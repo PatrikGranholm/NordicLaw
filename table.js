@@ -148,21 +148,17 @@ async function loadData(fileName) {
         pagination: true,
         paginationSize: 50,
         placeholder: "No data available",
-        groupBy: ["Shelf mark", "Production Unit", "Leaves/Pages"],
-        groupStartOpen: [true, false, false],
-        groupHeader: [
-          function(value, count, data) {
-            const depository = data[0]?.Depository || "Unknown Depository";
-            return `<strong>${depository}, ${value}</strong>`;
-          },
-          value => `Unit ${value}`,
-          value => `${value}`,
-        ],
+        groupBy: false, // Disable group headers
+        movableRows: false, // Prevent rows from being nested or moved
         responsiveLayout: false, // prevent Tabulator from hiding columns responsively
         columns: columns,
         movableColumns: true, // Allow users to reorder columns
         autoResize: false, // Disable auto-resizing to maintain fixed widths
         height: "100%", // Ensure table fills the container
+        initialSort: [
+          { column: "Depository", dir: "asc" },
+          { column: "Shelf mark", dir: "asc" }
+        ],
       });
 
       // Ensure groups expand/restore after rendering and filtering
