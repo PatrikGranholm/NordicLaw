@@ -139,6 +139,8 @@ async function loadData(fileName) {
     if (table) {
       table.setColumns(columns);
       await table.replaceData(rows);
+      // Update total record count
+      document.getElementById('total-records').textContent = rows.length;
       // ensure groups reflect current filters/search after render
       setTimeout(() => expandGroupsGlobal(), 150);
     } else {
@@ -160,11 +162,14 @@ async function loadData(fileName) {
           { column: "Shelf mark", dir: "asc" }
         ],
       });
+      // Update total record count
+      document.getElementById('total-records').textContent = rows.length;
 
       // Ensure groups expand/restore after rendering and filtering
       if (table) {
-        table.on("dataFiltered", function(filters, rows){
-          // give Tabulator time to update groups then expand
+        table.on("dataFiltered", function(filters, filteredRows){
+          // Update total record count to show filtered count
+          document.getElementById('total-records').textContent = filteredRows.length;
           setTimeout(() => expandGroupsGlobal(), 150);
         });
         // also call after render completes to ensure groups exist
