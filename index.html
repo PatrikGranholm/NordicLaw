@@ -13,6 +13,38 @@
     }
 
     body { font-family: system-ui, sans-serif; margin: 20px; }
+    #main-layout {
+      display: flex;
+      flex-direction: row;
+      height: 100%;
+      min-height: 700px;
+    }
+    #facet-sidebar {
+      width: 260px;
+      min-width: 180px;
+      max-width: 320px;
+      background: #f8f8f8;
+      border-right: 1px solid #ddd;
+      padding: 16px 12px 12px 8px;
+      box-sizing: border-box;
+      overflow-y: auto;
+    }
+    #facet-sidebar h3 {
+      margin-top: 0;
+      font-size: 1.1em;
+      margin-bottom: 0.5em;
+    }
+    #facet-sidebar label {
+      display: block;
+      margin-bottom: 0.2em;
+      font-size: 0.98em;
+    }
+    #facet-sidebar select, #facet-sidebar input[type=checkbox] {
+      margin-right: 0.5em;
+    }
+    #facet-sidebar .facet-group {
+      margin-bottom: 1.2em;
+    }
     #controls {
       margin-bottom: 10px;
       display: flex;
@@ -26,7 +58,8 @@
     #table {
       flex-grow: 1;
       height: 100%;
-      padding-bottom: 20px; /* Add padding to the lower margin */
+      padding-bottom: 20px;
+      min-width: 0;
     }
     select {
       padding: 6px;
@@ -41,15 +74,15 @@
   </style>
 </head>
 <body>
-  <h1>NordicLaw Manuscript Metadata Browser</h1>
+  <h1>NordicLaw Manuscript Metadata Browser (TSV)</h1>
 
   <div id="controls">
     <label for="dataset"><strong>Choose dataset:</strong></label>
     <select id="dataset">
-      <option value="data/1.0_Metadata_Dan.json">Danish Manuscripts</option>
-      <option value="data/1.0_Metadata_Isl.json">Icelandic Manuscripts</option>
-      <option value="data/1.0_Metadata_Norw.json" selected>Norwegian Manuscripts</option>
-      <option value="data/1.0_Metadata_Swe.json">Swedish Manuscripts</option>
+      <option value="data/1.0_Metadata_Norw.tsv" selected>Norwegian Manuscripts (TSV)</option>
+      <option value="data/1.0_Metadata_Isl.tsv">Icelandic Manuscripts (TSV)</option>
+      <option value="data/1.0_Metadata_Dan.tsv">Danish Manuscripts (TSV)</option>
+      <option value="data/1.0_Metadata_Swe.tsv">Swedish Manuscripts (TSV)</option>
     </select>
 
     <input type="text" id="search" placeholder="Search all fields...">
@@ -64,7 +97,20 @@
     </select>
   </div>
 
-  <div id="table"></div>
+  <div id="main-layout">
+    <div id="facet-sidebar">
+      <h3>Facet Search</h3>
+  <div class="facet-group" id="facet-Depository"></div>
+  <div class="facet-group" id="facet-Object"></div>
+  <div class="facet-group" id="facet-Script"></div>
+  <div class="facet-group" id="facet-Material"></div>
+  <div class="facet-group" id="facet-Main text group"></div>
+  <div class="facet-group" id="facet-Main text"></div>
+  <div class="facet-group" id="facet-Century"></div>
+  <div class="facet-group" id="facet-Dating"></div>
+    </div>
+    <div id="table"></div>
+  </div>
 
   <script src="https://unpkg.com/tabulator-tables@6.2.5/dist/js/tabulator.min.js"></script>
   <script src="table.js"></script>
