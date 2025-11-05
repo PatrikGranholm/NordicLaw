@@ -376,7 +376,10 @@ async function loadDataTSV(fileName) {
         field: h,
         visible: true,
         hozAlign: 'left',
-        width: ["Depository", "Shelf mark", "Production Unit"].includes(h) ? 200 : 100
+        width: ["Depository", "Shelf mark", "Production Unit"].includes(h) ? 200 : 100,
+        headerFilter: "input",
+        headerFilterPlaceholder: "Filter...",
+        headerFilterLiveFilter: true
       };
       if (h === "Links to Database") {
         colDef.formatter = function(cell) {
@@ -387,14 +390,6 @@ async function loadDataTSV(fileName) {
           return v;
         };
         colDef.formatterParams = { allowHtml: true };
-      }
-      if (h === "Columns" || h === "Depository") {
-        colDef.headerFilter = "select";
-        colDef.headerFilterParams = { values: true, clearable: true, multiselect: false, sort: "asc" };
-        colDef.headerFilterPlaceholder = "All";
-        colDef.headerFilterLiveFilter = true;
-      } else {
-        colDef.headerFilter = false;
       }
       colDefs[h] = colDef;
     });
@@ -411,9 +406,8 @@ async function loadDataTSV(fileName) {
       visible: true,
       hozAlign: 'left',
       width: 90,
-      headerFilter: "select",
-      headerFilterParams: { values: true, clearable: true, multiselect: false, sort: "asc" },
-      headerFilterPlaceholder: "All",
+      headerFilter: "input",
+      headerFilterPlaceholder: "Filter...",
       headerFilterLiveFilter: true
     });
 
