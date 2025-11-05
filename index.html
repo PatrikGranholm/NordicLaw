@@ -20,14 +20,29 @@
       min-height: 700px;
     }
     #facet-sidebar {
-      width: 260px;
+      width: 340px;
       min-width: 180px;
-      max-width: 320px;
+      max-width: 600px;
       background: #f8f8f8;
       border-right: 1px solid #ddd;
       padding: 16px 12px 12px 8px;
       box-sizing: border-box;
       overflow-y: auto;
+      position: relative;
+      flex-shrink: 0;
+      transition: width 0.1s;
+    }
+
+    #facet-resizer {
+      position: absolute;
+      top: 0;
+      right: -2px;
+      width: 16px;
+      height: 100%;
+      cursor: ew-resize;
+      background: linear-gradient(to right, #e0e0e0 60%, #cccccc 100%);
+      z-index: 10;
+      opacity: 0.7;
     }
     #facet-sidebar h3 {
       margin-top: 0;
@@ -99,6 +114,7 @@
 
   <div id="main-layout">
     <div id="facet-sidebar">
+      <div id="facet-resizer" title="Drag to resize sidebar"></div>
       <h3>Facet Search</h3>
   <div class="facet-group" id="facet-Depository"></div>
   <div class="facet-group" id="facet-Object"></div>
@@ -114,5 +130,42 @@
 
   <script src="https://unpkg.com/tabulator-tables@6.2.5/dist/js/tabulator.min.js"></script>
   <script src="table.js"></script>
+
+  <script>
+    // Facet sidebar resizer logic
+    (function() {
+      const sidebar = document.getElementById('facet-sidebar');
+      const resizer = document.getElementById('facet-resizer');
+      let dragging = false;
+      let startX = 0;
+      let startWidth = 0;
+      const minWidth = 180;
+      const maxWidth = 600;
+      resizer.addEventListener('mousedown', function(e) {
+        dragging = true;
+        startX = e.clientX;
+        startWidth = sidebar.offsetWidth;
+        document.body.style.cursor = 'ew-resize';
+        document.body.style.userSelect = 'none';
+      });
+      document.addEventListener('mousemove', function(e) {
+        if (!dragging) return;
+        let newWidth = startWidth + (e.clientX - startX);
+        newWidth = Math.max(minWidth, Math.min(maxWidth, newWidth));
+        sidebar.style.width = newWidth + 'px';
+        // Trigger Tabulator to redraw if present
+        if (window.table && typeof window.table.redraw === 'function') {
+          window.table.redraw(true);
+        }
+      });
+      document.addEventListener('mouseup', function() {
+        if (dragging) {
+          dragging = false;
+          document.body.style.cursor = '';
+          document.body.style.userSelect = '';
+        }
+      });
+    })();
+  </script>
 </body>
 </html>

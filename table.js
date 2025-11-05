@@ -69,11 +69,34 @@ Tabulator.extendModule("sort", "sorters", {
   natural: (a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" }),
 });
 
+
 // --- Facet filter logic ---
 
 const FACET_FIELDS = ["Depository", "Object", "Script", "Material", "Main text group", "Dating", "Century"];
 let facetSelections = {};
 let allRows = [];
+
+// Main text abbreviation mapping, loaded from texts.tsv at runtime
+let MAIN_TEXT_MAP = null;
+async function loadMainTextMap() {
+  if (MAIN_TEXT_MAP) return MAIN_TEXT_MAP;
+  try {
+    const resp = await fetch('data/texts.tsv');
+    const text = await resp.text();
+    const lines = text.split(/\r?\n/).filter(line => line.trim() !== '');
+    const map = {};
+    lines.forEach(line => {
+      const [abbr, full] = line.split(/\t/);
+      if (abbr && full) map[abbr.trim()] = full.trim();
+    });
+    MAIN_TEXT_MAP = map;
+    return map;
+  } catch (e) {
+    console.error('Failed to load texts.tsv:', e);
+    MAIN_TEXT_MAP = {};
+    return {};
+  }
+}
 
 // Helper: parse a Dating string to a century (returns string like '13th', '14th', etc. or '')
 function parseCentury(dating) {
@@ -130,7 +153,8 @@ function getUniqueValues(rows, field) {
   return Array.from(set).sort((a, b) => a.localeCompare(b, undefined, {numeric:true, sensitivity:"base"}));
 }
 
-function renderFacetSidebar(rows) {
+async function renderFacetSidebar(rows) {
+  const mainTextMap = await loadMainTextMap();
   FACET_FIELDS.forEach(field => {
     const facetDiv = document.getElementById(`facet-${field}`);
     if (!facetDiv) return;
@@ -150,12 +174,16 @@ function renderFacetSidebar(rows) {
       let html = `<strong>Main text group</strong><br>`;
       html += `<label><input type="checkbox" value="__ALL__" checked data-facet="Main text group">All</label>`;
       Object.keys(groupMap).sort().forEach(group => {
-        html += `<div style='margin-left:0.5em;'><label><input type="checkbox" value="${group.replace(/"/g, '&quot;')}" data-facet="Main text group">${group}</label>`;
+        // Expand group abbreviation if possible
+        const groupLabel = mainTextMap[group] ? `${group} — ${mainTextMap[group]}` : group;
+        html += `<div style='margin-left:0.5em;'><label><input type="checkbox" value="${group.replace(/"/g, '&quot;')}" data-facet="Main text group">${groupLabel}</label>`;
         const variants = Array.from(groupMap[group]);
         if (variants.length > 0) {
           html += `<div style='margin-left:1.5em;'>`;
           variants.sort().forEach(variant => {
-            html += `<label><input type="checkbox" value="${group}|${variant}" data-facet="Main text group-variant">${variant}</label>`;
+            // Expand variant abbreviation if possible
+            const variantLabel = mainTextMap[variant] ? `${variant} — ${mainTextMap[variant]}` : variant;
+            html += `<label><input type="checkbox" value="${group}|${variant}" data-facet="Main text group-variant">${variantLabel}</label>`;
           });
           html += `</div>`;
         }
@@ -169,7 +197,12 @@ function renderFacetSidebar(rows) {
     let html = `<strong>${field}</strong><br>`;
     html += `<label><input type="checkbox" value="__ALL__" checked data-facet="${field}">All</label>`;
     values.forEach(val => {
-      html += `<label><input type="checkbox" value="${val.replace(/"/g, '&quot;')}" data-facet="${field}">${val}</label>`;
+      // Expand abbreviation if possible for Main text
+      let label = val;
+      if (field === "Main text" && mainTextMap[val]) {
+        label = `${val} — ${mainTextMap[val]}`;
+      }
+      html += `<label><input type="checkbox" value="${val.replace(/"/g, '&quot;')}" data-facet="${field}">${label}</label>`;
     });
     facetDiv.innerHTML = html;
   });
@@ -259,8 +292,35 @@ function applyFacetFilters() {
   });
 }
 
+
+
+// Depository abbreviation mapping, loaded from depositories.tsv at runtime
+let DEPOSITORY_MAP = null;
+
+async function loadDepositoryMap() {
+  if (DEPOSITORY_MAP) return DEPOSITORY_MAP;
+  try {
+    const resp = await fetch('data/depositories.tsv');
+    const text = await resp.text();
+    const lines = text.split(/\r?\n/).filter(line => line.trim() !== '');
+    const map = {};
+    lines.forEach(line => {
+      const [abbr, name] = line.split(/\t/);
+      if (abbr && name) map[abbr.trim()] = name.trim();
+    });
+    DEPOSITORY_MAP = map;
+    return map;
+  } catch (e) {
+    console.error('Failed to load depositories.tsv:', e);
+    DEPOSITORY_MAP = {};
+    return {};
+  }
+}
+
+
 async function loadDataTSV(fileName) {
   try {
+    const depositoryMap = await loadDepositoryMap();
     const response = await fetch(fileName);
     const tsvText = await response.text();
     const lines = tsvText.split(/\r?\n/).filter(line => line.trim() !== "");
@@ -273,6 +333,17 @@ async function loadDataTSV(fileName) {
       headers.forEach((h, i) => {
         let val = values[i] !== undefined ? values[i] : "";
         if (h === "Main text") val = val.trim();
+        // Parse Excel-style HYPERLINK formulas for Links to Database
+        if (h === "Links to Database" && val.startsWith("=HYPERL")) {
+          // =HYPERLÄNK("url";"label") or =HYPERLINK("url","label")
+          let m = val.match(/=HYPERL[ÄA]NK\(["']([^"']+)["'];?["']([^"']+)["']\)/i);
+          if (!m) m = val.match(/=HYPERLINK\(["']([^"']+)["'],["']([^"']+)["']\)/i);
+          if (m) val = `<a href="${m[1]}" target="_blank">${m[2]}</a>`;
+        }
+        // Expand Depository abbreviation
+        if (h === "Depository" && val in depositoryMap) {
+          val = depositoryMap[val];
+        }
         obj[h] = val;
       });
       // Add Main text group (abbreviation before parentheses)
@@ -291,8 +362,15 @@ async function loadDataTSV(fileName) {
     allRows = rows;
 
 
-    // Build columns dynamically from headers, add Century column at the end
-    let columns = headers.map(h => {
+
+    // User-specified column order
+    const userColumnOrder = [
+      "Depository","Shelf mark","Name","Object","Size","Dating","Leaves/Pages","Main text","Minor text","Gatherings","Physical Size (mm)","Production Unit","Pricking","Material","Ruling","Columns","Lines","Script","Rubric","Scribe","Production","Style","Colours","Form of Initials","Size of Initials","Iconography","Place","Related Shelfmarks","Literature","Links to Database"
+    ];
+
+    // Build columns from headers, but order by userColumnOrder, then any extra columns (e.g. Century)
+    let colDefs = {};
+    headers.forEach(h => {
       let colDef = {
         title: h,
         field: h,
@@ -300,6 +378,16 @@ async function loadDataTSV(fileName) {
         hozAlign: 'left',
         width: ["Depository", "Shelf mark", "Production Unit"].includes(h) ? 200 : 100
       };
+      if (h === "Links to Database") {
+        colDef.formatter = function(cell) {
+          const v = cell.getValue();
+          if (!v) return "";
+          if (v.startsWith('<a ')) return v;
+          if (/^https?:\/\//.test(v)) return `<a href="${v}" target="_blank">${v}</a>`;
+          return v;
+        };
+        colDef.formatterParams = { allowHtml: true };
+      }
       if (h === "Columns" || h === "Depository") {
         colDef.headerFilter = "select";
         colDef.headerFilterParams = { values: true, clearable: true, multiselect: false, sort: "asc" };
@@ -308,9 +396,15 @@ async function loadDataTSV(fileName) {
       } else {
         colDef.headerFilter = false;
       }
-      return colDef;
+      colDefs[h] = colDef;
     });
-    // Add Century column
+
+    // Compose columns array in user order, then add any extra columns (except Century)
+    let columns = [];
+    userColumnOrder.forEach(h => { if (colDefs[h]) columns.push(colDefs[h]); });
+    // Add any columns from headers not in userColumnOrder (except Century)
+    headers.forEach(h => { if (!userColumnOrder.includes(h) && h !== "Century" && colDefs[h]) columns.push(colDefs[h]); });
+    // Add Century column at the end if present
     columns.push({
       title: "Century",
       field: "Century",
@@ -324,7 +418,9 @@ async function loadDataTSV(fileName) {
     });
 
     // Render facet sidebar and set up events
-  renderFacetSidebar(rows);
+
+  // renderFacetSidebar is now async
+  await renderFacetSidebar(rows);
   setupFacetEvents();
 
     // If table exists, update columns and data; otherwise create it
