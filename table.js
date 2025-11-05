@@ -171,19 +171,19 @@ async function renderFacetSidebar(rows) {
         if (!groupMap[group]) groupMap[group] = new Set();
         if (variant) groupMap[group].add(variant);
       });
-      let html = `<strong>Main text group</strong><br>`;
-      html += `<label><input type="checkbox" value="__ALL__" checked data-facet="Main text group">All</label>`;
-      Object.keys(groupMap).sort().forEach(group => {
-        // Expand group abbreviation if possible
+      let html = `<div class="fw-bold mb-2">Main text group</div>`;
+      html += `<div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="__ALL__" checked data-facet="Main text group" id="facet-mtg-all"><label class="form-check-label" for="facet-mtg-all">All</label></div>`;
+      Object.keys(groupMap).sort().forEach((group, gi) => {
+        const groupId = `facet-mtg-group-${gi}`;
         const groupLabel = mainTextMap[group] ? `${group} — ${mainTextMap[group]}` : group;
-        html += `<div style='margin-left:0.5em;'><label><input type="checkbox" value="${group.replace(/"/g, '&quot;')}" data-facet="Main text group">${groupLabel}</label>`;
+        html += `<div style='margin-left:0.5em;'><div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="${group.replace(/"/g, '&quot;')}" data-facet="Main text group" id="${groupId}"><label class="form-check-label" for="${groupId}">${groupLabel}</label></div>`;
         const variants = Array.from(groupMap[group]);
         if (variants.length > 0) {
           html += `<div style='margin-left:1.5em;'>`;
-          variants.sort().forEach(variant => {
-            // Expand variant abbreviation if possible
+          variants.sort().forEach((variant, vi) => {
+            const variantId = `facet-mtg-variant-${gi}-${vi}`;
             const variantLabel = mainTextMap[variant] ? `${variant} — ${mainTextMap[variant]}` : variant;
-            html += `<label><input type="checkbox" value="${group}|${variant}" data-facet="Main text group-variant">${variantLabel}</label>`;
+            html += `<div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="${group}|${variant}" data-facet="Main text group-variant" id="${variantId}"><label class="form-check-label" for="${variantId}">${variantLabel}</label></div>`;
           });
           html += `</div>`;
         }
@@ -194,15 +194,15 @@ async function renderFacetSidebar(rows) {
     }
     // Default facet rendering
     const values = getUniqueValues(rows, field);
-    let html = `<strong>${field}</strong><br>`;
-    html += `<label><input type="checkbox" value="__ALL__" checked data-facet="${field}">All</label>`;
-    values.forEach(val => {
-      // Expand abbreviation if possible for Main text
+    let html = `<div class="fw-bold mb-2">${field}</div>`;
+    html += `<div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="__ALL__" checked data-facet="${field}" id="facet-${field}-all"><label class="form-check-label" for="facet-${field}-all">All</label></div>`;
+    values.forEach((val, i) => {
       let label = val;
       if (field === "Main text" && mainTextMap[val]) {
         label = `${val} — ${mainTextMap[val]}`;
       }
-      html += `<label><input type="checkbox" value="${val.replace(/"/g, '&quot;')}" data-facet="${field}">${label}</label>`;
+      const id = `facet-${field}-${i}`;
+      html += `<div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="${val.replace(/"/g, '&quot;')}" data-facet="${field}" id="${id}"><label class="form-check-label" for="${id}">${label}</label></div>`;
     });
     facetDiv.innerHTML = html;
   });
@@ -442,6 +442,7 @@ async function loadDataTSV(fileName) {
           { column: "Depository", dir: "asc" },
           { column: "Shelf mark", dir: "asc" }
         ],
+        theme: "bootstrap5",
       });
       document.getElementById('total-records').textContent = rows.length;
       if (table) {

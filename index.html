@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Manuscript Metadata (Tree View with File Selector)</title>
-  <link href="https://unpkg.com/tabulator-tables@6.2.5/dist/css/tabulator.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://unpkg.com/tabulator-tables@6.2.5/dist/css/tabulator_bootstrap5.min.css" rel="stylesheet">
   <style>
     html, body {
       height: 100%;
@@ -11,8 +12,7 @@
       display: flex;
       flex-direction: column;
     }
-
-    body { font-family: system-ui, sans-serif; margin: 20px; }
+    body { margin: 20px; }
     #main-layout {
       display: flex;
       flex-direction: row;
@@ -32,7 +32,6 @@
       flex-shrink: 0;
       transition: width 0.1s;
     }
-
     #facet-resizer {
       position: absolute;
       top: 0;
@@ -44,40 +43,11 @@
       z-index: 10;
       opacity: 0.7;
     }
-    #facet-sidebar h3 {
-      margin-top: 0;
-      font-size: 1.1em;
-      margin-bottom: 0.5em;
-    }
-    #facet-sidebar label {
-      display: block;
-      margin-bottom: 0.2em;
-      font-size: 0.98em;
-    }
-    #facet-sidebar select, #facet-sidebar input[type=checkbox] {
-      margin-right: 0.5em;
-    }
-    #facet-sidebar .facet-group {
-      margin-bottom: 1.2em;
-    }
-    #controls {
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    #search {
-      width: 300px;
-      padding: 6px;
-    }
     #table {
       flex-grow: 1;
       height: 100%;
       padding-bottom: 20px;
       min-width: 0;
-    }
-    select {
-      padding: 6px;
     }
     .tabulator-group-level-0 {
       background: #f5f5f5;
@@ -89,45 +59,114 @@
   </style>
 </head>
 <body>
-  <h1>NordicLaw Manuscript Metadata Browser (TSV)</h1>
 
-  <div id="controls">
-    <label for="dataset"><strong>Choose dataset:</strong></label>
-    <select id="dataset">
-      <option value="data/1.0_Metadata_Norw.tsv" selected>Norwegian Manuscripts (TSV)</option>
-      <option value="data/1.0_Metadata_Isl.tsv">Icelandic Manuscripts (TSV)</option>
-      <option value="data/1.0_Metadata_Dan.tsv">Danish Manuscripts (TSV)</option>
-      <option value="data/1.0_Metadata_Swe.tsv">Swedish Manuscripts (TSV)</option>
-    </select>
+  <h1 class="mb-4">NordicLaw Manuscript Metadata Browser (TSV)</h1>
 
-    <input type="text" id="search" placeholder="Search all fields...">
-
-    <div id="record-count" style="margin-left:10px;"><strong>Total records:</strong> <span id="total-records">0</span></div>
-    
-    <label for="pagination-size"><strong>Records per page:</strong></label>
-    <select id="pagination-size">
-      <option value="50" selected>50</option>
-      <option value="100">100</option>
-      <option value="all">All</option>
-    </select>
-  </div>
-
-  <div id="main-layout">
-    <div id="facet-sidebar">
-      <div id="facet-resizer" title="Drag to resize sidebar"></div>
-      <h3>Facet Search</h3>
-  <div class="facet-group" id="facet-Depository"></div>
-  <div class="facet-group" id="facet-Object"></div>
-  <div class="facet-group" id="facet-Script"></div>
-  <div class="facet-group" id="facet-Material"></div>
-  <div class="facet-group" id="facet-Main text group"></div>
-  <div class="facet-group" id="facet-Main text"></div>
-  <div class="facet-group" id="facet-Century"></div>
-  <div class="facet-group" id="facet-Dating"></div>
+  <div id="controls" class="row g-3 align-items-center mb-3">
+    <div class="col-auto">
+      <label for="dataset" class="col-form-label fw-bold">Choose dataset:</label>
     </div>
-    <div id="table"></div>
+    <div class="col-auto">
+      <select id="dataset" class="form-select">
+        <option value="data/1.0_Metadata_Norw.tsv" selected>Norwegian Manuscripts (TSV)</option>
+        <option value="data/1.0_Metadata_Isl.tsv">Icelandic Manuscripts (TSV)</option>
+        <option value="data/1.0_Metadata_Dan.tsv">Danish Manuscripts (TSV)</option>
+        <option value="data/1.0_Metadata_Swe.tsv">Swedish Manuscripts (TSV)</option>
+      </select>
+    </div>
+    <div class="col-auto">
+      <input type="text" id="search" class="form-control" placeholder="Search all fields...">
+    </div>
+    <div class="col-auto" id="record-count">
+      <span class="fw-bold">Total records:</span> <span id="total-records">0</span>
+    </div>
+    <div class="col-auto">
+      <label for="pagination-size" class="col-form-label fw-bold">Records per page:</label>
+    </div>
+    <div class="col-auto">
+      <select id="pagination-size" class="form-select">
+        <option value="50" selected>50</option>
+        <option value="100">100</option>
+        <option value="all">All</option>
+      </select>
+    </div>
   </div>
 
+  <div id="main-layout" class="row flex-nowrap" style="height:100%;">
+    <div id="facet-sidebar" class="col-auto bg-light border-end">
+      <div id="facet-resizer" title="Drag to resize sidebar"></div>
+      <h3 class="mt-2 mb-3">Facet Search</h3>
+      <div class="accordion" id="facetAccordion" style="--bs-accordion-bg: transparent;">
+        <div class="accordion-item mb-2">
+          <h2 class="accordion-header" id="headingDepository">
+            <button class="accordion-button py-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDepository" aria-expanded="true" aria-controls="collapseDepository">Depository</button>
+          </h2>
+          <div id="collapseDepository" class="accordion-collapse collapse show" aria-labelledby="headingDepository">
+            <div class="accordion-body p-2" id="facet-Depository"></div>
+          </div>
+        </div>
+        <div class="accordion-item mb-2">
+          <h2 class="accordion-header" id="headingObject">
+            <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseObject" aria-expanded="false" aria-controls="collapseObject">Object</button>
+          </h2>
+          <div id="collapseObject" class="accordion-collapse collapse" aria-labelledby="headingObject">
+            <div class="accordion-body p-2" id="facet-Object"></div>
+          </div>
+        </div>
+        <div class="accordion-item mb-2">
+          <h2 class="accordion-header" id="headingScript">
+            <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseScript" aria-expanded="false" aria-controls="collapseScript">Script</button>
+          </h2>
+          <div id="collapseScript" class="accordion-collapse collapse" aria-labelledby="headingScript">
+            <div class="accordion-body p-2" id="facet-Script"></div>
+          </div>
+        </div>
+        <div class="accordion-item mb-2">
+          <h2 class="accordion-header" id="headingMaterial">
+            <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMaterial" aria-expanded="false" aria-controls="collapseMaterial">Material</button>
+          </h2>
+          <div id="collapseMaterial" class="accordion-collapse collapse" aria-labelledby="headingMaterial">
+            <div class="accordion-body p-2" id="facet-Material"></div>
+          </div>
+        </div>
+        <div class="accordion-item mb-2">
+          <h2 class="accordion-header" id="headingMainTextGroup">
+            <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMainTextGroup" aria-expanded="false" aria-controls="collapseMainTextGroup">Main text group</button>
+          </h2>
+          <div id="collapseMainTextGroup" class="accordion-collapse collapse" aria-labelledby="headingMainTextGroup">
+            <div class="accordion-body p-2" id="facet-Main text group"></div>
+          </div>
+        </div>
+        <div class="accordion-item mb-2">
+          <h2 class="accordion-header" id="headingMainText">
+            <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMainText" aria-expanded="false" aria-controls="collapseMainText">Main text</button>
+          </h2>
+          <div id="collapseMainText" class="accordion-collapse collapse" aria-labelledby="headingMainText">
+            <div class="accordion-body p-2" id="facet-Main text"></div>
+          </div>
+        </div>
+        <div class="accordion-item mb-2">
+          <h2 class="accordion-header" id="headingCentury">
+            <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCentury" aria-expanded="false" aria-controls="collapseCentury">Century</button>
+          </h2>
+          <div id="collapseCentury" class="accordion-collapse collapse" aria-labelledby="headingCentury">
+            <div class="accordion-body p-2" id="facet-Century"></div>
+          </div>
+        </div>
+        <div class="accordion-item mb-2">
+          <h2 class="accordion-header" id="headingDating">
+            <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDating" aria-expanded="false" aria-controls="collapseDating">Dating</button>
+          </h2>
+          <div id="collapseDating" class="accordion-collapse collapse" aria-labelledby="headingDating">
+            <div class="accordion-body p-2" id="facet-Dating"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="table" class="col p-0"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://unpkg.com/tabulator-tables@6.2.5/dist/js/tabulator.min.js"></script>
   <script src="table.js"></script>
 
