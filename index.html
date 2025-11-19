@@ -60,20 +60,10 @@
 </head>
 <body>
 
-  <h1 class="mb-4">NordicLaw Manuscript Metadata Browser (TSV)</h1>
+  <h1 class="mb-4">NordicLaw Manuscripts (Beta)</h1>
 
   <div id="controls" class="row g-3 align-items-center mb-3">
-    <div class="col-auto">
-      <label for="dataset" class="col-form-label fw-bold">Choose dataset:</label>
-    </div>
-    <div class="col-auto">
-      <select id="dataset" class="form-select">
-        <option value="data/1.2_Metadata_Norw.tsv" selected>Norwegian Manuscripts (TSV)</option>
-        <option value="data/1.1_Metadata_Isl.tsv">Icelandic Manuscripts (TSV)</option>
-        <option value="data/1.0_Metadata_Dan.tsv">Danish Manuscripts (TSV)</option>
-        <option value="data/1.1_Metadata_Swe.tsv">Swedish Manuscripts (TSV)</option>
-      </select>
-    </div>
+    <!-- Dataset select removed: always using combined file -->
     <div class="col-auto">
       <input type="text" id="search" class="form-control" placeholder="Search all fields...">
     </div>
@@ -97,6 +87,14 @@
       <div id="facet-resizer" title="Drag to resize sidebar"></div>
       <h3 class="mt-2 mb-3">Facet Search</h3>
       <div class="accordion" id="facetAccordion" style="--bs-accordion-bg: transparent;">
+                <div class="accordion-item mb-2">
+                  <h2 class="accordion-header" id="headingLanguage">
+                    <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLanguage" aria-expanded="false" aria-controls="collapseLanguage">Language</button>
+                  </h2>
+                  <div id="collapseLanguage" class="accordion-collapse collapse" aria-labelledby="headingLanguage">
+                    <div class="accordion-body p-2" id="facet-Language"></div>
+                  </div>
+                </div>
         <div class="accordion-item mb-2">
           <h2 class="accordion-header" id="headingDepository">
             <button class="accordion-button py-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDepository" aria-expanded="true" aria-controls="collapseDepository">Depository</button>

@@ -5,10 +5,10 @@ KAB	Kristinréttr Árna biskups
 K	Kristinréttr
 K (BorgL-e)	Kristenréttr Borgarþings
 K (BorgL-y)	Kristenréttr Borgarþings
-K (E) 	Kristenréttr Eiðsífaþings
+K (E)	Kristenréttr Eiðsífaþings
 K (GuL-e)	Kristenréttr Gulaþings
 K (GuL-y)	Kristenréttr Gulaþings
-K (F) 	Kristenréttr Frostuþings
+K (F)	Kristenréttr Frostuþings
 Fml	Farmannalǫg
 Bja	Bjarkejarréttr
 BorgL	Borgatingsloven
@@ -115,3 +115,164 @@ RBEM	Réttarbøtar Eirik Magnússon
 RBME	Réttarbøtar Magnúss Eiriksson
 RBMV	Margrétar Valdemarsdóttur
 NGL	Norges gamle Love
+MEL	Magnus Erikssons Landslag
+Kgb	Konungabalken
+Eb	Edsörebalken
+Gb	Giftermålsbalken
+Hmb	Högmålsbalken
+Tb	Tjuvabalken
+Äb	Ärvdabalken
+Tmb	Tingmålsbalken
+MEStL	Magnus Erikssons Stadslag - Magnus Erikssons Gårdsrätt
+Bb	Byggningabalken
+Kgb	Konungabalken
+Eb	Edsörebalken
+Gb	Giftermålsbalken
+Kmb	Köpmålabalken
+Rsb	Radstufuobalken
+Smb	Skeppsmålabalken
+Dmb	Drapsmålabalken
+Smb	Såramålbalken
+ÄUL	Äldre Upplandslagen
+UL	Upplandslagen
+Add	Additamenta
+Blb	Byalagsbalken
+För	Förord
+Jb	Jordabalken
+Kgb	Konungabalken
+Kkb	Kyrkobalken
+Kmb	Köpmålabalken
+Mb-Manhelgdsbalken
+Rb	Rättegångsbalken
+StfBM	Konung Birger Magnussons stadfästelsebrev
+Äb	Ärvdabalken
+SdmL	Södermannalagen
+Bb	Byggningabalken
+Conf	Confirmatio Regis Magni
+För	Prologus
+Gb	Giftermålsbalken
+Jb	Jordabalken
+Kgb	Konungabalken
+Kkb	Kyrkobalken
+Kmb	Köpmålabalken
+Mb	Manhelgdsbalken
+Rb	Rättegångsbalken
+Till	Additamenta (Tillägg)
+Tjdb	Tjuvnadsbalken
+Äb	Ärvdabalken
+GL	Gutalagen
+GS	Gutasagan
+HL	Hälsingelagen
+Blb	Byalagsbalken
+För	Förord (Praefatio)
+Jb	Jorðabalker
+Kgb	Konungabalken
+Kkb	Kyrkobalken
+Kmb	Köpmalabalken
+Mb	Manhelgdsbalken
+Rb	Rättergångsbalken
+Äb	Ärvdabalken
+JyL	Jyske lov
+SkKL	Skånske kirkelov
+SkL	Skånske lov
+Epi	Epilogue
+SmL	Smålandslagen (Tiohärads lag)
+DL	Dalalagen (often called Äldre Västmannalagen)
+Bb	Byggningabalken
+Eb	Edsöresbalken (konungs)
+Gb	Giptningabalken
+Kkb	Kristnubalker
+Mb	Manhælghisbalken
+Rb	Rättergångsbalken (þingbalkr)
+Tjdb	Tjuvnadsbalken
+VmL	Västmannalagen
+Bb	Bygningabalkær
+För	Praefatio (Förord)
+Jb	Jordabalken
+Kgb	Konungabalken
+Kkb	Kyrkobalken
+Kmb	Köpmålabalken
+Mb	Manhelgdsbalken
+Rb	Rättegångsbalken
+Äb	Ärvdabalken
+VSjL	Valdemars sjællandske lov
+VgL	Västgötalagen
+YVgL	Yngre Västgötalagen
+Add	Additamenta
+Drb	Dråparebalken
+Frb	Fredsbalken
+Föb	Förnämesbalken
+Gb	Giftermålsbalken
+Jb	Jordabalken
+Kkb	Kyrkobalken
+Kvab	Kvarnbalken
+Rlb	Rättslösabalken
+Tb	Tjuvabalken
+Urb	Urbotamål
+Utgb	Utgärdarbalken
+Vs	Balken om vådasår
+Äb	Ärvdabalken
+ÄVgL	Äldre Västgötalagen
+Föb	Förnämesbalken
+Fös	Förnamessaker
+Gb	Giftermålsbalken
+Jb	Jordabalken
+Kkb	Kyrkobalken
+Kva	Huru mylnu skal göra
+Lek	Lekarerätten
+Md	Om mandråp
+Rlb	Rättlösabalken
+Slb	Slagsmålsbalken
+Smb	Såramålbalken
+Tb	Tjuvabalken
+Urb	Urbotamål
+Vs	Om vådasår
+Äb	Ärvdabalken
+ÖgL	Östgötalagen
+Bb	Byggningabalken
+Db	Dråpsbalken
+Eb	Edsörebalken (konungs)
+Kkb	Kyrkobalken
+Vm	Vådamålsbalken
+Rb	Rättegångsbalken
+KrL	Kristoffers landslag
+Äb	Ärvdabalken
+Gb	Giptningabalken
+Bb	Byggningabalken
+Hmb	Högmålsbalken
+Jb	Jordabalken
+Kgb	Konungabalken
+Kmb	Köpmålabalken
+Tb	Tjuvabalken
+Tmb	Tingmålsbalken
+BS	Bagarnas skrå i Stockholm (c. 1506-10)
+DS	Dragarnas (vindragarnas) skrå i Stockholm (1502 or 1503)
+GsS	Guldsmedernas skrå i Stockholm (1501?)
+Grg	Grágás
+Arþ	Arfa þáttr
+Bat	Baugatal
+Feþ	Festa þáttr
+Fjl	Fjárleigur
+Hrs	Hreppaskil
+Klb	Kristinna laga þáttr
+Lbþ	Landbrigða þáttr
+Lrþ	Lögréttuþáttar
+Lsþ	Lögsögumannsþáttar
+Misc	Miscellaneous articles
+Ómb	Ómaga bálkr
+Rsþ	Rannsókna þáttr
+Þsþ	Þingskapaþáttar
+Vl	Vígslóða
+Js	Járnsíða
+JyL	Jyske lov
+För	Praefatio
+ESjL	Erik’s Law of Zealand (Dan Eriks sjællandske lov)
+KrSt	Kristoffers Stadslag
+SjKL	Sjællandske kirkelov
+SkL	Skånske lov
+SkSt	Skånske Stadsrett
+SkBL	Skånske bylov
+LuSt	Lunds Stadsrett
+MaBL	Malmø bylov
+RoSt	Roskilde Stadsrett
+SkSt	Skagen Stadsrett

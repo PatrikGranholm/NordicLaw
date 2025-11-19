@@ -72,9 +72,25 @@ Tabulator.extendModule("sort", "sorters", {
 
 // --- Facet filter logic ---
 
-const FACET_FIELDS = ["Depository", "Object", "Script", "Material", "Main text group", "Dating", "Century"];
+const FACET_FIELDS = ["Language", "Depository", "Object", "Script", "Material", "Main text group", "Dating", "Century"];
 let facetSelections = {};
 let allRows = [];
+
+// Map 'language' column to 'Language' for facets, expanding ISO codes
+const LANGUAGE_MAP = {
+  'da': 'Danish',
+  'is': 'Icelandic',
+  'no': 'Norwegian',
+  'sv': 'Swedish',
+  // Add more as needed
+};
+function normalizeRowLanguage(row) {
+  if (row["Language"]) {
+    const code = row["Language"].toLowerCase();
+    row["Language"] = LANGUAGE_MAP[code] || row["Language"];
+  }
+  return row;
+}
 
 // Main text abbreviation mapping, loaded from texts.tsv at runtime
 let MAIN_TEXT_MAP = null;
@@ -357,6 +373,8 @@ async function loadDataTSV(fileName) {
       obj["Century"] = parseCentury(obj["Dating"]);
       // Add parsed DatingYear (improved)
       obj["DatingYear"] = parseDatingYear(obj["Dating"]);
+      // Normalize language column for facet
+      normalizeRowLanguage(obj);
       return obj;
     });
     allRows = rows;
@@ -365,7 +383,7 @@ async function loadDataTSV(fileName) {
 
     // User-specified column order
     const userColumnOrder = [
-      "Depository","Shelf mark","Name","Object","Size","Dating","Leaves/Pages","Main text","Minor text","Gatherings","Physical Size (mm)","Production Unit","Pricking","Material","Ruling","Columns","Lines","Script","Rubric","Scribe","Production","Style","Colours","Form of Initials","Size of Initials","Iconography","Place","Related Shelfmarks","Literature","Links to Database"
+      "Depository","Shelf mark", "Language", "Name","Object","Size","Dating","Leaves/Pages","Main text","Minor text","Gatherings","Physical Size (mm)","Production Unit","Pricking","Material","Ruling","Columns","Lines","Script","Rubric","Scribe","Production","Style","Colours","Form of Initials","Size of Initials","Iconography","Place","Related Shelfmarks","Literature","Links to Database"
     ];
 
     // Build columns from headers, but order by userColumnOrder, then any extra columns (e.g. Century)
@@ -466,11 +484,13 @@ function setupControls() {
   const paginationSizeSelect = document.getElementById("pagination-size");
 
   // Load selected TSV by default
-  loadDataTSV(datasetSelect.value);
+  // Always load the combined file
+  loadDataTSV('data/NordicLaw_data.tsv');
 
   // Handle dropdown change
+  // Remove dataset switching, always use combined file
   datasetSelect.addEventListener("change", () => {
-    loadDataTSV(datasetSelect.value);
+    loadDataTSV('data/NordicLaw_data.tsv');
     searchInput.value = ""; // clear search when changing dataset
   });
 
