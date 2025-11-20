@@ -519,6 +519,14 @@ function setupControls() {
     });
   }
 
+  // Search button logic
+  const searchBtn = document.getElementById("search-btn");
+  if (searchBtn) {
+    searchBtn.addEventListener("click", function() {
+      applyFacetFilters();
+    });
+  }
+
   const searchInput = document.getElementById("search");
   const paginationSizeSelect = document.getElementById("pagination-size");
 
