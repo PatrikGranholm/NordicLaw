@@ -95,7 +95,11 @@ function normalizeRowLanguage(row) {
 // Main text abbreviation mapping, loaded from texts.tsv at runtime
 let MAIN_TEXT_MAP = null;
 async function loadMainTextMap() {
-  if (MAIN_TEXT_MAP) return MAIN_TEXT_MAP;
+  if (MAIN_TEXT_MAP) {
+    // Always assign to window for modal rendering
+    window.MAIN_TEXT_MAP = MAIN_TEXT_MAP;
+    return MAIN_TEXT_MAP;
+  }
   try {
     const resp = await fetch('data/texts.tsv');
     const text = await resp.text();
@@ -106,10 +110,12 @@ async function loadMainTextMap() {
       if (abbr && full) map[abbr.trim()] = full.trim();
     });
     MAIN_TEXT_MAP = map;
+    window.MAIN_TEXT_MAP = map;
     return map;
   } catch (e) {
     console.error('Failed to load texts.tsv:', e);
     MAIN_TEXT_MAP = {};
+    window.MAIN_TEXT_MAP = {};
     return {};
   }
 }
@@ -510,23 +516,31 @@ async function loadDataTSV(fileName) {
 
         function renderItem(item) {
             let displayValue = item.value;
-            
+
+            // Expand Main text using MAIN_TEXT_MAP if available
+            if (item.key === "Main text" && typeof displayValue === 'string' && window.MAIN_TEXT_MAP) {
+              const expanded = window.MAIN_TEXT_MAP[displayValue];
+              if (expanded) {
+                displayValue = `${displayValue} — <span class='text-secondary'>${expanded}</span>`;
+              }
+            }
+
             // Auto-convert URLs to links if they aren't already HTML anchors
             if (displayValue && typeof displayValue === 'string') {
-                if (item.key === "Links to Database" || /^https?:\/\//.test(displayValue)) {
-                    if (!displayValue.trim().startsWith('<a ') && /^https?:\/\//.test(displayValue)) {
-                        displayValue = `<a href="${displayValue}" target="_blank">${displayValue}</a>`;
-                    }
+              if (item.key === "Links to Database" || /^https?:\/\//.test(displayValue)) {
+                if (!displayValue.trim().startsWith('<a ') && /^https?:\/\//.test(displayValue)) {
+                  displayValue = `<a href="${displayValue}" target="_blank">${displayValue}</a>`;
                 }
+              }
             }
-            
+
             if (!displayValue) displayValue = '&nbsp;';
 
             // Compact layout: Label on top (small), value below
             return `<div class="mb-2 border-bottom pb-1">
-                      <div class="fw-bold text-secondary" style="font-size: 0.75rem; text-transform: uppercase;">${item.key}</div>
-                      <div class="text-break" style="font-size: 0.9rem;">${displayValue}</div>
-                    </div>`;
+                  <div class="fw-bold text-secondary" style="font-size: 0.75rem; text-transform: uppercase;">${item.key}</div>
+                  <div class="text-break" style="font-size: 0.9rem;">${displayValue}</div>
+                </div>`;
         }
 
         let html = '<div class="container-fluid"><div class="row">';
