@@ -474,7 +474,98 @@ async function loadDataTSV(fileName) {
           { column: "Shelf mark", dir: "asc" }
         ],
         theme: "bootstrap5",
+        selectable: 1, // Allow row selection for visual feedback
       });
+
+      // Attach rowClick event handler
+      table.on("rowClick", function(e, row){
+        console.log("Row clicked", row.getData());
+        const data = row.getData();
+        const contentDiv = document.getElementById('row-details-content');
+        if (!contentDiv) {
+          console.error("row-details-content element not found!");
+          return;
+        }
+        
+        // Collect and sort entries based on userColumnOrder
+        const entries = [];
+        const dataKeys = Object.keys(data).filter(k => k !== "DatingYear" && k !== "_id"); // Exclude internal fields if any
+        
+        dataKeys.sort((a, b) => {
+            const idxA = userColumnOrder.indexOf(a);
+            const idxB = userColumnOrder.indexOf(b);
+            if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+            if (idxA !== -1) return -1;
+            if (idxB !== -1) return 1;
+            return 0;
+        });
+
+        dataKeys.forEach(key => {
+             entries.push({ key: key, value: data[key] });
+        });
+
+        // Split into two columns
+        const mid = Math.ceil(entries.length / 2);
+        const left = entries.slice(0, mid);
+        const right = entries.slice(mid);
+
+        function renderItem(item) {
+            let displayValue = item.value;
+            
+            // Auto-convert URLs to links if they aren't already HTML anchors
+            if (displayValue && typeof displayValue === 'string') {
+                if (item.key === "Links to Database" || /^https?:\/\//.test(displayValue)) {
+                    if (!displayValue.trim().startsWith('<a ') && /^https?:\/\//.test(displayValue)) {
+                        displayValue = `<a href="${displayValue}" target="_blank">${displayValue}</a>`;
+                    }
+                }
+            }
+            
+            if (!displayValue) displayValue = '&nbsp;';
+
+            // Compact layout: Label on top (small), value below
+            return `<div class="mb-2 border-bottom pb-1">
+                      <div class="fw-bold text-secondary" style="font-size: 0.75rem; text-transform: uppercase;">${item.key}</div>
+                      <div class="text-break" style="font-size: 0.9rem;">${displayValue}</div>
+                    </div>`;
+        }
+
+        let html = '<div class="container-fluid"><div class="row">';
+        
+        html += '<div class="col-md-6">';
+        left.forEach(item => { html += renderItem(item); });
+        html += '</div>';
+
+        html += '<div class="col-md-6">';
+        right.forEach(item => { html += renderItem(item); });
+        html += '</div>';
+
+        html += '</div></div>';
+        contentDiv.innerHTML = html;
+        
+        const modalEl = document.getElementById('rowDetailsModal');
+        if (!modalEl) {
+          console.error("rowDetailsModal element not found!");
+          return;
+        }
+
+        // Try to find bootstrap
+        const bs = window.bootstrap || (typeof bootstrap !== 'undefined' ? bootstrap : null);
+        
+        if (bs && bs.Modal) {
+          try {
+            const modal = bs.Modal.getOrCreateInstance(modalEl);
+            modal.show();
+          } catch (err) {
+            console.error("Error showing modal:", err);
+            alert("Error showing modal. See console for details.");
+          }
+        } else {
+          console.error("Bootstrap Modal not available.");
+          alert("Bootstrap not loaded. Row details:\n" + JSON.stringify(data, null, 2));
+        }
+      });
+
       document.getElementById('total-records').textContent = rows.length;
       if (table) {
         table.on("dataFiltered", function(filters, filteredRows){
@@ -549,6 +640,11 @@ function setupControls() {
       table.setPageSize(parseInt(value, 10));
     }
   });
+}
+
+// Check if Bootstrap is loaded
+if (typeof bootstrap === 'undefined' && !window.bootstrap) {
+  console.error("Bootstrap 5 is not loaded! Modal will not work.");
 }
 
 setupControls();
