@@ -395,10 +395,8 @@ async function loadDataTSV(fileName) {
 
 
     // User-specified column order
-    const userColumnOrder = [
-      "Depository","Shelf mark", "Language", "Name","Object","Size","Dating","Leaves/Pages","Main text","Minor text","Gatherings","Physical Size (mm)","Production Unit","Pricking","Material","Ruling","Columns","Lines","Script","Rubric","Scribe","Production","Style","Colours","Form of Initials","Size of Initials","Iconography","Place","Related Shelfmarks","Literature","Links to Database"
-    ];
-
+    const userColumnOrder = ["Depository","Shelf mark","Language","Name","Object","Size","Production Unit","Leaves/Pages","Main text","Minor text","Dating","Gatherings","Full size","Leaf size","Catch Words and Gatherings","Pricking","Material","Ruling","Columns","Lines","Script","Rubric","Scribe","Production","Style","Colours","Form of Initials","Size of Initials","Iconography","Place","Related Shelfmarks","Literature","Links to Database"];
+    
     // Build columns from headers, but order by userColumnOrder, then any extra columns (e.g. Century)
     let colDefs = {};
     headers.forEach(h => {
@@ -434,7 +432,7 @@ async function loadDataTSV(fileName) {
     columns.push({
       title: "Century",
       field: "Century",
-      visible: true,
+      visible: false, // Hide the Century column
       hozAlign: 'left',
       width: 90,
       headerFilter: "input",
@@ -489,19 +487,20 @@ async function loadDataTSV(fileName) {
         
         // Collect and sort entries based on userColumnOrder
         const entries = [];
-        const dataKeys = Object.keys(data).filter(k => k !== "DatingYear" && k !== "_id"); // Exclude internal fields if any
-        
+        // Exclude internal fields and fields to hide in modal
+        const dataKeys = Object.keys(data).filter(k => k !== "DatingYear" && k !== "_id" && k !== "Century" && k !== "Main text group");
+
         dataKeys.sort((a, b) => {
-            const idxA = userColumnOrder.indexOf(a);
-            const idxB = userColumnOrder.indexOf(b);
-            if (idxA !== -1 && idxB !== -1) return idxA - idxB;
-            if (idxA !== -1) return -1;
-            if (idxB !== -1) return 1;
-            return 0;
+          const idxA = userColumnOrder.indexOf(a);
+          const idxB = userColumnOrder.indexOf(b);
+          if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+          if (idxA !== -1) return -1;
+          if (idxB !== -1) return 1;
+          return 0;
         });
 
         dataKeys.forEach(key => {
-             entries.push({ key: key, value: data[key] });
+          entries.push({ key: key, value: data[key] });
         });
 
         // Split into two columns
