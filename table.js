@@ -278,10 +278,14 @@ function setupFacetEvents() {
 
 function applyFacetFilters() {
   facetSelections = getFacetSelections();
+  const searchInput = document.getElementById('search');
+  const query = searchInput ? searchInput.value.toLowerCase() : "";
+
   if (!table) return;
   table.clearFilter(true);
   // Compose filter function
   table.setFilter(function(row) {
+    // 1. Check Facets
     for (const field of FACET_FIELDS) {
       if (field === "Main text group") {
         if (facetSelections["Main text group-variant"] && facetSelections["Main text group-variant"].length > 0) {
@@ -304,6 +308,15 @@ function applyFacetFilters() {
         }
       }
     }
+
+    // 2. Check Global Search
+    if (query) {
+      const matchesSearch = Object.values(row).some(val =>
+        String(val).toLowerCase().includes(query)
+      );
+      if (!matchesSearch) return false;
+    }
+
     return true;
   });
 }
@@ -479,7 +492,33 @@ async function loadDataTSV(fileName) {
 }
 
 function setupControls() {
-  const datasetSelect = document.getElementById("dataset");
+  // Clear search/facets button logic
+  const clearBtn = document.getElementById("clear-filters");
+  if (clearBtn) {
+    clearBtn.addEventListener("click", function() {
+      // Clear search box
+      const searchInput = document.getElementById("search");
+      if (searchInput) {
+        searchInput.value = "";
+      }
+      // Reset all facet checkboxes to 'All'
+      FACET_FIELDS.forEach(field => {
+        const facetDiv = document.getElementById(`facet-${field}`);
+        if (!facetDiv) return;
+        const allBox = facetDiv.querySelector('input[type=checkbox][value="__ALL__"]');
+        if (allBox) {
+          allBox.checked = true;
+          // Uncheck all others
+          facetDiv.querySelectorAll('input[type=checkbox][data-facet]:not([value="__ALL__"])').forEach(cb => {
+            cb.checked = false;
+          });
+        }
+      });
+      // Re-apply filters
+      applyFacetFilters();
+    });
+  }
+
   const searchInput = document.getElementById("search");
   const paginationSizeSelect = document.getElementById("pagination-size");
 
@@ -487,30 +526,9 @@ function setupControls() {
   // Always load the combined file
   loadDataTSV('data/NordicLaw_data.tsv');
 
-  // Handle dropdown change
-  // Remove dataset switching, always use combined file
-  datasetSelect.addEventListener("change", () => {
-    loadDataTSV('data/NordicLaw_data.tsv');
-    searchInput.value = ""; // clear search when changing dataset
-  });
-
   // Global search across all fields
   searchInput.addEventListener("keyup", function () {
-    const query = this.value.toLowerCase();
-    if (!table) return;
-    table.setFilter(function (data) {
-      // Apply global search on top of facet filters
-      // First, check facet filters
-      for (const field of FACET_FIELDS) {
-        if (facetSelections[field] && facetSelections[field].length > 0) {
-          if (!facetSelections[field].includes(data[field])) return false;
-        }
-      }
-      // Then, global search
-      return Object.values(data).some(val =>
-        String(val).toLowerCase().includes(query)
-      );
-    });
+    applyFacetFilters();
   });
 
   // Handle pagination size change
