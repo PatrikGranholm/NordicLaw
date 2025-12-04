@@ -376,8 +376,11 @@ async function loadDataTSV(fileName) {
           if (m) val = `<a href="${m[1]}" target="_blank">${m[2]}</a>`;
         }
         // Expand Depository abbreviation
-        if (h === "Depository" && val in depositoryMap) {
-          val = depositoryMap[val];
+        if (h === "Depository") {
+          obj["Depository_abbr"] = val; // Store original abbreviation for filename generation
+          if (val in depositoryMap) {
+            val = depositoryMap[val];
+          }
         }
         obj[h] = val;
       });
@@ -494,7 +497,7 @@ async function loadDataTSV(fileName) {
         // Collect and sort entries based on userColumnOrder
         const entries = [];
         // Exclude internal fields and fields to hide in modal
-        const dataKeys = Object.keys(data).filter(k => k !== "DatingYear" && k !== "_id" && k !== "Century" && k !== "Main text group");
+        const dataKeys = Object.keys(data).filter(k => k !== "DatingYear" && k !== "_id" && k !== "Century" && k !== "Main text group" && k !== "Depository_abbr");
 
         dataKeys.sort((a, b) => {
           const idxA = userColumnOrder.indexOf(a);
@@ -556,6 +559,26 @@ async function loadDataTSV(fileName) {
         html += '</div></div>';
         contentDiv.innerHTML = html;
         
+        // Generate filename for PDF download
+        // Format: Depository (abbr) + Shelf mark + Leaves/Pages
+        // Replace non-char/non-digit with _
+        const depAbbr = data["Depository_abbr"] || data["Depository"] || "Unknown";
+        const shelfMark = data["Shelf mark"] || "";
+        const leaves = data["Leaves/Pages"] || "";
+        
+        let rawFilename = `${depAbbr}_${shelfMark}_${leaves}`;
+        // Sanitize: replace non-alphanumeric characters (except underscores) with _
+        // Actually user asked: "Replace any non character or non digit contents with _"
+        let filename = rawFilename.replace(/[^a-zA-Z0-9]/g, "_");
+        // Remove duplicate underscores and trim
+        filename = filename.replace(/_+/g, "_").replace(/^_|_$/g, "");
+        if (!filename) filename = "manuscript_details";
+        
+        const pdfBtn = document.getElementById("download-pdf-btn");
+        if (pdfBtn) {
+            pdfBtn.dataset.filename = filename + ".pdf";
+        }
+
         const modalEl = document.getElementById('rowDetailsModal');
         if (!modalEl) {
           console.error("rowDetailsModal element not found!");
@@ -653,6 +676,135 @@ function setupControls() {
       table.setPageSize(parseInt(value, 10));
     }
   });
+
+  // PDF Download logic (Custom DOM Parsing for clickable links)
+  const pdfBtn = document.getElementById("download-pdf-btn");
+  if (pdfBtn) {
+    pdfBtn.addEventListener("click", function() {
+      if (!window.jspdf) {
+        alert("jsPDF library not loaded.");
+        return;
+      }
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF('p', 'pt', 'a4');
+      const content = document.getElementById("row-details-content");
+      if (!content) return;
+
+      // Parse modal content: find all label/value pairs in both columns
+      // Each column: .col-md-6 > div.mb-2.border-bottom.pb-1
+      const columns = content.querySelectorAll('.col-md-6');
+      let leftItems = [], rightItems = [];
+      if (columns.length === 2) {
+        leftItems = Array.from(columns[0].querySelectorAll('.mb-2.border-bottom.pb-1'));
+        rightItems = Array.from(columns[1].querySelectorAll('.mb-2.border-bottom.pb-1'));
+      }
+
+      // Helper to extract label and value (HTML)
+      function extractItem(div) {
+        const labelDiv = div.querySelector('.fw-bold');
+        const valueDiv = div.querySelector('.text-break');
+        const label = labelDiv ? labelDiv.textContent.trim() : '';
+        let value = valueDiv ? valueDiv.innerHTML.trim() : '';
+        return { label, value };
+      }
+
+      // PDF layout
+      const marginX = 40, marginY = 60, colGap = 30;
+      const colWidth = (515 - colGap) / 2; // 515 = A4 width - 2*marginX
+      let y = marginY + 20;
+      const lineHeight = 18;
+      const maxY = doc.internal.pageSize.getHeight() - 60;
+
+      // Set font to Times for all text
+      doc.setFont("helvetica");
+      // Header
+      doc.setFontSize(16);
+      doc.setTextColor(40);
+      doc.setFont("helvetica", "bold");
+      doc.text("NordicLaw Manuscripts", marginX, marginY);
+
+      // Render two columns with dynamic height calculation
+      function renderColumn(items, xStart) {
+        let yPos = y;
+        for (const item of items) {
+          const { label, value } = extractItem(item);
+          if (!label && !value) continue;
+          // Label: Times Bold, size 8, gray (#6c757d), ALL CAPS
+          doc.setFont("times", "bold");
+          doc.setFontSize(8);
+          doc.setTextColor(108, 117, 125); // Bootstrap 5 text-secondary
+          const labelCaps = label ? label.toUpperCase() : "";
+          const labelDims = doc.getTextDimensions(labelCaps, { maxWidth: colWidth });
+          doc.text(labelCaps, xStart, yPos, { maxWidth: colWidth });
+          yPos += (labelDims.h || 12) + 4;
+          // Value: Times Regular, size 10, black
+          doc.setFont("times", "normal");
+          doc.setFontSize(10);
+          doc.setTextColor(33, 37, 41); // Bootstrap 5 text-dark
+          const tempDiv = document.createElement('div');
+          tempDiv.innerHTML = value;
+          const anchors = tempDiv.querySelectorAll('a');
+          if (anchors.length > 0) {
+            tempDiv.childNodes.forEach(node => {
+              if (node.nodeType === 3) { // text
+                const txt = node.textContent;
+                if (txt && txt.trim()) {
+                  const dims = doc.getTextDimensions(txt, { maxWidth: colWidth });
+                  doc.text(txt, xStart, yPos, { maxWidth: colWidth });
+                  yPos += dims.h || lineHeight;
+                }
+              } else if (node.nodeType === 1 && node.tagName === 'A') {
+                const linkText = node.textContent;
+                const href = node.getAttribute('href');
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(11);
+                doc.setTextColor(13, 110, 253); // Bootstrap 5 link color
+                const dims = doc.getTextDimensions(linkText, { maxWidth: colWidth });
+                doc.textWithLink(linkText, xStart, yPos, { url: href });
+                doc.setTextColor(33, 37, 41); // Reset to text-dark
+                yPos += dims.h || lineHeight;
+              }
+            });
+          } else {
+            // Plain text (strip HTML)
+            const plain = tempDiv.textContent || '';
+            const dims = doc.getTextDimensions(plain, { maxWidth: colWidth });
+            doc.text(plain, xStart, yPos, { maxWidth: colWidth });
+            yPos += dims.h || lineHeight;
+          }
+          yPos += 8;
+          if (yPos > maxY) {
+            doc.addPage();
+            yPos = marginY + 20;
+            // Header for new page
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(16);
+            doc.setTextColor(40);
+            doc.text("NordicLaw Manuscripts", marginX, marginY);
+          }
+        }
+      }
+
+      renderColumn(leftItems, marginX);
+      renderColumn(rightItems, marginX + colWidth + colGap);
+
+      // Footer (on all pages)
+      const pageCount = doc.getNumberOfPages();
+      const dateStr = new Date().toLocaleString();
+      const pageHeight = doc.internal.pageSize.getHeight();
+      for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+        doc.setFont("helvetica");
+        doc.setFontSize(10);
+        doc.setTextColor(100);
+        doc.text(`Accessed: ${dateStr}`, marginX, pageHeight - 20);
+      }
+
+      // Save
+      const filename = this.dataset.filename || "manuscript-details.pdf";
+      doc.save(filename);
+    });
+  }
 }
 
 // Check if Bootstrap is loaded
