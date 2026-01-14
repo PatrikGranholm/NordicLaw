@@ -279,6 +279,8 @@ async function renderFacetSidebar(rows) {
       let html = `<div class="fw-bold mb-2">Main text group</div>`;
       html += `<div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="__ALL__" checked data-facet="Main text group" id="facet-mtg-all"><label class="form-check-label" for="facet-mtg-all">All</label></div>`;
       Object.keys(groupMap).sort().forEach((group, gi) => {
+        // Skip empty or dot-only group values
+        if (group === '' || group.trim() === '.') return;
         const groupId = `facet-mtg-group-${gi}`;
         const groupLabel = mainTextMap[group] ? `${group} — ${mainTextMap[group]}` : group;
         html += `<div style='margin-left:0.5em;'><div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="${group.replace(/"/g, '&quot;')}" data-facet="Main text group" id="${groupId}"><label class="form-check-label" for="${groupId}">${groupLabel}</label></div>`;
@@ -286,6 +288,8 @@ async function renderFacetSidebar(rows) {
         if (variants.length > 0) {
           html += `<div style='margin-left:1.5em;'>`;
           variants.sort().forEach((variant, vi) => {
+            // Skip empty or dot-only variant values
+            if (variant === '' || variant.trim() === '.') return;
             const variantId = `facet-mtg-variant-${gi}-${vi}`;
             const variantLabel = mainTextMap[variant] ? `${variant} — ${mainTextMap[variant]}` : variant;
             html += `<div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="${group}|${variant}" data-facet="Main text group-variant" id="${variantId}"><label class="form-check-label" for="${variantId}">${variantLabel}</label></div>`;
@@ -302,6 +306,8 @@ async function renderFacetSidebar(rows) {
     let html = `<div class="fw-bold mb-2">${field}</div>`;
     html += `<div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="__ALL__" checked data-facet="${field}" id="facet-${field}-all"><label class="form-check-label" for="facet-${field}-all">All</label></div>`;
     values.forEach((val, i) => {
+      // Skip empty or dot-only values for Main text facet
+      if (field === "Main text" && (val === '' || val.trim() === '.' )) return;
       let label = val;
       if (field === "Main text" && mainTextMap[val]) {
         label = `${val} — ${mainTextMap[val]}`;
