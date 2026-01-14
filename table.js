@@ -15,6 +15,89 @@ function parseDatingYear(dating) {
   if (m) return (parseInt(m[1], 10) - 1) * 100 + 50; // mid-century
   return null;
 }
+
+function escapeHtml(text) {
+  if (text === null || text === undefined) return '';
+  return String(text)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function isSafeHttpUrl(url) {
+  return typeof url === 'string' && /^https?:\/\//i.test(url.trim());
+}
+
+function normalizeLinksToDatabase(value) {
+  if (!value || typeof value !== 'string') return '';
+  let v = value.trim();
+  if (!v) return '';
+
+  // 1) Excel-style hyperlink formulas
+  // =HYPERLÄNK("url";"label") or =HYPERLINK("url","label")
+  if (v.startsWith('=HYPERL')) {
+    let m = v.match(/=HYPERL[ÄA]NK\(["']([^"']+)["'];?["']([^"']+)["']\)/i);
+    if (!m) m = v.match(/=HYPERLINK\(["']([^"']+)["'],["']([^"']+)["']\)/i);
+    if (m && isSafeHttpUrl(m[1])) {
+      const href = m[1].trim();
+      const label = m[2] ? m[2].trim() : href;
+      return `<a href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a>`;
+    }
+  }
+
+  // 2) Existing HTML: re-build anchors safely (avoid trusting arbitrary HTML from TSV)
+  if (v.includes('<a')) {
+    try {
+      const tmp = document.createElement('div');
+      tmp.innerHTML = v;
+      const anchors = Array.from(tmp.querySelectorAll('a'));
+      if (anchors.length > 0) {
+        const rendered = anchors
+          .map(a => {
+            const href = (a.getAttribute('href') || '').trim();
+            const label = (a.textContent || href).trim();
+            if (!isSafeHttpUrl(href)) return '';
+            return `<a href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a>`;
+          })
+          .filter(Boolean)
+          .join('; ');
+        if (rendered) return rendered;
+      }
+    } catch (e) {
+      // Fall through to other parsing strategies
+    }
+  }
+
+  // 3) Markdown links: [label](url) possibly multiple
+  const mdLinks = [];
+  const mdRe = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g;
+  let mdMatch;
+  while ((mdMatch = mdRe.exec(v)) !== null) {
+    const label = (mdMatch[1] || '').trim();
+    const href = (mdMatch[2] || '').trim();
+    if (!isSafeHttpUrl(href)) continue;
+    mdLinks.push({ label: label || href, href });
+  }
+  if (mdLinks.length > 0) {
+    return mdLinks
+      .map(l => `<a href="${escapeHtml(l.href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(l.label)}</a>`)
+      .join('; ');
+  }
+
+  // 4) Plain URLs (single or multiple separated by semicolons/spaces)
+  const urlRe = /(https?:\/\/[^\s;]+)/g;
+  const urls = (v.match(urlRe) || []).map(s => s.trim()).filter(isSafeHttpUrl);
+  if (urls.length > 0) {
+    return urls
+      .map(href => `<a href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(href)}</a>`)
+      .join('; ');
+  }
+
+  // 5) Not a link: show as escaped text
+  return escapeHtml(v);
+}
 let table; // Keep reference to reuse same table instance
 
 // Expand/close groups based on active filters/search; uses current `table` variable
@@ -368,12 +451,9 @@ async function loadDataTSV(fileName) {
       headers.forEach((h, i) => {
         let val = values[i] !== undefined ? values[i] : "";
         if (h === "Main text") val = val.trim();
-        // Parse Excel-style HYPERLINK formulas for Links to Database
-        if (h === "Links to Database" && val.startsWith("=HYPERL")) {
-          // =HYPERLÄNK("url";"label") or =HYPERLINK("url","label")
-          let m = val.match(/=HYPERL[ÄA]NK\(["']([^"']+)["'];?["']([^"']+)["']\)/i);
-          if (!m) m = val.match(/=HYPERLINK\(["']([^"']+)["'],["']([^"']+)["']\)/i);
-          if (m) val = `<a href="${m[1]}" target="_blank">${m[2]}</a>`;
+        // Normalize link formats (Markdown/URL/HTML/Excel) to safe HTML anchors
+        if (h === "Links to Database") {
+          val = normalizeLinksToDatabase(val);
         }
         // Expand Depository abbreviation
         if (h === "Depository") {
@@ -422,10 +502,7 @@ async function loadDataTSV(fileName) {
       if (h === "Links to Database") {
         colDef.formatter = function(cell) {
           const v = cell.getValue();
-          if (!v) return "";
-          if (v.startsWith('<a ')) return v;
-          if (/^https?:\/\//.test(v)) return `<a href="${v}" target="_blank">${v}</a>`;
-          return v;
+          return normalizeLinksToDatabase(v);
         };
         colDef.formatterParams = { allowHtml: true };
       }
@@ -528,13 +605,12 @@ async function loadDataTSV(fileName) {
               }
             }
 
-            // Auto-convert URLs to links if they aren't already HTML anchors
-            if (displayValue && typeof displayValue === 'string') {
-              if (item.key === "Links to Database" || /^https?:\/\//.test(displayValue)) {
-                if (!displayValue.trim().startsWith('<a ') && /^https?:\/\//.test(displayValue)) {
-                  displayValue = `<a href="${displayValue}" target="_blank">${displayValue}</a>`;
-                }
-              }
+            // Normalize known link field(s)
+            if (item.key === "Links to Database") {
+              displayValue = normalizeLinksToDatabase(displayValue);
+            } else if (displayValue && typeof displayValue === 'string' && /^https?:\/\//.test(displayValue)) {
+              // Auto-convert plain URLs for other fields
+              displayValue = `<a href="${escapeHtml(displayValue)}" target="_blank" rel="noopener noreferrer">${escapeHtml(displayValue)}</a>`;
             }
 
             if (!displayValue) displayValue = '&nbsp;';
