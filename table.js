@@ -155,7 +155,7 @@ Tabulator.extendModule("sort", "sorters", {
 
 // --- Facet filter logic ---
 
-const FACET_FIELDS = ["Language", "Depository", "Object", "Script", "Material", "Main text group", "Dating", "Century"];
+const FACET_FIELDS = ["Language", "Depository", "Object", "Script", "Material", "Main text group", "Dating"];
 let facetSelections = {};
 let allRows = [];
 
@@ -263,6 +263,30 @@ async function renderFacetSidebar(rows) {
   FACET_FIELDS.forEach(field => {
     const facetDiv = document.getElementById(`facet-${field}`);
     if (!facetDiv) return;
+    if (field === "Dating") {
+      // Render a year-range selector based on parsed DatingYear
+      const years = rows
+        .map(r => r["DatingYear"])
+        .filter(y => typeof y === 'number' && !Number.isNaN(y));
+      const minYear = years.length ? Math.min(...years) : '';
+      const maxYear = years.length ? Math.max(...years) : '';
+
+      let html = `<div class="fw-bold mb-2">Dating</div>`;
+      html += `<div class="small text-secondary mb-2">Filter by year range (uses parsed year from Dating)</div>`;
+      html += `<div class="d-flex gap-2 align-items-end mb-2">
+        <div class="flex-fill">
+          <label class="form-label mb-1" style="font-size:0.75rem; text-transform:uppercase;">From</label>
+          <input class="form-control form-control-sm" type="number" inputmode="numeric" data-dating-range="min" id="facet-Dating-min" placeholder="${escapeHtml(minYear)}">
+        </div>
+        <div class="flex-fill">
+          <label class="form-label mb-1" style="font-size:0.75rem; text-transform:uppercase;">To</label>
+          <input class="form-control form-control-sm" type="number" inputmode="numeric" data-dating-range="max" id="facet-Dating-max" placeholder="${escapeHtml(maxYear)}">
+        </div>
+        <button class="btn btn-sm btn-outline-secondary" type="button" data-dating-range-clear>Clear</button>
+      </div>`;
+      facetDiv.innerHTML = html;
+      return;
+    }
     if (field === "Main text group") {
       // Build a map: group -> Set(variants)
       const groupMap = {};
@@ -324,6 +348,19 @@ function getFacetSelections() {
     FACET_FIELDS.forEach(field => {
       const facetDiv = document.getElementById(`facet-${field}`);
       if (!facetDiv) return;
+      if (field === "Dating") {
+        const minEl = facetDiv.querySelector('input[data-dating-range="min"]');
+        const maxEl = facetDiv.querySelector('input[data-dating-range="max"]');
+        const minVal = minEl ? minEl.value.trim() : '';
+        const maxVal = maxEl ? maxEl.value.trim() : '';
+        if (minVal !== '' || maxVal !== '') {
+          selections["DatingRange"] = {
+            min: minVal === '' ? null : Number(minVal),
+            max: maxVal === '' ? null : Number(maxVal),
+          };
+        }
+        return;
+      }
       if (field === "Main text group") {
         const groupBoxes = facetDiv.querySelectorAll('input[type=checkbox][data-facet="Main text group"]');
         const checkedGroups = Array.from(groupBoxes).filter(cb => cb.checked && cb.value !== "__ALL__").map(cb => cb.value);
@@ -356,6 +393,26 @@ function setupFacetEvents() {
   FACET_FIELDS.forEach(field => {
     const facetDiv = document.getElementById(`facet-${field}`);
     if (!facetDiv) return;
+
+    if (field === "Dating") {
+      // Range inputs
+      facetDiv.addEventListener('input', (e) => {
+        if (e.target && e.target.matches('input[data-dating-range]')) {
+          applyFacetFilters();
+        }
+      });
+      facetDiv.addEventListener('click', (e) => {
+        const btn = e.target && e.target.closest && e.target.closest('button[data-dating-range-clear]');
+        if (!btn) return;
+        const minEl = facetDiv.querySelector('input[data-dating-range="min"]');
+        const maxEl = facetDiv.querySelector('input[data-dating-range="max"]');
+        if (minEl) minEl.value = '';
+        if (maxEl) maxEl.value = '';
+        applyFacetFilters();
+      });
+      return;
+    }
+
     facetDiv.addEventListener('change', (e) => {
       if (!e.target.matches('input[type=checkbox][data-facet]')) return;
       if (e.target.value === "__ALL__") {
@@ -390,6 +447,23 @@ function applyFacetFilters() {
   table.setFilter(function(row) {
     // 1. Check Facets
     for (const field of FACET_FIELDS) {
+      if (field === "Dating") {
+        const range = facetSelections["DatingRange"];
+        if (range && (range.min !== null || range.max !== null)) {
+          let min = range.min;
+          let max = range.max;
+          if (typeof min === 'number' && Number.isNaN(min)) min = null;
+          if (typeof max === 'number' && Number.isNaN(max)) max = null;
+          if (min !== null && max !== null && min > max) {
+            const tmp = min; min = max; max = tmp;
+          }
+          const y = row["DatingYear"];
+          if (typeof y !== 'number' || Number.isNaN(y)) return false;
+          if (min !== null && y < min) return false;
+          if (max !== null && y > max) return false;
+        }
+        continue;
+      }
       if (field === "Main text group") {
         if (facetSelections["Main text group-variant"] && facetSelections["Main text group-variant"].length > 0) {
           let matched = false;
