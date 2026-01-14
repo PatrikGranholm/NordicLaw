@@ -465,6 +465,10 @@ async function loadDataTSV(fileName) {
       headers.forEach((h, i) => {
         let val = values[i] !== undefined ? values[i] : "";
         if (h === "Main text") val = val.trim();
+        // Normalize link formats (Markdown/URL/HTML/Excel) to safe HTML anchors
+        if (h === "Links to Database") {
+          val = normalizeLinksToDatabase(val);
+        }
         // Expand Depository abbreviation
         if (h === "Depository") {
           obj["Depository_abbr"] = val; // Store original abbreviation for filename generation
