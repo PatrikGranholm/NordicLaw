@@ -282,8 +282,8 @@ async function renderFacetSidebar(rows) {
         // Skip empty or dot-only group values
         if (group === '' || group.trim() === '.') return;
         const groupId = `facet-mtg-group-${gi}`;
-        const groupLabel = mainTextMap[group] ? `${group} — ${mainTextMap[group]}` : group;
-        html += `<div style='margin-left:0.5em;'><div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="${group.replace(/"/g, '&quot;')}" data-facet="Main text group" id="${groupId}"><label class="form-check-label" for="${groupId}">${groupLabel}</label></div>`;
+        const groupLabel = mainTextMap[group] ? `${escapeHtml(group)} — ${escapeHtml(mainTextMap[group])}` : escapeHtml(group);
+        html += `<div style='margin-left:0.5em;'><div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="${escapeHtml(group)}" data-facet="Main text group" id="${groupId}"><label class="form-check-label" for="${groupId}">${groupLabel}</label></div>`;
         const variants = Array.from(groupMap[group]);
         if (variants.length > 0) {
           html += `<div style='margin-left:1.5em;'>`;
@@ -291,8 +291,8 @@ async function renderFacetSidebar(rows) {
             // Skip empty or dot-only variant values
             if (variant === '' || variant.trim() === '.') return;
             const variantId = `facet-mtg-variant-${gi}-${vi}`;
-            const variantLabel = mainTextMap[variant] ? `${variant} — ${mainTextMap[variant]}` : variant;
-            html += `<div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="${group}|${variant}" data-facet="Main text group-variant" id="${variantId}"><label class="form-check-label" for="${variantId}">${variantLabel}</label></div>`;
+            const variantLabel = mainTextMap[variant] ? `${escapeHtml(variant)} — ${escapeHtml(mainTextMap[variant])}` : escapeHtml(variant);
+            html += `<div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="${escapeHtml(group + '|' + variant)}" data-facet="Main text group-variant" id="${variantId}"><label class="form-check-label" for="${variantId}">${variantLabel}</label></div>`;
           });
           html += `</div>`;
         }
@@ -313,7 +313,7 @@ async function renderFacetSidebar(rows) {
         label = `${val} — ${mainTextMap[val]}`;
       }
       const id = `facet-${field}-${i}`;
-      html += `<div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="${val.replace(/"/g, '&quot;')}" data-facet="${field}" id="${id}"><label class="form-check-label" for="${id}">${label}</label></div>`;
+      html += `<div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="${escapeHtml(val)}" data-facet="${escapeHtml(field)}" id="${id}"><label class="form-check-label" for="${id}">${escapeHtml(label)}</label></div>`;
     });
     facetDiv.innerHTML = html;
   });
@@ -344,7 +344,9 @@ function updateFacetAllCheckbox(field) {
   const facetDiv = document.getElementById(`facet-${field}`);
   if (!facetDiv) return;
   const allBox = facetDiv.querySelector('input[type=checkbox][value="__ALL__"]');
-  const otherBoxes = facetDiv.querySelectorAll('input[type=checkbox][data-facet]:not([value="__ALL__"])');
+  const otherBoxes = (field === "Main text group")
+    ? facetDiv.querySelectorAll('input[type=checkbox][data-facet="Main text group"]:not([value="__ALL__"])')
+    : facetDiv.querySelectorAll('input[type=checkbox][data-facet]:not([value="__ALL__"])');
   if (!allBox) return;
   const allChecked = Array.from(otherBoxes).every(cb => cb.checked);
   allBox.checked = allChecked || Array.from(otherBoxes).every(cb => !cb.checked);
@@ -359,12 +361,18 @@ function setupFacetEvents() {
       if (e.target.value === "__ALL__") {
         // All box toggled: check/uncheck all
         const allChecked = e.target.checked;
-        facetDiv.querySelectorAll('input[type=checkbox][data-facet]:not([value="__ALL__"])').forEach(cb => {
+        const selector = (field === "Main text group")
+          ? 'input[type=checkbox][data-facet="Main text group"]:not([value="__ALL__"])'
+          : 'input[type=checkbox][data-facet]:not([value="__ALL__"])';
+        facetDiv.querySelectorAll(selector).forEach(cb => {
           cb.checked = allChecked;
         });
       } else {
         // If all boxes checked, check All; if none checked, check All
-        updateFacetAllCheckbox(field);
+        // For Main text group, don't let variant toggles affect the group "All" state.
+        if (!(field === "Main text group" && e.target.dataset.facet === "Main text group-variant")) {
+          updateFacetAllCheckbox(field);
+        }
       }
       applyFacetFilters();
     });
@@ -457,10 +465,6 @@ async function loadDataTSV(fileName) {
       headers.forEach((h, i) => {
         let val = values[i] !== undefined ? values[i] : "";
         if (h === "Main text") val = val.trim();
-        // Normalize link formats (Markdown/URL/HTML/Excel) to safe HTML anchors
-        if (h === "Links to Database") {
-          val = normalizeLinksToDatabase(val);
-        }
         // Expand Depository abbreviation
         if (h === "Depository") {
           obj["Depository_abbr"] = val; // Store original abbreviation for filename generation
