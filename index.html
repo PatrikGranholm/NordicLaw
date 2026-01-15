@@ -43,12 +43,40 @@
       z-index: 10;
       opacity: 0.7;
     }
-    #table {
+    #table-view {
       flex-grow: 1;
       height: 100%;
       padding-bottom: 20px;
       min-width: 0;
     }
+    #merged-view {
+      flex-grow: 1;
+      height: 100%;
+      overflow: auto;
+      padding: 8px;
+      min-width: 0;
+    }
+    .merged-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    .merged-table th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #f8f9fa;
+    }
+    .ms-sep {
+      border-top: 3px solid rgba(0,0,0,0.15);
+    }
+    /* Manuscript striping: match the Bootstrap/Tabulator table striping tone */
+    .merged-table tbody tr.ms-a td { background: var(--bs-table-striped-bg, rgba(0,0,0,0.05)); }
+    .merged-table tbody tr.ms-b td { background: transparent; }
+
+    /* Production-unit indicator: keep a subtle stripe without overriding manuscript striping */
+    .merged-table td.pu-a { box-shadow: inset 4px 0 0 rgba(255,193,7,0.65); }
+    .merged-table td.pu-b { box-shadow: inset 4px 0 0 rgba(220,53,69,0.55); }
     .tabulator-group-level-0 {
       background: #f5f5f5;
       font-weight: bold;
@@ -75,6 +103,15 @@
     </div>
     <div class="col-auto" id="record-count">
       <span class="fw-bold">Total records:</span> <span id="total-records">0</span>
+    </div>
+    <div class="col-auto">
+      <label for="view-select" class="col-form-label fw-bold">View:</label>
+    </div>
+    <div class="col-auto">
+      <select id="view-select" class="form-select">
+        <option value="table" selected>Text View</option>
+        <option value="merged">Manuscript View</option>
+      </select>
     </div>
     <div class="col-auto">
       <label for="pagination-size" class="col-form-label fw-bold">Records per page:</label>
@@ -151,7 +188,22 @@
         </div>
       </div>
     </div>
-    <div id="table" class="col p-0"></div>
+    <div class="col p-0" style="min-width:0;">
+      <div id="table-view"></div>
+      <div id="merged-view" style="display:none;">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <div class="d-flex align-items-center gap-2">
+            <div class="fw-bold">Manuscript view</div>
+            <div class="dropdown">
+              <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="merged-columns-btn" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Columns</button>
+              <div class="dropdown-menu p-2" id="merged-columns-menu" style="max-height:60vh; overflow:auto; min-width:260px;"></div>
+            </div>
+          </div>
+          <div class="text-secondary small" id="merged-view-meta"></div>
+        </div>
+        <div id="merged-table"></div>
+      </div>
+    </div>
   </div>
 
   <!-- Row Details Modal -->

@@ -159,6 +159,648 @@ const FACET_FIELDS = ["Language", "Depository", "Object", "Script", "Material", 
 let facetSelections = {};
 let allRows = [];
 
+// Header order from the filled combined TSV (used to match the Excel/TSV column layout in merged view)
+let DATA_HEADERS = null;
+
+// Final column order actually used by both the Tabulator table and the merged (Excel-like) view.
+// Edit COLUMN_ORDER to change the UI column order.
+let DISPLAY_COLUMNS = null;
+
+// Manuscript (merged) view: visible columns (persisted in localStorage)
+const MERGED_COLUMNS_STORAGE_KEY = "nordiclaw.mergedVisibleColumns";
+let MERGED_VISIBLE_COLUMNS = null; // Set<string> | null (null => all visible)
+
+// User-specified column order (also used by the merged view)
+// NOTE: This is the single place to change column ordering in the UI.
+const COLUMN_ORDER = [
+  "Depository",
+  "Shelf mark",
+  "Language",
+  "Name",
+  "Object",
+  "Size",
+  "Production Unit",
+  "Leaves/Pages",
+  "Main text",
+  "Minor text",
+  "Dating",
+  "Gatherings",
+  "Full size",
+  "Leaf size",
+  "Catch Words and Gatherings",
+  "Pricking",
+  "Material",
+  "Ruling",
+  "Columns",
+  "Lines",
+  "Script",
+  "Rubric",
+  "Scribe",
+  "Production",
+  "Style",
+  "Colours",
+  "Form of Initials",
+  "Size of Initials",
+  "Iconography",
+  "Place",
+  "Related Shelfmarks",
+  "Literature",
+  "Links to Database",
+];
+
+function buildDisplayColumns(headers) {
+  const hs = Array.isArray(headers) ? headers : [];
+  const headerSet = new Set(hs);
+
+  // Start with the user order, but only keep columns that actually exist in the data.
+  const ordered = COLUMN_ORDER.filter(h => headerSet.has(h));
+
+  // Append any remaining columns (stable, in-file order), excluding internal fields.
+  for (const h of hs) {
+    if (h === "Century") continue;
+    if (!ordered.includes(h)) ordered.push(h);
+  }
+
+  return ordered;
+}
+
+function getMergedVisibleColumnsSet() {
+  if (MERGED_VISIBLE_COLUMNS instanceof Set) return MERGED_VISIBLE_COLUMNS;
+  return null;
+}
+
+function isMergedColumnVisible(col) {
+  const set = getMergedVisibleColumnsSet();
+  return !set || set.has(col);
+}
+
+function loadMergedColumnVisibility() {
+  try {
+    const raw = localStorage.getItem(MERGED_COLUMNS_STORAGE_KEY);
+    if (!raw) {
+      MERGED_VISIBLE_COLUMNS = null;
+      return;
+    }
+    const arr = JSON.parse(raw);
+    if (!Array.isArray(arr)) {
+      MERGED_VISIBLE_COLUMNS = null;
+      return;
+    }
+    MERGED_VISIBLE_COLUMNS = new Set(arr.map(String));
+  } catch (e) {
+    MERGED_VISIBLE_COLUMNS = null;
+  }
+}
+
+function saveMergedColumnVisibility() {
+  try {
+    if (!(MERGED_VISIBLE_COLUMNS instanceof Set)) {
+      localStorage.removeItem(MERGED_COLUMNS_STORAGE_KEY);
+      return;
+    }
+    localStorage.setItem(MERGED_COLUMNS_STORAGE_KEY, JSON.stringify(Array.from(MERGED_VISIBLE_COLUMNS)));
+  } catch (e) {
+    // ignore
+  }
+}
+
+function sanitizeMergedColumnVisibility() {
+  if (!DISPLAY_COLUMNS || !Array.isArray(DISPLAY_COLUMNS)) return;
+  if (!(MERGED_VISIBLE_COLUMNS instanceof Set)) return;
+
+  const allowed = new Set(DISPLAY_COLUMNS);
+  for (const c of Array.from(MERGED_VISIBLE_COLUMNS)) {
+    if (!allowed.has(c)) MERGED_VISIBLE_COLUMNS.delete(c);
+  }
+  // Avoid rendering a table with zero columns.
+  if (MERGED_VISIBLE_COLUMNS.size === 0) {
+    MERGED_VISIBLE_COLUMNS = null;
+  }
+}
+
+function getMergedVisibleColumnsArray(columnsFull) {
+  const cols = Array.isArray(columnsFull) ? columnsFull : [];
+  return cols.filter(isMergedColumnVisible);
+}
+
+function renderMergedColumnsMenu() {
+  const menu = document.getElementById("merged-columns-menu");
+  if (!menu) return;
+  if (!DISPLAY_COLUMNS || !Array.isArray(DISPLAY_COLUMNS) || DISPLAY_COLUMNS.length === 0) {
+    menu.innerHTML = '<div class="text-secondary small">Columns not ready yet.</div>';
+    return;
+  }
+
+  const minimal = [
+    "Depository",
+    "Shelf mark",
+    "Language",
+    "Production Unit",
+    "Leaves/Pages",
+    "Main text",
+    "Minor text",
+    "Dating",
+    "Links to Database",
+  ];
+
+  const selected = getMergedVisibleColumnsSet();
+  const isChecked = (c) => !selected || selected.has(c);
+
+  let html = '';
+  html += '<div class="d-flex gap-2 mb-2">';
+  html += '<button class="btn btn-sm btn-outline-secondary" type="button" data-cols-action="all">All</button>';
+  html += '<button class="btn btn-sm btn-outline-secondary" type="button" data-cols-action="minimal">Minimal</button>';
+  html += '<button class="btn btn-sm btn-outline-secondary" type="button" data-cols-action="reset">Reset</button>';
+  html += '</div>';
+  html += '<div class="mb-2">';
+  html += '<input class="form-control form-control-sm" type="text" placeholder="Filter columns…" data-cols-filter>';
+  html += '</div>';
+  html += '<div data-cols-list>';
+  for (const col of DISPLAY_COLUMNS) {
+    html += `
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" data-cols-col="${escapeHtml(col)}" id="colvis-${escapeHtml(col)}" ${isChecked(col) ? 'checked' : ''}>
+        <label class="form-check-label" for="colvis-${escapeHtml(col)}">${escapeHtml(col)}</label>
+      </div>`;
+  }
+  html += '</div>';
+  menu.innerHTML = html;
+
+  function applyFilter() {
+    const q = (menu.querySelector('[data-cols-filter]')?.value || '').toLowerCase();
+    const items = menu.querySelectorAll('[data-cols-list] .form-check');
+    items.forEach(el => {
+      const label = el.textContent || '';
+      el.style.display = (!q || label.toLowerCase().includes(q)) ? '' : 'none';
+    });
+  }
+
+  menu.querySelector('[data-cols-filter]')?.addEventListener('input', applyFilter);
+
+  menu.querySelectorAll('button[data-cols-action]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const action = btn.getAttribute('data-cols-action');
+      if (action === 'all') {
+        MERGED_VISIBLE_COLUMNS = null;
+      } else if (action === 'reset') {
+        MERGED_VISIBLE_COLUMNS = null;
+      } else if (action === 'minimal') {
+        MERGED_VISIBLE_COLUMNS = new Set(minimal.filter(c => DISPLAY_COLUMNS.includes(c)));
+      }
+      saveMergedColumnVisibility();
+      renderMergedColumnsMenu();
+      if (currentView === 'merged') applyFacetFilters();
+    });
+  });
+
+  menu.querySelectorAll('input[type=checkbox][data-cols-col]').forEach(cb => {
+    cb.addEventListener('change', () => {
+      const col = cb.getAttribute('data-cols-col');
+      if (!col) return;
+
+      if (!(MERGED_VISIBLE_COLUMNS instanceof Set)) {
+        MERGED_VISIBLE_COLUMNS = new Set(DISPLAY_COLUMNS);
+      }
+
+      if (cb.checked) MERGED_VISIBLE_COLUMNS.add(col);
+      else MERGED_VISIBLE_COLUMNS.delete(col);
+
+      sanitizeMergedColumnVisibility();
+      saveMergedColumnVisibility();
+      if (currentView === 'merged') applyFacetFilters();
+    });
+  });
+}
+
+// View mode: default Tabulator table, optional merged-cells (Excel-like) view
+let currentView = "table";
+
+// Optional: raw Excel-like dataset (blank cells preserved) + merge coordinates exported by convert_excel_to_tsv.py
+// These files are expected to be generated via:
+//   python data/scripts/convert_excel_to_tsv.py data/<file>.xlsx --excel-identical --export-merges
+// producing:
+//   data/<file>_raw.tsv and data/<file>_raw_merges.json
+let RAW_EXCEL_LOADING = null;
+let RAW_EXCEL_LOADED = false;
+let RAW_EXCEL_FAILED = false;
+let RAW_BY_MANUSCRIPT_KEY = new Map(); // key -> { rows: RawRow[], sourceId: string }
+let RAW_MERGES_BY_SOURCE = new Map();  // sourceId -> { columns: string[], merges: MergeRange[] }
+
+const RAW_EXCEL_SOURCES = [
+  { id: "dan", lang: "da", tsv: "data/1.0_Metadata_Dan_raw.tsv", merges: "data/1.0_Metadata_Dan_raw_merges.json" },
+  { id: "isl", lang: "is", tsv: "data/1.1_Metadata_Isl_raw.tsv", merges: "data/1.1_Metadata_Isl_raw_merges.json" },
+  { id: "norw", lang: "no", tsv: "data/1.2_Metadata_Norw_raw.tsv", merges: "data/1.2_Metadata_Norw_raw_merges.json" },
+  { id: "swe", lang: "sv", tsv: "data/1.1_Metadata_Swe_raw.tsv", merges: "data/1.1_Metadata_Swe_raw_merges.json" },
+];
+
+async function ensureRawExcelLoaded() {
+  if (RAW_EXCEL_LOADED || RAW_EXCEL_FAILED) return Promise.resolve();
+  if (RAW_EXCEL_LOADING) return RAW_EXCEL_LOADING;
+
+  RAW_EXCEL_LOADING = (async () => {
+    try {
+      const depositoryMap = await loadDepositoryMap();
+      const results = await Promise.all(RAW_EXCEL_SOURCES.map(async (src) => {
+        try {
+          const tsvResp = await fetch(src.tsv);
+          if (!tsvResp.ok) throw new Error(`Failed to fetch ${src.tsv}: ${tsvResp.status}`);
+          const tsvText = await tsvResp.text();
+
+          // Merges are optional; if missing, the merged view still benefits from the raw blank cells
+          try {
+            const mergesResp = await fetch(src.merges);
+            if (mergesResp.ok) {
+              const mergesJson = await mergesResp.json();
+              RAW_MERGES_BY_SOURCE.set(src.id, mergesJson);
+            } else {
+              console.warn(`Missing merge JSON for ${src.id}: ${src.merges} (${mergesResp.status})`);
+            }
+          } catch (e) {
+            console.warn(`Failed to load merge JSON for ${src.id}: ${src.merges}`, e);
+          }
+
+          // Parse TSV (keep empty lines to preserve Excel spacing; they will still be associated to a manuscript via hidden key fill)
+          const lines = tsvText.split(/\r?\n/);
+          if (!lines.length) return false;
+          const rawHeaders = (lines[0] || "").split("\t");
+
+          // Insert Language after Shelf mark (to match the combined dataset layout)
+          const shelfIdx = rawHeaders.indexOf("Shelf mark");
+          const headers = rawHeaders.slice();
+          if (shelfIdx !== -1 && !headers.includes("Language")) {
+            headers.splice(shelfIdx + 1, 0, "Language");
+          }
+
+          let currentShelf = "";
+          let currentDepAbbr = "";
+
+          for (let i = 1; i < lines.length; i++) {
+            const line = lines[i];
+            // Preserve row count even if line is empty
+            const rawValues = (line !== undefined) ? line.split("\t") : [];
+            const values = rawValues.slice();
+            if (shelfIdx !== -1 && !rawHeaders.includes("Language")) {
+              values.splice(shelfIdx + 1, 0, src.lang);
+            }
+
+            const obj = {};
+            headers.forEach((h, colIndex) => {
+              let val = values[colIndex] !== undefined ? values[colIndex] : "";
+              if (h === "Main text") val = String(val || "").trim();
+              if (h === "Depository") {
+                obj["Depository_abbr"] = val;
+                if (val in depositoryMap) {
+                  val = depositoryMap[val];
+                }
+              }
+              obj[h] = val;
+            });
+
+            // Hidden key fill (does NOT change visible blank cells)
+            const shelfVal = normalizeForCompare(obj["Shelf mark"]);
+            const depAbbrVal = normalizeForCompare(obj["Depository_abbr"]);
+            if (shelfVal) currentShelf = shelfVal;
+            if (depAbbrVal) currentDepAbbr = depAbbrVal;
+            obj["Depository_abbr"] = obj["Depository_abbr"] || currentDepAbbr;
+            obj["__msKey"] = (currentDepAbbr || "") + "||" + (currentShelf || "");
+            obj["__sourceId"] = src.id;
+            obj["__sourceRowIndex"] = i - 1; // 0-based index relative to data rows (matches merges JSON)
+
+            // Derived fields (for consistency if used by renderers)
+            if (obj["Main text"]) {
+              const m = String(obj["Main text"]).match(/^([^\(]+)\s*\(/);
+              obj["Main text group"] = m ? m[1].trim() : obj["Main text"];
+            } else {
+              obj["Main text group"] = "";
+            }
+            obj["DatingYear"] = parseDatingYear(obj["Dating"]);
+            normalizeRowLanguage(obj);
+
+            // Store into manuscript map (skip rows before we have a key)
+            const msKey = obj["__msKey"];
+            if (!msKey || msKey === "||") continue;
+            if (!RAW_BY_MANUSCRIPT_KEY.has(msKey)) {
+              RAW_BY_MANUSCRIPT_KEY.set(msKey, { rows: [], sourceId: src.id });
+            }
+            RAW_BY_MANUSCRIPT_KEY.get(msKey).rows.push(obj);
+          }
+
+          return true;
+        } catch (e) {
+          console.warn(`Raw TSV not available for ${src.id}: ${src.tsv}`, e);
+          return false;
+        }
+      }));
+
+      const loadedCount = results.filter(Boolean).length;
+      if (loadedCount > 0) {
+        RAW_EXCEL_LOADED = true;
+      } else {
+        RAW_EXCEL_FAILED = true;
+      }
+    } catch (e) {
+      console.warn("Raw Excel dataset not available; merged view will fall back to heuristic merging.", e);
+      RAW_EXCEL_FAILED = true;
+    } finally {
+      RAW_EXCEL_LOADING = null;
+    }
+  })();
+
+  return RAW_EXCEL_LOADING;
+}
+
+function buildLocalMergeLookup(rawRows, sourceId, columnsFull, columnsVisible) {
+  const source = RAW_MERGES_BY_SOURCE.get(sourceId);
+  if (!source || !Array.isArray(source.merges)) return null;
+
+  // Map source row index -> local row index
+  const rowIndexToLocal = new Map();
+  for (let i = 0; i < rawRows.length; i++) {
+    rowIndexToLocal.set(rawRows[i].__sourceRowIndex, i);
+  }
+
+  const full = (Array.isArray(columnsFull) && columnsFull.length > 0)
+    ? columnsFull
+    : ((DISPLAY_COLUMNS && Array.isArray(DISPLAY_COLUMNS)) ? DISPLAY_COLUMNS : ((DATA_HEADERS && Array.isArray(DATA_HEADERS)) ? DATA_HEADERS : COLUMN_ORDER));
+
+  const visible = (Array.isArray(columnsVisible) && columnsVisible.length > 0)
+    ? columnsVisible
+    : full;
+
+  const fullIndex = new Map(full.map((c, idx) => [c, idx]));
+  const visibleIndex = new Map(visible.map((c, idx) => [c, idx]));
+
+  const topLeft = new Map(); // "r,c" -> {rowSpan, colSpan}
+  const covered = new Set(); // "r,c"
+
+  for (const m of source.merges) {
+    const minSrcRow = m.minRow;
+    const maxSrcRow = m.maxRow;
+    if (!rowIndexToLocal.has(minSrcRow) || !rowIndexToLocal.has(maxSrcRow)) continue;
+
+    // Only apply merges fully contained within this manuscript's row set
+    let fullyContained = true;
+    for (let r = minSrcRow; r <= maxSrcRow; r++) {
+      if (!rowIndexToLocal.has(r)) { fullyContained = false; break; }
+    }
+    if (!fullyContained) continue;
+
+    const minColName = m.minCol;
+    const maxColName = m.maxCol;
+    if (!fullIndex.has(minColName) || !fullIndex.has(maxColName)) continue;
+    const minFullCol = fullIndex.get(minColName);
+    const maxFullCol = fullIndex.get(maxColName);
+    const a = Math.min(minFullCol, maxFullCol);
+    const b = Math.max(minFullCol, maxFullCol);
+
+    // Map the merge range to the visible column grid.
+    const visibleColsInRange = [];
+    for (let i = a; i <= b; i++) {
+      const colName = full[i];
+      if (visibleIndex.has(colName)) visibleColsInRange.push(visibleIndex.get(colName));
+    }
+    if (visibleColsInRange.length === 0) continue;
+    const minCol = Math.min(...visibleColsInRange);
+    const maxCol = Math.max(...visibleColsInRange);
+
+    const minRow = rowIndexToLocal.get(minSrcRow);
+    const maxRow = rowIndexToLocal.get(maxSrcRow);
+
+    const rowSpan = (maxRow - minRow) + 1;
+    const colSpan = (maxCol - minCol) + 1;
+    if (rowSpan <= 1 && colSpan <= 1) continue;
+
+    const tlKey = `${minRow},${minCol}`;
+    topLeft.set(tlKey, { rowSpan, colSpan });
+
+    for (let r = minRow; r <= maxRow; r++) {
+      for (let c = minCol; c <= maxCol; c++) {
+        const k = `${r},${c}`;
+        if (k === tlKey) continue;
+        covered.add(k);
+      }
+    }
+  }
+
+  return { topLeft, covered, columns: visible };
+}
+
+function normalizeForCompare(val) {
+  if (val === null || val === undefined) return "";
+  const v = String(val).trim();
+  return v === "." ? "" : v;
+}
+
+function getManuscriptKey(row) {
+  const dep = normalizeForCompare(row["Depository_abbr"] || row["Depository"]);
+  const shelf = normalizeForCompare(row["Shelf mark"]);
+  return dep + "||" + shelf;
+}
+
+function groupByPreserveOrder(rows, keyFn) {
+  const map = new Map();
+  for (const r of rows) {
+    const k = keyFn(r);
+    if (!map.has(k)) map.set(k, []);
+    map.get(k).push(r);
+  }
+  return Array.from(map.entries()).map(([key, groupRows]) => ({ key, rows: groupRows }));
+}
+
+function getConstantFields(rows, columns, excluded = []) {
+  const excludedSet = new Set(excluded);
+  const constant = new Set();
+  for (const col of columns) {
+    if (excludedSet.has(col)) continue;
+    const values = new Set(rows.map(r => normalizeForCompare(r[col])));
+    if (values.size <= 1) constant.add(col);
+  }
+  return constant;
+}
+
+function renderMergedCell(field, value) {
+  const v = normalizeForCompare(value);
+  if (!v) return "&nbsp;";
+  if (field === "Links to Database") return normalizeLinksToDatabase(v);
+  return escapeHtml(v);
+}
+
+function renderMergedView(manuscripts) {
+  const mergedRoot = document.getElementById("merged-table");
+  const meta = document.getElementById("merged-view-meta");
+  if (!mergedRoot) return;
+
+  const columnsFull = (DISPLAY_COLUMNS && Array.isArray(DISPLAY_COLUMNS))
+    ? DISPLAY_COLUMNS.slice()
+    : ((DATA_HEADERS && Array.isArray(DATA_HEADERS)) ? DATA_HEADERS.slice() : COLUMN_ORDER.slice());
+  const columns = getMergedVisibleColumnsArray(columnsFull);
+  let totalRows = 0;
+  manuscripts.forEach(m => { totalRows += m.rows.length; });
+
+  if (meta) {
+    let note = "";
+    if (!RAW_EXCEL_LOADED && !RAW_EXCEL_FAILED) note = " (loading raw Excel merges…)";
+    if (RAW_EXCEL_FAILED) note = " (raw Excel files not found; showing fallback view)";
+    meta.textContent = `${manuscripts.length} manuscripts, ${totalRows} rows${note}`;
+  }
+  const totalEl = document.getElementById('total-records');
+  if (totalEl) totalEl.textContent = `${manuscripts.length} manuscripts (${totalRows} rows)`;
+
+  let html = '<table class="table table-sm table-bordered merged-table"><thead><tr>';
+  for (const col of columns) {
+    html += `<th>${escapeHtml(col)}</th>`;
+  }
+  html += '</tr></thead><tbody>';
+
+  manuscripts.forEach((ms, msIndex) => {
+    const msClass = (msIndex % 2 === 0) ? 'ms-a' : 'ms-b';
+    // Prefer raw Excel-like rows (blank cells preserved) if available
+    const rawBlock = RAW_BY_MANUSCRIPT_KEY.get(ms.key);
+    const msRows = (rawBlock && rawBlock.rows && rawBlock.rows.length > 0) ? rawBlock.rows : ms.rows;
+    const msRowCount = msRows.length;
+    const mergeLookup = (rawBlock && RAW_MERGES_BY_SOURCE.has(rawBlock.sourceId))
+      ? buildLocalMergeLookup(msRows, rawBlock.sourceId, columnsFull, columns)
+      : null;
+    const msConst = mergeLookup ? null : getConstantFields(msRows, columns, ["Production Unit"]);
+
+    // Build contiguous Production Unit runs so we can merge/stripe without re-ordering rows.
+    const runs = [];
+    const rowToRunIndex = new Array(msRowCount);
+    let lastPU = "";
+    let runStart = 0;
+    let runIndex = 0;
+    for (let i = 0; i < msRowCount; i++) {
+      const v = normalizeForCompare(msRows[i]["Production Unit"]);
+      const pu = v || lastPU;
+      if (i === 0) {
+        lastPU = pu;
+        runStart = 0;
+        runIndex = 0;
+      } else if (pu !== lastPU) {
+        runs.push({ start: runStart, end: i - 1, index: runIndex, pu: lastPU });
+        runIndex++;
+        runStart = i;
+        lastPU = pu;
+      }
+      rowToRunIndex[i] = runIndex;
+    }
+    runs.push({ start: runStart, end: msRowCount - 1, index: runIndex, pu: lastPU });
+
+    // In heuristic mode we can still merge constant fields within each run.
+    const runConstByStart = new Map();
+    if (!mergeLookup) {
+      for (const r of runs) {
+        const slice = msRows.slice(r.start, r.end + 1);
+        runConstByStart.set(r.start, getConstantFields(slice, columns, []));
+      }
+    }
+
+    for (let rIndex = 0; rIndex < msRowCount; rIndex++) {
+      const row = msRows[rIndex];
+      const isFirstMsRow = (rIndex === 0);
+      const trClasses = [msClass];
+      if (isFirstMsRow) trClasses.push('ms-sep');
+      html += `<tr class="${trClasses.join(' ')}">`;
+
+      const currentRunIdx = rowToRunIndex[rIndex] || 0;
+      const puClass = (currentRunIdx % 2 === 0) ? 'pu-a' : 'pu-b';
+
+      // Find the start/end for this run (used for rowspan)
+      let runStartIdx = rIndex;
+      let runEndIdx = rIndex;
+      // Cheap lookup: scan runs array (runs count per manuscript is small)
+      for (const rr of runs) {
+        if (rr.start <= rIndex && rIndex <= rr.end) {
+          runStartIdx = rr.start;
+          runEndIdx = rr.end;
+          break;
+        }
+      }
+      const isRunStart = (rIndex === runStartIdx);
+      const runRowSpan = (runEndIdx - runStartIdx) + 1;
+      const runConst = (!mergeLookup && isRunStart) ? runConstByStart.get(runStartIdx) : null;
+
+      for (let c = 0; c < columns.length; c++) {
+        const col = columns[c];
+
+        if (mergeLookup) {
+          // The raw Excel files don't have a Language column; we inject it.
+          // Merge it per manuscript so duplicates don't repeat visually.
+          if (col === "Language") {
+            if (!isFirstMsRow) continue;
+            html += `<td class="${msClass}" rowspan="${msRowCount}">${renderMergedCell(col, row[col])}</td>`;
+            continue;
+          }
+
+          const key = `${rIndex},${c}`;
+          if (mergeLookup.covered.has(key)) continue;
+          const span = mergeLookup.topLeft.get(key);
+          const attrs = span ? ` rowspan="${span.rowSpan}" colspan="${span.colSpan}"` : "";
+          html += `<td class="${(col === "Production Unit") ? puClass : msClass}"${attrs}>${renderMergedCell(col, row[col])}</td>`;
+          continue;
+        }
+
+        if (msConst && msConst.has(col)) {
+          if (!isFirstMsRow) continue;
+          html += `<td class="${msClass}" rowspan="${msRowCount}">${renderMergedCell(col, row[col])}</td>`;
+          continue;
+        }
+
+        if (col === "Production Unit") {
+          if (!isRunStart) continue;
+          html += `<td class="${puClass}" rowspan="${runRowSpan}">${renderMergedCell(col, row[col])}</td>`;
+          continue;
+        }
+
+        if (runConst && runConst.has(col)) {
+          html += `<td class="${puClass}" rowspan="${runRowSpan}">${renderMergedCell(col, row[col])}</td>`;
+          continue;
+        }
+
+        html += `<td>${renderMergedCell(col, row[col])}</td>`;
+      }
+
+      html += '</tr>';
+    }
+  });
+
+  html += '</tbody></table>';
+  mergedRoot.innerHTML = html;
+}
+
+function setView(view) {
+  currentView = (view === "merged") ? "merged" : "table";
+  const tableView = document.getElementById("table-view");
+  const mergedView = document.getElementById("merged-view");
+  if (tableView) tableView.style.display = (currentView === "table") ? "block" : "none";
+  if (mergedView) mergedView.style.display = (currentView === "merged") ? "block" : "none";
+
+  if (currentView === "table" && table && typeof table.redraw === 'function') {
+    try { table.redraw(true); } catch (e) {}
+  }
+
+  const paginationSizeSelect = document.getElementById("pagination-size");
+  if (paginationSizeSelect) paginationSizeSelect.disabled = (currentView === "merged");
+
+  // Keep merged column menu in sync
+  if (currentView === "merged") {
+    renderMergedColumnsMenu();
+  }
+
+  if (currentView === "merged") {
+    // Kick off raw Excel + merge JSON loading (if available) and re-render when ready.
+    const meta = document.getElementById("merged-view-meta");
+    if (meta && !RAW_EXCEL_LOADED && !RAW_EXCEL_FAILED) {
+      meta.textContent = "Loading raw Excel layout (if available)…";
+    }
+    ensureRawExcelLoaded().then(() => {
+      if (currentView === "merged") applyFacetFilters();
+    });
+  }
+
+  applyFacetFilters();
+}
+
 // Map 'language' column to 'Language' for facets, expanding ISO codes
 const LANGUAGE_MAP = {
   'da': 'Danish',
@@ -441,6 +1083,95 @@ function applyFacetFilters() {
   const searchInput = document.getElementById('search');
   const query = searchInput ? searchInput.value.toLowerCase() : "";
 
+  if (currentView === "merged") {
+    const manuscripts = groupByPreserveOrder(allRows || [], getManuscriptKey)
+      .map(g => ({ key: g.key, rows: g.rows }))
+      .sort((a, b) => {
+        const a0 = a.rows[0] || {};
+        const b0 = b.rows[0] || {};
+        const depCmp = String(a0["Depository"] || "").localeCompare(String(b0["Depository"] || ""), undefined, { sensitivity: "base" });
+        if (depCmp !== 0) return depCmp;
+        return String(a0["Shelf mark"] || "").localeCompare(String(b0["Shelf mark"] || ""), undefined, { numeric: true, sensitivity: "base" });
+      });
+
+    const range = facetSelections["DatingRange"];
+    let min = range ? range.min : null;
+    let max = range ? range.max : null;
+    if (typeof min === 'number' && Number.isNaN(min)) min = null;
+    if (typeof max === 'number' && Number.isNaN(max)) max = null;
+    if (min !== null && max !== null && min > max) {
+      const tmp = min; min = max; max = tmp;
+    }
+
+    function manuscriptMatches(ms) {
+      for (const field of FACET_FIELDS) {
+        if (field === "Dating") {
+          if (min === null && max === null) continue;
+          const anyInRange = ms.rows.some(r => {
+            const y = r["DatingYear"];
+            if (typeof y !== 'number' || Number.isNaN(y)) return false;
+            if (min !== null && y < min) return false;
+            if (max !== null && y > max) return false;
+            return true;
+          });
+          if (!anyInRange) return false;
+          continue;
+        }
+
+        if (field === "Main text group") {
+          const variantSelections = facetSelections["Main text group-variant"];
+          if (variantSelections && variantSelections.length > 0) {
+            const anyVariant = ms.rows.some(r => {
+              const group = r["Main text group"] || "";
+              let variant = "";
+              if (r["Main text"]) {
+                const m = String(r["Main text"]).match(/^([^\(]+)\s*\(([^\)]+)\)/);
+                if (m) variant = m[2].trim();
+              }
+              const key = group + "|" + variant;
+              return variantSelections.includes(key);
+            });
+            if (!anyVariant) return false;
+            continue;
+          }
+          const groups = facetSelections[field];
+          if (groups && groups.length > 0) {
+            const anyGroup = ms.rows.some(r => groups.includes(r[field]));
+            if (!anyGroup) return false;
+          }
+          continue;
+        }
+
+        const selected = facetSelections[field];
+        if (selected && selected.length > 0) {
+          const anyMatch = ms.rows.some(r => selected.includes(r[field]));
+          if (!anyMatch) return false;
+        }
+      }
+
+      if (query) {
+        const anySearch = ms.rows.some(r => Object.values(r).some(val => String(val).toLowerCase().includes(query)));
+        if (!anySearch) return false;
+      }
+
+      return true;
+    }
+
+    const filtered = manuscripts.filter(manuscriptMatches);
+    renderMergedView(filtered);
+
+    // Keep Tabulator internally in sync (even though hidden)
+    if (table) {
+      const allowed = new Set(filtered.map(m => m.key));
+      table.clearFilter(true);
+      table.setFilter(function(row) {
+        return allowed.has(getManuscriptKey(row));
+      });
+    }
+
+    return;
+  }
+
   if (!table) return;
   table.clearFilter(true);
   // Compose filter function
@@ -533,16 +1264,21 @@ async function loadDataTSV(fileName) {
     if (lines.length === 0) throw new Error("TSV file is empty");
     const headers = lines[0].split("\t");
 
+    // Preserve the actual column order from the combined TSV for the merged view.
+    DATA_HEADERS = headers.slice();
+    DISPLAY_COLUMNS = buildDisplayColumns(headers);
+
+    // Load/validate column visibility selections now that we know which columns exist.
+    loadMergedColumnVisibility();
+    sanitizeMergedColumnVisibility();
+    renderMergedColumnsMenu();
+
     let rows = lines.slice(1).map(line => {
       const values = line.split("\t");
       const obj = {};
       headers.forEach((h, i) => {
         let val = values[i] !== undefined ? values[i] : "";
         if (h === "Main text") val = val.trim();
-        // Normalize link formats (Markdown/URL/HTML/Excel) to safe HTML anchors
-        if (h === "Links to Database") {
-          val = normalizeLinksToDatabase(val);
-        }
         // Expand Depository abbreviation
         if (h === "Depository") {
           obj["Depository_abbr"] = val; // Store original abbreviation for filename generation
@@ -569,12 +1305,7 @@ async function loadDataTSV(fileName) {
     });
     allRows = rows;
 
-
-
-    // User-specified column order
-    const userColumnOrder = ["Depository","Shelf mark","Language","Name","Object","Size","Production Unit","Leaves/Pages","Main text","Minor text","Dating","Gatherings","Full size","Leaf size","Catch Words and Gatherings","Pricking","Material","Ruling","Columns","Lines","Script","Rubric","Scribe","Production","Style","Colours","Form of Initials","Size of Initials","Iconography","Place","Related Shelfmarks","Literature","Links to Database"];
-    
-    // Build columns from headers, but order by userColumnOrder, then any extra columns (e.g. Century)
+  // Build columns from headers, but order by USER_COLUMN_ORDER
     let colDefs = {};
     headers.forEach(h => {
       let colDef = {
@@ -597,11 +1328,9 @@ async function loadDataTSV(fileName) {
       colDefs[h] = colDef;
     });
 
-    // Compose columns array in user order, then add any extra columns (except Century)
+    // Compose columns array in the UI display order (COLUMN_ORDER + any extras)
     let columns = [];
-    userColumnOrder.forEach(h => { if (colDefs[h]) columns.push(colDefs[h]); });
-    // Add any columns from headers not in userColumnOrder (except Century)
-    headers.forEach(h => { if (!userColumnOrder.includes(h) && h !== "Century" && colDefs[h]) columns.push(colDefs[h]); });
+    (DISPLAY_COLUMNS || []).forEach(h => { if (colDefs[h]) columns.push(colDefs[h]); });
     // Add Century column at the end if present
     columns.push({
       title: "Century",
@@ -626,7 +1355,7 @@ async function loadDataTSV(fileName) {
       await table.replaceData(rows);
       document.getElementById('total-records').textContent = rows.length;
     } else {
-      table = new Tabulator("#table", {
+      table = new Tabulator("#table-view", {
         data: rows,
         layout: "fitColumns",
         pagination: true,
@@ -649,6 +1378,9 @@ async function loadDataTSV(fileName) {
         selectable: 1, // Allow row selection for visual feedback
       });
 
+      // Expose for index.html sidebar-resizer redraw hook
+      window.table = table;
+
       // Attach rowClick event handler
       table.on("rowClick", function(e, row){
         console.log("Row clicked", row.getData());
@@ -659,14 +1391,14 @@ async function loadDataTSV(fileName) {
           return;
         }
         
-        // Collect and sort entries based on userColumnOrder
+        // Collect and sort entries based on USER_COLUMN_ORDER
         const entries = [];
         // Exclude internal fields and fields to hide in modal
         const dataKeys = Object.keys(data).filter(k => k !== "DatingYear" && k !== "_id" && k !== "Century" && k !== "Main text group" && k !== "Depository_abbr");
 
         dataKeys.sort((a, b) => {
-          const idxA = userColumnOrder.indexOf(a);
-          const idxB = userColumnOrder.indexOf(b);
+          const idxA = USER_COLUMN_ORDER.indexOf(a);
+          const idxB = USER_COLUMN_ORDER.indexOf(b);
           if (idxA !== -1 && idxB !== -1) return idxA - idxB;
           if (idxA !== -1) return -1;
           if (idxB !== -1) return 1;
@@ -769,7 +1501,9 @@ async function loadDataTSV(fileName) {
       document.getElementById('total-records').textContent = rows.length;
       if (table) {
         table.on("dataFiltered", function(filters, filteredRows){
-          document.getElementById('total-records').textContent = filteredRows.length;
+          if (currentView === "table") {
+            document.getElementById('total-records').textContent = filteredRows.length;
+          }
         });
       }
     }
@@ -796,6 +1530,15 @@ function setupControls() {
       FACET_FIELDS.forEach(field => {
         const facetDiv = document.getElementById(`facet-${field}`);
         if (!facetDiv) return;
+
+        if (field === "Dating") {
+          const minEl = facetDiv.querySelector('input[data-dating-range="min"]');
+          const maxEl = facetDiv.querySelector('input[data-dating-range="max"]');
+          if (minEl) minEl.value = "";
+          if (maxEl) maxEl.value = "";
+          return;
+        }
+
         const allBox = facetDiv.querySelector('input[type=checkbox][value="__ALL__"]');
         if (allBox) {
           allBox.checked = true;
@@ -820,6 +1563,13 @@ function setupControls() {
 
   const searchInput = document.getElementById("search");
   const paginationSizeSelect = document.getElementById("pagination-size");
+  const viewSelect = document.getElementById("view-select");
+
+  if (viewSelect) {
+    viewSelect.addEventListener("change", function () {
+      setView(this.value);
+    });
+  }
 
   // Load selected TSV by default
   // Always load the combined file
