@@ -1305,7 +1305,7 @@ async function loadDataTSV(fileName) {
     });
     allRows = rows;
 
-  // Build columns from headers, but order by USER_COLUMN_ORDER
+  // Build columns from headers, ordered by DISPLAY_COLUMNS/COLUMN_ORDER
     let colDefs = {};
     headers.forEach(h => {
       let colDef = {
@@ -1391,14 +1391,18 @@ async function loadDataTSV(fileName) {
           return;
         }
         
-        // Collect and sort entries based on USER_COLUMN_ORDER
+        // Collect and sort entries based on the same column order used in the UI
         const entries = [];
         // Exclude internal fields and fields to hide in modal
         const dataKeys = Object.keys(data).filter(k => k !== "DatingYear" && k !== "_id" && k !== "Century" && k !== "Main text group" && k !== "Depository_abbr");
 
+        const modalOrder = (Array.isArray(DISPLAY_COLUMNS) && DISPLAY_COLUMNS.length > 0)
+          ? DISPLAY_COLUMNS
+          : (Array.isArray(COLUMN_ORDER) ? COLUMN_ORDER : []);
+
         dataKeys.sort((a, b) => {
-          const idxA = USER_COLUMN_ORDER.indexOf(a);
-          const idxB = USER_COLUMN_ORDER.indexOf(b);
+          const idxA = modalOrder.indexOf(a);
+          const idxB = modalOrder.indexOf(b);
           if (idxA !== -1 && idxB !== -1) return idxA - idxB;
           if (idxA !== -1) return -1;
           if (idxB !== -1) return 1;
