@@ -296,10 +296,62 @@ function renderMergedColumnsMenu() {
     "Shelf mark",
     "Language",
     "Production Unit",
+    "Dating",
+    "Material",
+    "Literature",
+    "Links to Database",
+  ];
+
+  const textualContent = [
+    "Depository",
+    "Shelf mark",
+    "Language",
+    "Production Unit",
     "Leaves/Pages",
     "Main text",
     "Minor text",
     "Dating",
+    "Place",
+    "Related Shelfmarks",
+    "Literature",
+    "Links to Database",
+  ];
+
+  const codicology = [
+    "Depository",
+    "Shelf mark",
+    "Language",
+    "Name",
+    "Object",
+    "Material",
+    "Size",
+    "Leaves/Pages",
+    "Gatherings",
+    "Full size",
+    "Leaf size",
+    "Catch Words and Gatherings",
+    "Pricking",
+    "Ruling",
+    "Production Unit",
+    "Production",
+    "Place",
+    "Links to Database",
+  ];
+
+  const layoutAndDecoration = [
+    "Depository",
+    "Shelf mark",
+    "Language",
+    "Name",
+    "Columns",
+    "Lines",
+    "Ruling",
+    "Rubric",
+    "Style",
+    "Colours",
+    "Form of Initials",
+    "Size of Initials",
+    "Iconography",
     "Links to Database",
   ];
 
@@ -310,6 +362,9 @@ function renderMergedColumnsMenu() {
   html += '<div class="d-flex gap-2 mb-2">';
   html += '<button class="btn btn-sm btn-outline-secondary" type="button" data-cols-action="all">All</button>';
   html += '<button class="btn btn-sm btn-outline-secondary" type="button" data-cols-action="minimal">Minimal</button>';
+  html += '<button class="btn btn-sm btn-outline-secondary" type="button" data-cols-action="textual">Textual content</button>';
+  html += '<button class="btn btn-sm btn-outline-secondary" type="button" data-cols-action="codicology">Codicology</button>';
+  html += '<button class="btn btn-sm btn-outline-secondary" type="button" data-cols-action="layout">Layout & decoration</button>';
   html += '<button class="btn btn-sm btn-outline-secondary" type="button" data-cols-action="reset">Reset</button>';
   html += '</div>';
   html += '<div class="mb-2">';
@@ -346,6 +401,12 @@ function renderMergedColumnsMenu() {
         MERGED_VISIBLE_COLUMNS = null;
       } else if (action === 'minimal') {
         MERGED_VISIBLE_COLUMNS = new Set(minimal.filter(c => DISPLAY_COLUMNS.includes(c)));
+      } else if (action === 'textual') {
+        MERGED_VISIBLE_COLUMNS = new Set(textualContent.filter(c => DISPLAY_COLUMNS.includes(c)));
+      } else if (action === 'codicology') {
+        MERGED_VISIBLE_COLUMNS = new Set(codicology.filter(c => DISPLAY_COLUMNS.includes(c)));
+      } else if (action === 'layout') {
+        MERGED_VISIBLE_COLUMNS = new Set(layoutAndDecoration.filter(c => DISPLAY_COLUMNS.includes(c)));
       }
       saveMergedColumnVisibility();
       renderMergedColumnsMenu();
@@ -774,6 +835,10 @@ function setView(view) {
   const mergedView = document.getElementById("merged-view");
   if (tableView) tableView.style.display = (currentView === "table") ? "block" : "none";
   if (mergedView) mergedView.style.display = (currentView === "merged") ? "block" : "none";
+
+  // Column selector lives in the top control bar; only show it for Manuscript View.
+  const mergedColsControl = document.getElementById("merged-columns-control");
+  if (mergedColsControl) mergedColsControl.style.display = (currentView === "merged") ? "" : "none";
 
   if (currentView === "table" && table && typeof table.redraw === 'function') {
     try { table.redraw(true); } catch (e) {}

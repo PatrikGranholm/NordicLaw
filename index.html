@@ -53,7 +53,9 @@
       flex-grow: 1;
       height: 100%;
       overflow: auto;
-      padding: 8px;
+      /* No top padding: sticky headers pin to scrollport top without a bleed-through band */
+      padding: 0 8px 8px;
+      background: #fff;
       min-width: 0;
     }
     .merged-table {
@@ -64,8 +66,11 @@
     .merged-table th {
       position: sticky;
       top: 0;
-      z-index: 2;
+      z-index: 5;
       background: #f8f9fa;
+      background-clip: padding-box;
+      /* Prevent occasional sub-pixel bleed-through while scrolling */
+      box-shadow: 0 1px 0 rgba(0,0,0,0.15);
     }
     .ms-sep {
       border-top: 3px solid rgba(0,0,0,0.15);
@@ -112,6 +117,12 @@
         <option value="table" selected>Text View</option>
         <option value="merged">Manuscript View</option>
       </select>
+    </div>
+    <div class="col-auto" id="merged-columns-control" style="display:none;">
+      <div class="dropdown">
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="merged-columns-btn" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Columns</button>
+        <div class="dropdown-menu p-2" id="merged-columns-menu" style="max-height:60vh; overflow:auto; min-width:260px;"></div>
+      </div>
     </div>
     <div class="col-auto">
       <label for="pagination-size" class="col-form-label fw-bold">Records per page:</label>
@@ -194,10 +205,6 @@
         <div class="d-flex justify-content-between align-items-center mb-2">
           <div class="d-flex align-items-center gap-2">
             <div class="fw-bold">Manuscript view</div>
-            <div class="dropdown">
-              <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="merged-columns-btn" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Columns</button>
-              <div class="dropdown-menu p-2" id="merged-columns-menu" style="max-height:60vh; overflow:auto; min-width:260px;"></div>
-            </div>
           </div>
           <div class="text-secondary small" id="merged-view-meta"></div>
         </div>
