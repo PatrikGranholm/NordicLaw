@@ -309,11 +309,11 @@ function renderMergedColumnsMenu() {
   const minimal = [
     "Depository",
     "Shelf mark",
+    "Name",
     "Language",
     "Production Unit",
     "Dating",
     "Material",
-    "Literature",
     "Links to Database",
   ];
 
@@ -325,18 +325,13 @@ function renderMergedColumnsMenu() {
     "Leaves/Pages",
     "Main text",
     "Minor text",
-    "Dating",
-    "Place",
-    "Related Shelfmarks",
-    "Literature",
-    "Links to Database",
+    "Dating"
   ];
 
   const codicology = [
     "Depository",
     "Shelf mark",
     "Language",
-    "Name",
     "Object",
     "Material",
     "Size",
@@ -349,15 +344,12 @@ function renderMergedColumnsMenu() {
     "Ruling",
     "Production Unit",
     "Production",
-    "Place",
-    "Links to Database",
   ];
 
   const layoutAndDecoration = [
     "Depository",
     "Shelf mark",
     "Language",
-    "Name",
     "Columns",
     "Lines",
     "Ruling",
@@ -367,7 +359,7 @@ function renderMergedColumnsMenu() {
     "Form of Initials",
     "Size of Initials",
     "Iconography",
-    "Links to Database",
+    "Place",
   ];
 
   const selected = getMergedVisibleColumnsSet();
@@ -720,9 +712,9 @@ function renderMergedView(manuscripts) {
     meta.textContent = `${manuscripts.length} manuscripts, ${totalRows} rows${note}`;
   }
   const totalEl = document.getElementById('total-records');
-  if (totalEl) totalEl.textContent = `${manuscripts.length} manuscripts (${totalRows} rows)`;
+  if (totalEl) totalEl.textContent = `${manuscripts.length} manuscripts (${totalRows} texts)`;
 
-  let html = '<table class="table table-sm table-bordered merged-table"><thead><tr>';
+  let html = '<table class="table table-bordered merged-table"><thead><tr>';
   for (const col of columns) {
     html += `<th>${escapeHtml(col)}</th>`;
   }
