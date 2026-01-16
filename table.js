@@ -155,7 +155,22 @@ Tabulator.extendModule("sort", "sorters", {
 
 // --- Facet filter logic ---
 
-const FACET_FIELDS = ["Language", "Depository", "Object", "Script", "Material", "Main text group", "Dating"];
+const FACET_FIELDS = [
+  "Language",
+  "Depository",
+  "Object",
+  "Script",
+  "Material",
+  "Size",
+  "Pricking",
+  "Ruling",
+  "Columns",
+  "Lines",
+  "Rubric",
+  "Style",
+  "Main text group",
+  "Dating",
+];
 let facetSelections = {};
 let allRows = [];
 
