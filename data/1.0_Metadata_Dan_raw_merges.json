@@ -2298,12 +2298,12 @@
       "value": "Unavailable"
     },
     {
-      "minRow": 396,
-      "maxRow": 397,
-      "minColIndex": 21,
-      "maxColIndex": 21,
-      "minCol": "Rubric",
-      "maxCol": "Rubric",
+      "minRow": 367,
+      "maxRow": 368,
+      "minColIndex": 12,
+      "maxColIndex": 12,
+      "minCol": "Leaf size",
+      "maxCol": "Leaf size",
       "value": ""
     },
     {
@@ -2334,12 +2334,12 @@
       "value": ""
     },
     {
-      "minRow": 367,
-      "maxRow": 368,
-      "minColIndex": 12,
-      "maxColIndex": 12,
-      "minCol": "Leaf size",
-      "maxCol": "Leaf size",
+      "minRow": 396,
+      "maxRow": 397,
+      "minColIndex": 21,
+      "maxColIndex": 21,
+      "minCol": "Rubric",
+      "maxCol": "Rubric",
       "value": ""
     },
     {
@@ -4251,6 +4251,15 @@
       "value": "Yes"
     },
     {
+      "minRow": 243,
+      "maxRow": 259,
+      "minColIndex": 29,
+      "maxColIndex": 29,
+      "minCol": "Place",
+      "maxCol": "Place",
+      "value": "Throughout"
+    },
+    {
       "minRow": 95,
       "maxRow": 97,
       "minColIndex": 19,
@@ -4258,15 +4267,6 @@
       "minCol": "Lines",
       "maxCol": "Lines",
       "value": "23"
-    },
-    {
-      "minRow": 520,
-      "maxRow": 522,
-      "minColIndex": 30,
-      "maxColIndex": 30,
-      "minCol": "Literature",
-      "maxCol": "Literature",
-      "value": ""
     },
     {
       "minRow": 260,
@@ -4278,6 +4278,15 @@
       "value": "AM 39 4to"
     },
     {
+      "minRow": 520,
+      "maxRow": 522,
+      "minColIndex": 30,
+      "maxColIndex": 30,
+      "minCol": "Literature",
+      "maxCol": "Literature",
+      "value": ""
+    },
+    {
       "minRow": 558,
       "maxRow": 562,
       "minColIndex": 18,
@@ -4285,15 +4294,6 @@
       "minCol": "Columns",
       "maxCol": "Columns",
       "value": "1"
-    },
-    {
-      "minRow": 243,
-      "maxRow": 259,
-      "minColIndex": 29,
-      "maxColIndex": 29,
-      "minCol": "Place",
-      "maxCol": "Place",
-      "value": "Throughout"
     },
     {
       "minRow": 542,
@@ -5781,15 +5781,6 @@
       "value": "R, B"
     },
     {
-      "minRow": 229,
-      "maxRow": 238,
-      "minColIndex": 2,
-      "maxColIndex": 2,
-      "minCol": "Related Shelfmarks",
-      "maxCol": "Related Shelfmarks",
-      "value": ""
-    },
-    {
       "minRow": 176,
       "maxRow": 185,
       "minColIndex": 17,
@@ -5797,6 +5788,15 @@
       "minCol": "Ruling",
       "maxCol": "Ruling",
       "value": "Unknown"
+    },
+    {
+      "minRow": 229,
+      "maxRow": 238,
+      "minColIndex": 2,
+      "maxColIndex": 2,
+      "minCol": "Related Shelfmarks",
+      "maxCol": "Related Shelfmarks",
+      "value": ""
     },
     {
       "minRow": 604,
@@ -6474,12 +6474,12 @@
       "value": "Yes"
     },
     {
-      "minRow": 599,
-      "maxRow": 603,
-      "minColIndex": 15,
-      "maxColIndex": 15,
-      "minCol": "Pricking",
-      "maxCol": "Pricking",
+      "minRow": 537,
+      "maxRow": 541,
+      "minColIndex": 13,
+      "maxColIndex": 13,
+      "minCol": "Catch Words and Gatherings",
+      "maxCol": "Catch Words and Gatherings",
       "value": ""
     },
     {
@@ -6492,12 +6492,12 @@
       "value": ""
     },
     {
-      "minRow": 537,
-      "maxRow": 541,
-      "minColIndex": 13,
-      "maxColIndex": 13,
-      "minCol": "Catch Words and Gatherings",
-      "maxCol": "Catch Words and Gatherings",
+      "minRow": 599,
+      "maxRow": 603,
+      "minColIndex": 15,
+      "maxColIndex": 15,
+      "minCol": "Pricking",
+      "maxCol": "Pricking",
       "value": ""
     },
     {
@@ -7149,15 +7149,6 @@
       "value": ""
     },
     {
-      "minRow": 260,
-      "maxRow": 272,
-      "minColIndex": 14,
-      "maxColIndex": 14,
-      "minCol": "Production Unit",
-      "maxCol": "Production Unit",
-      "value": "I"
-    },
-    {
       "minRow": 323,
       "maxRow": 327,
       "minColIndex": 24,
@@ -7165,6 +7156,15 @@
       "minCol": "Style",
       "maxCol": "Style",
       "value": "Romanesque"
+    },
+    {
+      "minRow": 260,
+      "maxRow": 272,
+      "minColIndex": 14,
+      "maxColIndex": 14,
+      "minCol": "Production Unit",
+      "maxCol": "Production Unit",
+      "value": "I"
     },
     {
       "minRow": 98,
@@ -7347,21 +7347,21 @@
       "value": "Unknown"
     },
     {
-      "minRow": 402,
-      "maxRow": 417,
-      "minColIndex": 27,
-      "maxColIndex": 27,
-      "minCol": "Size of Initials",
-      "maxCol": "Size of Initials",
-      "value": ""
-    },
-    {
       "minRow": 398,
       "maxRow": 401,
       "minColIndex": 23,
       "maxColIndex": 23,
       "minCol": "Production",
       "maxCol": "Production",
+      "value": ""
+    },
+    {
+      "minRow": 402,
+      "maxRow": 417,
+      "minColIndex": 27,
+      "maxColIndex": 27,
+      "minCol": "Size of Initials",
+      "maxCol": "Size of Initials",
       "value": ""
     },
     {
@@ -8850,13 +8850,13 @@
       "value": "Codex"
     },
     {
-      "minRow": 678,
-      "maxRow": 680,
+      "minRow": 367,
+      "maxRow": 368,
       "minColIndex": 11,
       "maxColIndex": 11,
       "minCol": "Full size",
       "maxCol": "Full size",
-      "value": "Unknown"
+      "value": ""
     },
     {
       "minRow": 219,
@@ -8868,13 +8868,13 @@
       "value": "None"
     },
     {
-      "minRow": 367,
-      "maxRow": 368,
+      "minRow": 678,
+      "maxRow": 680,
       "minColIndex": 11,
       "maxColIndex": 11,
       "minCol": "Full size",
       "maxCol": "Full size",
-      "value": ""
+      "value": "Unknown"
     },
     {
       "minRow": 665,
@@ -9885,15 +9885,6 @@
       "value": "Codex"
     },
     {
-      "minRow": 319,
-      "maxRow": 327,
-      "minColIndex": 11,
-      "maxColIndex": 11,
-      "minCol": "Full size",
-      "maxCol": "Full size",
-      "value": "136x111"
-    },
-    {
       "minRow": 358,
       "maxRow": 360,
       "minColIndex": 17,
@@ -9903,13 +9894,13 @@
       "value": ""
     },
     {
-      "minRow": 383,
-      "maxRow": 384,
-      "minColIndex": 21,
-      "maxColIndex": 21,
-      "minCol": "Rubric",
-      "maxCol": "Rubric",
-      "value": "Yes"
+      "minRow": 319,
+      "maxRow": 327,
+      "minColIndex": 11,
+      "maxColIndex": 11,
+      "minCol": "Full size",
+      "maxCol": "Full size",
+      "value": "136x111"
     },
     {
       "minRow": 599,
@@ -9921,6 +9912,15 @@
       "value": "AM 15 8vo"
     },
     {
+      "minRow": 383,
+      "maxRow": 384,
+      "minColIndex": 21,
+      "maxColIndex": 21,
+      "minCol": "Rubric",
+      "maxCol": "Rubric",
+      "value": "Yes"
+    },
+    {
       "minRow": 62,
       "maxRow": 79,
       "minColIndex": 0,
@@ -9930,15 +9930,6 @@
       "value": "AM 9 4to"
     },
     {
-      "minRow": 694,
-      "maxRow": 695,
-      "minColIndex": 0,
-      "maxColIndex": 0,
-      "minCol": "Shelf mark",
-      "maxCol": "Shelf mark",
-      "value": "E Don Var 2 8vo"
-    },
-    {
       "minRow": 396,
       "maxRow": 397,
       "minColIndex": 0,
@@ -9946,6 +9937,15 @@
       "minCol": "Shelf mark",
       "maxCol": "Shelf mark",
       "value": "GKS 3121 4to"
+    },
+    {
+      "minRow": 694,
+      "maxRow": 695,
+      "minColIndex": 0,
+      "maxColIndex": 0,
+      "minCol": "Shelf mark",
+      "maxCol": "Shelf mark",
+      "value": "E Don Var 2 8vo"
     },
     {
       "minRow": 565,
@@ -11415,15 +11415,6 @@
       "value": "Romanesque"
     },
     {
-      "minRow": 527,
-      "maxRow": 536,
-      "minColIndex": 10,
-      "maxColIndex": 10,
-      "minCol": "Gatherings",
-      "maxCol": "Gatherings",
-      "value": "Unknown"
-    },
-    {
       "minRow": 563,
       "maxRow": 564,
       "minColIndex": 13,
@@ -11431,6 +11422,15 @@
       "minCol": "Catch Words and Gatherings",
       "maxCol": "Catch Words and Gatherings",
       "value": "None"
+    },
+    {
+      "minRow": 527,
+      "maxRow": 536,
+      "minColIndex": 10,
+      "maxColIndex": 10,
+      "minCol": "Gatherings",
+      "maxCol": "Gatherings",
+      "value": "Unknown"
     },
     {
       "minRow": 628,
@@ -13755,15 +13755,6 @@
       "value": ""
     },
     {
-      "minRow": 309,
-      "maxRow": 313,
-      "minColIndex": 3,
-      "maxColIndex": 3,
-      "minCol": "Depository",
-      "maxCol": "Depository",
-      "value": "KB"
-    },
-    {
       "minRow": 744,
       "maxRow": 747,
       "minColIndex": 11,
@@ -13771,6 +13762,15 @@
       "minCol": "Full size",
       "maxCol": "Full size",
       "value": "Unknown"
+    },
+    {
+      "minRow": 309,
+      "maxRow": 313,
+      "minColIndex": 3,
+      "maxColIndex": 3,
+      "minCol": "Depository",
+      "maxCol": "Depository",
+      "value": "KB"
     },
     {
       "minRow": 765,
@@ -14232,15 +14232,6 @@
       "value": "Lombard-styled small initials (2 lines)."
     },
     {
-      "minRow": 656,
-      "maxRow": 661,
-      "minColIndex": 23,
-      "maxColIndex": 23,
-      "minCol": "Production",
-      "maxCol": "Production",
-      "value": "Unknown"
-    },
-    {
       "minRow": 460,
       "maxRow": 481,
       "minColIndex": 30,
@@ -14248,6 +14239,15 @@
       "minCol": "Literature",
       "maxCol": "Literature",
       "value": ""
+    },
+    {
+      "minRow": 656,
+      "maxRow": 661,
+      "minColIndex": 23,
+      "maxColIndex": 23,
+      "minCol": "Production",
+      "maxCol": "Production",
+      "value": "Unknown"
     },
     {
       "minRow": 433,
@@ -14538,6 +14538,15 @@
       "value": "Unknown"
     },
     {
+      "minRow": 583,
+      "maxRow": 589,
+      "minColIndex": 19,
+      "maxColIndex": 19,
+      "minCol": "Lines",
+      "maxCol": "Lines",
+      "value": "19"
+    },
+    {
       "minRow": 232,
       "maxRow": 235,
       "minColIndex": 8,
@@ -14545,15 +14554,6 @@
       "minCol": "Main text",
       "maxCol": "Main text",
       "value": ""
-    },
-    {
-      "minRow": 558,
-      "maxRow": 562,
-      "minColIndex": 13,
-      "maxColIndex": 13,
-      "minCol": "Catch Words and Gatherings",
-      "maxCol": "Catch Words and Gatherings",
-      "value": "None"
     },
     {
       "minRow": 176,
@@ -14565,13 +14565,13 @@
       "value": "4to"
     },
     {
-      "minRow": 583,
-      "maxRow": 589,
-      "minColIndex": 19,
-      "maxColIndex": 19,
-      "minCol": "Lines",
-      "maxCol": "Lines",
-      "value": "19"
+      "minRow": 558,
+      "maxRow": 562,
+      "minColIndex": 13,
+      "maxColIndex": 13,
+      "minCol": "Catch Words and Gatherings",
+      "maxCol": "Catch Words and Gatherings",
+      "value": "None"
     },
     {
       "minRow": 619,
@@ -16266,13 +16266,13 @@
       "value": "Codex"
     },
     {
-      "minRow": 390,
-      "maxRow": 392,
-      "minColIndex": 11,
-      "maxColIndex": 11,
-      "minCol": "Full size",
-      "maxCol": "Full size",
-      "value": "Unknown"
+      "minRow": 460,
+      "maxRow": 481,
+      "minColIndex": 18,
+      "maxColIndex": 18,
+      "minCol": "Columns",
+      "maxCol": "Columns",
+      "value": ""
     },
     {
       "minRow": 625,
@@ -16293,6 +16293,15 @@
       "value": ""
     },
     {
+      "minRow": 390,
+      "maxRow": 392,
+      "minColIndex": 11,
+      "maxColIndex": 11,
+      "minCol": "Full size",
+      "maxCol": "Full size",
+      "value": "Unknown"
+    },
+    {
       "minRow": 134,
       "maxRow": 137,
       "minColIndex": 27,
@@ -16300,15 +16309,6 @@
       "minCol": "Size of Initials",
       "maxCol": "Size of Initials",
       "value": "Small, Medium and Large"
-    },
-    {
-      "minRow": 460,
-      "maxRow": 481,
-      "minColIndex": 18,
-      "maxColIndex": 18,
-      "minCol": "Columns",
-      "maxCol": "Columns",
-      "value": ""
     },
     {
       "minRow": 98,
@@ -17958,15 +17958,6 @@
       "value": "188x130"
     },
     {
-      "minRow": 721,
-      "maxRow": 725,
-      "minColIndex": 21,
-      "maxColIndex": 21,
-      "minCol": "Rubric",
-      "maxCol": "Rubric",
-      "value": "Yes"
-    },
-    {
       "minRow": 418,
       "maxRow": 422,
       "minColIndex": 10,
@@ -17974,6 +17965,15 @@
       "minCol": "Gatherings",
       "maxCol": "Gatherings",
       "value": "Unknown"
+    },
+    {
+      "minRow": 721,
+      "maxRow": 725,
+      "minColIndex": 21,
+      "maxColIndex": 21,
+      "minCol": "Rubric",
+      "maxCol": "Rubric",
+      "value": "Yes"
     },
     {
       "minRow": 380,
@@ -23259,15 +23259,6 @@
       "value": "Codex"
     },
     {
-      "minRow": 520,
-      "maxRow": 522,
-      "minColIndex": 3,
-      "maxColIndex": 3,
-      "minCol": "Depository",
-      "maxCol": "Depository",
-      "value": "NRA"
-    },
-    {
       "minRow": 565,
       "maxRow": 582,
       "minColIndex": 1,
@@ -23275,6 +23266,15 @@
       "minCol": "Name",
       "maxCol": "Name",
       "value": ""
+    },
+    {
+      "minRow": 520,
+      "maxRow": 522,
+      "minColIndex": 3,
+      "maxColIndex": 3,
+      "minCol": "Depository",
+      "maxCol": "Depository",
+      "value": "NRA"
     },
     {
       "minRow": 482,
@@ -23961,13 +23961,13 @@
       "value": "HR"
     },
     {
-      "minRow": 28,
-      "maxRow": 39,
-      "minColIndex": 31,
-      "maxColIndex": 31,
-      "minCol": "Links to Database",
-      "maxCol": "Links to Database",
-      "value": "NorS"
+      "minRow": 301,
+      "maxRow": 307,
+      "minColIndex": 20,
+      "maxColIndex": 20,
+      "minCol": "Script",
+      "maxCol": "Script",
+      "value": ""
     },
     {
       "minRow": 62,
@@ -23979,13 +23979,13 @@
       "value": "I"
     },
     {
-      "minRow": 301,
-      "maxRow": 307,
-      "minColIndex": 20,
-      "maxColIndex": 20,
-      "minCol": "Script",
-      "maxCol": "Script",
-      "value": ""
+      "minRow": 28,
+      "maxRow": 39,
+      "minColIndex": 31,
+      "maxColIndex": 31,
+      "minCol": "Links to Database",
+      "maxCol": "Links to Database",
+      "value": "NorS"
     },
     {
       "minRow": 364,
@@ -23995,15 +23995,6 @@
       "minCol": "Shelf mark",
       "maxCol": "Shelf mark",
       "value": "Thott 1987 4to"
-    },
-    {
-      "minRow": 27,
-      "maxRow": 39,
-      "minColIndex": 17,
-      "maxColIndex": 17,
-      "minCol": "Ruling",
-      "maxCol": "Ruling",
-      "value": "Unknown"
     },
     {
       "minRow": 772,
@@ -24021,6 +24012,15 @@
       "maxColIndex": 10,
       "minCol": "Gatherings",
       "maxCol": "Gatherings",
+      "value": "Unknown"
+    },
+    {
+      "minRow": 27,
+      "maxRow": 39,
+      "minColIndex": 17,
+      "maxColIndex": 17,
+      "minCol": "Ruling",
+      "maxCol": "Ruling",
       "value": "Unknown"
     },
     {
@@ -26562,15 +26562,6 @@
       "value": "I:11 (5b, 1f, ff. 1-11); I:12 (6b, ff. 12-23); III:12 (6b, ff. 24-35); IV:12 (6b, ff. 36-47); V:12 (6b, ff. 48-59); VI:12 (6b, ff. 60-71); VII:12 (6b, ff. 72-83); VIII:12 (6b, ff. 84-95); IX:12 (6b, ff. 96-107); X:10 (5b, ff. 108-117); XI:12 (6b, ff. 118-129); XII:12 (6b, ff. 130-141); XIII:12 (6b, ff. 142-153); XIV:12 (6b, ff. 154-165); XV:11 (6b, 1f, ff. 166-176); XVI:13 (6b, 1f, ff. 177-189); XVII:13 (6b, 1f, ff. 190-202); XVIII:10 (5b, ff. 203-212); XIX:3 (1b, 1f, ff. 213-215); XX:17 (7b, ff. 216-229); XXI:2 (2f, ff. 230-231, free leaf and mirror)         "
     },
     {
-      "minRow": 27,
-      "maxRow": 39,
-      "minColIndex": 13,
-      "maxColIndex": 13,
-      "minCol": "Catch Words and Gatherings",
-      "maxCol": "Catch Words and Gatherings",
-      "value": "None"
-    },
-    {
       "minRow": 772,
       "maxRow": 777,
       "minColIndex": 27,
@@ -26578,6 +26569,15 @@
       "minCol": "Size of Initials",
       "maxCol": "Size of Initials",
       "value": "Small and Medium"
+    },
+    {
+      "minRow": 27,
+      "maxRow": 39,
+      "minColIndex": 13,
+      "maxColIndex": 13,
+      "minCol": "Catch Words and Gatherings",
+      "maxCol": "Catch Words and Gatherings",
+      "value": "None"
     },
     {
       "minRow": 260,
@@ -28101,13 +28101,13 @@
       "value": "ESjL"
     },
     {
-      "minRow": 740,
-      "maxRow": 743,
-      "minColIndex": 15,
-      "maxColIndex": 15,
-      "minCol": "Pricking",
-      "maxCol": "Pricking",
-      "value": "No"
+      "minRow": 433,
+      "maxRow": 446,
+      "minColIndex": 10,
+      "maxColIndex": 10,
+      "minCol": "Gatherings",
+      "maxCol": "Gatherings",
+      "value": "Unknown"
     },
     {
       "minRow": 558,
@@ -28119,6 +28119,15 @@
       "value": ""
     },
     {
+      "minRow": 740,
+      "maxRow": 743,
+      "minColIndex": 15,
+      "maxColIndex": 15,
+      "minCol": "Pricking",
+      "maxCol": "Pricking",
+      "value": "No"
+    },
+    {
       "minRow": 396,
       "maxRow": 397,
       "minColIndex": 4,
@@ -28126,15 +28135,6 @@
       "minCol": "Object",
       "maxCol": "Object",
       "value": "Codex"
-    },
-    {
-      "minRow": 433,
-      "maxRow": 446,
-      "minColIndex": 10,
-      "maxColIndex": 10,
-      "minCol": "Gatherings",
-      "maxCol": "Gatherings",
-      "value": "Unknown"
     },
     {
       "minRow": 138,
@@ -28386,7 +28386,7 @@
       "maxColIndex": 3,
       "minCol": "Depository",
       "maxCol": "Depository",
-      "value": "LU UB"
+      "value": "LUB"
     },
     {
       "minRow": 176,

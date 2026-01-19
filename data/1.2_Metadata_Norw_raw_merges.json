@@ -39,13 +39,13 @@
   "rowCount": 715,
   "merges": [
     {
-      "minRow": 46,
-      "maxRow": 47,
-      "minColIndex": 28,
-      "maxColIndex": 28,
-      "minCol": "Iconography",
-      "maxCol": "Iconography",
-      "value": "None"
+      "minRow": 484,
+      "maxRow": 491,
+      "minColIndex": 15,
+      "maxColIndex": 15,
+      "minCol": "Pricking",
+      "maxCol": "Pricking",
+      "value": "No"
     },
     {
       "minRow": 670,
@@ -66,13 +66,13 @@
       "value": "None"
     },
     {
-      "minRow": 484,
-      "maxRow": 491,
-      "minColIndex": 15,
-      "maxColIndex": 15,
-      "minCol": "Pricking",
-      "maxCol": "Pricking",
-      "value": "No"
+      "minRow": 46,
+      "maxRow": 47,
+      "minColIndex": 28,
+      "maxColIndex": 28,
+      "minCol": "Iconography",
+      "maxCol": "Iconography",
+      "value": "None"
     },
     {
       "minRow": 700,
@@ -84,15 +84,6 @@
       "value": "Throughout"
     },
     {
-      "minRow": 383,
-      "maxRow": 391,
-      "minColIndex": 20,
-      "maxColIndex": 20,
-      "minCol": "Script",
-      "maxCol": "Script",
-      "value": "Textualis"
-    },
-    {
       "minRow": 281,
       "maxRow": 286,
       "minColIndex": 17,
@@ -100,6 +91,15 @@
       "minCol": "Ruling",
       "maxCol": "Ruling",
       "value": "Dry"
+    },
+    {
+      "minRow": 383,
+      "maxRow": 391,
+      "minColIndex": 20,
+      "maxColIndex": 20,
+      "minCol": "Script",
+      "maxCol": "Script",
+      "value": "Textualis"
     },
     {
       "minRow": 479,
@@ -129,6 +129,15 @@
       "value": "I"
     },
     {
+      "minRow": 640,
+      "maxRow": 649,
+      "minColIndex": 14,
+      "maxColIndex": 14,
+      "minCol": "Production Unit",
+      "maxCol": "Production Unit",
+      "value": "II"
+    },
+    {
       "minRow": 214,
       "maxRow": 215,
       "minColIndex": 25,
@@ -145,15 +154,6 @@
       "minCol": "Production",
       "maxCol": "Production",
       "value": "Unknown"
-    },
-    {
-      "minRow": 640,
-      "maxRow": 649,
-      "minColIndex": 14,
-      "maxColIndex": 14,
-      "minCol": "Production Unit",
-      "maxCol": "Production Unit",
-      "value": "II"
     },
     {
       "minRow": 710,
@@ -183,15 +183,6 @@
       "value": "Parchment"
     },
     {
-      "minRow": 629,
-      "maxRow": 631,
-      "minColIndex": 1,
-      "maxColIndex": 1,
-      "minCol": "Name",
-      "maxCol": "Name",
-      "value": ""
-    },
-    {
       "minRow": 609,
       "maxRow": 610,
       "minColIndex": 22,
@@ -199,6 +190,15 @@
       "minCol": "Scribe",
       "maxCol": "Scribe",
       "value": "Hand b"
+    },
+    {
+      "minRow": 629,
+      "maxRow": 631,
+      "minColIndex": 1,
+      "maxColIndex": 1,
+      "minCol": "Name",
+      "maxCol": "Name",
+      "value": ""
     },
     {
       "minRow": 314,
@@ -210,15 +210,6 @@
       "value": ""
     },
     {
-      "minRow": 362,
-      "maxRow": 375,
-      "minColIndex": 25,
-      "maxColIndex": 25,
-      "minCol": "Colours",
-      "maxCol": "Colours",
-      "value": "R, B, Brown, Gold"
-    },
-    {
       "minRow": 36,
       "maxRow": 104,
       "minColIndex": 0,
@@ -226,6 +217,15 @@
       "minCol": "Shelf mark",
       "maxCol": "Shelf mark",
       "value": "Isl. Perg. 4to 34"
+    },
+    {
+      "minRow": 362,
+      "maxRow": 375,
+      "minColIndex": 25,
+      "maxColIndex": 25,
+      "minCol": "Colours",
+      "maxCol": "Colours",
+      "value": "R, B, Brown, Gold"
     },
     {
       "minRow": 606,
@@ -300,15 +300,6 @@
       "value": "40"
     },
     {
-      "minRow": 98,
-      "maxRow": 99,
-      "minColIndex": 7,
-      "maxColIndex": 7,
-      "minCol": "Leaves/Pages",
-      "maxCol": "Leaves/Pages",
-      "value": "Ff. 112vb–128rb"
-    },
-    {
       "minRow": 366,
       "maxRow": 372,
       "minColIndex": 22,
@@ -318,13 +309,22 @@
       "value": "Hand c (NgL scribe)"
     },
     {
-      "minRow": 421,
-      "maxRow": 460,
-      "minColIndex": 25,
-      "maxColIndex": 25,
-      "minCol": "Colours",
-      "maxCol": "Colours",
-      "value": "R, G, B (related to the parts of Hand d)"
+      "minRow": 98,
+      "maxRow": 99,
+      "minColIndex": 7,
+      "maxColIndex": 7,
+      "minCol": "Leaves/Pages",
+      "maxCol": "Leaves/Pages",
+      "value": "Ff. 112vb–128rb"
+    },
+    {
+      "minRow": 531,
+      "maxRow": 543,
+      "minColIndex": 2,
+      "maxColIndex": 2,
+      "minCol": "Related Shelfmarks",
+      "maxCol": "Related Shelfmarks",
+      "value": "Holm Perg. 11 fol. / C 14 (Storm 1885, 650) / AM 305 fol. (in Isl. Perg. fol. 11 ff. 137-140)"
     },
     {
       "minRow": 250,
@@ -336,13 +336,13 @@
       "value": "On f. 91v, a full miniature of the Crucifixtion is depicted, in High-Gothic style. Ontherwise, no historiated content. Ten large initials are found on f. 95rb1-7, f. 118ra6-9, f. 121rb6-9, f. 124rb6-9, f. 128vb7-10, f. 135vb11-14, f. 137vb23-28, f. 147vb6-10, f. 160ra18-22, f. 164vb33-36. In some parts, drawings were added to the lower margins, with mainly floral motifs."
     },
     {
-      "minRow": 531,
-      "maxRow": 543,
-      "minColIndex": 2,
-      "maxColIndex": 2,
-      "minCol": "Related Shelfmarks",
-      "maxCol": "Related Shelfmarks",
-      "value": "Holm Perg. 11 fol. / C 14 (Storm 1885, 650) / AM 305 fol. (in Isl. Perg. fol. 11 ff. 137-140)"
+      "minRow": 421,
+      "maxRow": 460,
+      "minColIndex": 25,
+      "maxColIndex": 25,
+      "minCol": "Colours",
+      "maxCol": "Colours",
+      "value": "R, G, B (related to the parts of Hand d)"
     },
     {
       "minRow": 679,
@@ -417,33 +417,6 @@
       "value": "1240–50"
     },
     {
-      "minRow": 228,
-      "maxRow": 229,
-      "minColIndex": 22,
-      "maxColIndex": 22,
-      "minCol": "Scribe",
-      "maxCol": "Scribe",
-      "value": "Hand a"
-    },
-    {
-      "minRow": 180,
-      "maxRow": 200,
-      "minColIndex": 10,
-      "maxColIndex": 10,
-      "minCol": "Gatherings",
-      "maxCol": "Gatherings",
-      "value": "IX: 8 (4b, ff. 58-65); X: 2(1b, ff. 66-67); XI: 4 (2b, ff. 68-71)"
-    },
-    {
-      "minRow": 298,
-      "maxRow": 305,
-      "minColIndex": 10,
-      "maxColIndex": 10,
-      "minCol": "Gatherings",
-      "maxCol": "Gatherings",
-      "value": "14 (ff. 86–95)"
-    },
-    {
       "minRow": 177,
       "maxRow": 207,
       "minColIndex": 5,
@@ -460,6 +433,33 @@
       "minCol": "Dating",
       "maxCol": "Dating",
       "value": "1175–1200 (Storm 1885: 491; Hægstad 1906: 9); 1200-1250 (Eithun et.al 1994:15; Rindal 1987: 134)"
+    },
+    {
+      "minRow": 298,
+      "maxRow": 305,
+      "minColIndex": 10,
+      "maxColIndex": 10,
+      "minCol": "Gatherings",
+      "maxCol": "Gatherings",
+      "value": "14 (ff. 86–95)"
+    },
+    {
+      "minRow": 180,
+      "maxRow": 200,
+      "minColIndex": 10,
+      "maxColIndex": 10,
+      "minCol": "Gatherings",
+      "maxCol": "Gatherings",
+      "value": "IX: 8 (4b, ff. 58-65); X: 2(1b, ff. 66-67); XI: 4 (2b, ff. 68-71)"
+    },
+    {
+      "minRow": 228,
+      "maxRow": 229,
+      "minColIndex": 22,
+      "maxColIndex": 22,
+      "minCol": "Scribe",
+      "maxCol": "Scribe",
+      "value": "Hand a"
     },
     {
       "minRow": 688,
@@ -561,15 +561,6 @@
       "value": "Unknown"
     },
     {
-      "minRow": 514,
-      "maxRow": 521,
-      "minColIndex": 12,
-      "maxColIndex": 12,
-      "minCol": "Leaf size",
-      "maxCol": "Leaf size",
-      "value": "270x230"
-    },
-    {
       "minRow": 110,
       "maxRow": 127,
       "minColIndex": 28,
@@ -577,6 +568,15 @@
       "minCol": "Iconography",
       "maxCol": "Iconography",
       "value": "None. Large initials (6-8 lines) on f. 1r1-6; f. 2v3-9; f. 17r1-6; f. 30r2-9; f. 33r12-16 (?); f. 74r6-10; f. 84r9-14; f. 92r1-7"
+    },
+    {
+      "minRow": 514,
+      "maxRow": 521,
+      "minColIndex": 12,
+      "maxColIndex": 12,
+      "minCol": "Leaf size",
+      "maxCol": "Leaf size",
+      "value": "270x230"
     },
     {
       "minRow": 244,
@@ -633,13 +633,13 @@
       "value": "R"
     },
     {
-      "minRow": 625,
-      "maxRow": 628,
-      "minColIndex": 8,
-      "maxColIndex": 8,
-      "minCol": "Main text",
-      "maxCol": "Main text",
-      "value": ""
+      "minRow": 597,
+      "maxRow": 614,
+      "minColIndex": 30,
+      "maxColIndex": 30,
+      "minCol": "Literature",
+      "maxCol": "Literature",
+      "value": "Jóhanna Katrín et. al. (2023)"
     },
     {
       "minRow": 544,
@@ -651,13 +651,13 @@
       "value": "Ink"
     },
     {
-      "minRow": 522,
-      "maxRow": 530,
-      "minColIndex": 12,
-      "maxColIndex": 12,
-      "minCol": "Leaf size",
-      "maxCol": "Leaf size",
-      "value": "115x97"
+      "minRow": 625,
+      "maxRow": 628,
+      "minColIndex": 8,
+      "maxColIndex": 8,
+      "minCol": "Main text",
+      "maxCol": "Main text",
+      "value": ""
     },
     {
       "minRow": 276,
@@ -669,13 +669,13 @@
       "value": "Romanesque"
     },
     {
-      "minRow": 597,
-      "maxRow": 614,
-      "minColIndex": 30,
-      "maxColIndex": 30,
-      "minCol": "Literature",
-      "maxCol": "Literature",
-      "value": "Jóhanna Katrín et. al. (2023)"
+      "minRow": 522,
+      "maxRow": 530,
+      "minColIndex": 12,
+      "maxColIndex": 12,
+      "minCol": "Leaf size",
+      "maxCol": "Leaf size",
+      "value": "115x97"
     },
     {
       "minRow": 516,
@@ -750,15 +750,6 @@
       "value": "1"
     },
     {
-      "minRow": 708,
-      "maxRow": 709,
-      "minColIndex": 26,
-      "maxColIndex": 26,
-      "minCol": "Form of Initials",
-      "maxCol": "Form of Initials",
-      "value": "NRA 8: No book painting. NRA 9: Small ornamented initials (2 lines), partly extended into the margins."
-    },
-    {
       "minRow": 213,
       "maxRow": 215,
       "minColIndex": 8,
@@ -766,6 +757,15 @@
       "minCol": "Main text",
       "maxCol": "Main text",
       "value": ""
+    },
+    {
+      "minRow": 708,
+      "maxRow": 709,
+      "minColIndex": 26,
+      "maxColIndex": 26,
+      "minCol": "Form of Initials",
+      "maxCol": "Form of Initials",
+      "value": "NRA 8: No book painting. NRA 9: Small ornamented initials (2 lines), partly extended into the margins."
     },
     {
       "minRow": 629,
@@ -1074,15 +1074,6 @@
       "value": "2"
     },
     {
-      "minRow": 27,
-      "maxRow": 28,
-      "minColIndex": 25,
-      "maxColIndex": 25,
-      "minCol": "Colours",
-      "maxCol": "Colours",
-      "value": "R; B"
-    },
-    {
       "minRow": 36,
       "maxRow": 44,
       "minColIndex": 18,
@@ -1090,6 +1081,15 @@
       "minCol": "Columns",
       "maxCol": "Columns",
       "value": "1"
+    },
+    {
+      "minRow": 27,
+      "maxRow": 28,
+      "minColIndex": 25,
+      "maxColIndex": 25,
+      "minCol": "Colours",
+      "maxCol": "Colours",
+      "value": "R; B"
     },
     {
       "minRow": 214,
@@ -1119,15 +1119,6 @@
       "value": "None"
     },
     {
-      "minRow": 110,
-      "maxRow": 122,
-      "minColIndex": 14,
-      "maxColIndex": 14,
-      "minCol": "Production Unit",
-      "maxCol": "Production Unit",
-      "value": "I"
-    },
-    {
       "minRow": 683,
       "maxRow": 687,
       "minColIndex": 12,
@@ -1135,6 +1126,15 @@
       "minCol": "Leaf size",
       "maxCol": "Leaf size",
       "value": "246 x 195"
+    },
+    {
+      "minRow": 110,
+      "maxRow": 122,
+      "minColIndex": 14,
+      "maxColIndex": 14,
+      "minCol": "Production Unit",
+      "maxCol": "Production Unit",
+      "value": "I"
     },
     {
       "minRow": 216,
@@ -1155,15 +1155,6 @@
       "value": "NB Ms 1 4to"
     },
     {
-      "minRow": 248,
-      "maxRow": 249,
-      "minColIndex": 19,
-      "maxColIndex": 19,
-      "minCol": "Lines",
-      "maxCol": "Lines",
-      "value": "Various"
-    },
-    {
       "minRow": 255,
       "maxRow": 257,
       "minColIndex": 19,
@@ -1171,6 +1162,15 @@
       "minCol": "Lines",
       "maxCol": "Lines",
       "value": "34"
+    },
+    {
+      "minRow": 248,
+      "maxRow": 249,
+      "minColIndex": 19,
+      "maxColIndex": 19,
+      "minCol": "Lines",
+      "maxCol": "Lines",
+      "value": "Various"
     },
     {
       "minRow": 418,
@@ -1272,15 +1272,6 @@
       "value": "Unknown"
     },
     {
-      "minRow": 544,
-      "maxRow": 547,
-      "minColIndex": 12,
-      "maxColIndex": 12,
-      "minCol": "Leaf size",
-      "maxCol": "Leaf size",
-      "value": "280x200"
-    },
-    {
       "minRow": 692,
       "maxRow": 694,
       "minColIndex": 14,
@@ -1288,6 +1279,15 @@
       "minCol": "Production Unit",
       "maxCol": "Production Unit",
       "value": "II"
+    },
+    {
+      "minRow": 544,
+      "maxRow": 547,
+      "minColIndex": 12,
+      "maxColIndex": 12,
+      "minCol": "Leaf size",
+      "maxCol": "Leaf size",
+      "value": "280x200"
     },
     {
       "minRow": 421,
@@ -1317,15 +1317,6 @@
       "value": "Unknown"
     },
     {
-      "minRow": 606,
-      "maxRow": 614,
-      "minColIndex": 12,
-      "maxColIndex": 12,
-      "minCol": "Leaf size",
-      "maxCol": "Leaf size",
-      "value": "260x185"
-    },
-    {
       "minRow": 640,
       "maxRow": 643,
       "minColIndex": 28,
@@ -1333,6 +1324,15 @@
       "minCol": "Iconography",
       "maxCol": "Iconography",
       "value": "None. One large initial on f. 62va10-13, otherwise Lombard middle and small initials."
+    },
+    {
+      "minRow": 606,
+      "maxRow": 614,
+      "minColIndex": 12,
+      "maxColIndex": 12,
+      "minCol": "Leaf size",
+      "maxCol": "Leaf size",
+      "value": "260x185"
     },
     {
       "minRow": 244,
@@ -1470,15 +1470,6 @@
       "value": "None. Large initials (4 lines) on f. 91ra12-15; f. 92va26-29; f. 11vb12-17; f. 122va13-16"
     },
     {
-      "minRow": 644,
-      "maxRow": 667,
-      "minColIndex": 21,
-      "maxColIndex": 21,
-      "minCol": "Rubric",
-      "maxCol": "Rubric",
-      "value": "No"
-    },
-    {
       "minRow": 138,
       "maxRow": 139,
       "minColIndex": 6,
@@ -1486,6 +1477,15 @@
       "minCol": "Dating",
       "maxCol": "Dating",
       "value": "1300"
+    },
+    {
+      "minRow": 644,
+      "maxRow": 667,
+      "minColIndex": 21,
+      "maxColIndex": 21,
+      "minCol": "Rubric",
+      "maxCol": "Rubric",
+      "value": "No"
     },
     {
       "minRow": 704,
@@ -1650,13 +1650,13 @@
       "value": "Nowhere"
     },
     {
-      "minRow": 250,
-      "maxRow": 271,
-      "minColIndex": 16,
-      "maxColIndex": 16,
-      "minCol": "Material",
-      "maxCol": "Material",
-      "value": "Parchment"
+      "minRow": 700,
+      "maxRow": 703,
+      "minColIndex": 18,
+      "maxColIndex": 18,
+      "minCol": "Columns",
+      "maxCol": "Columns",
+      "value": "Unknown"
     },
     {
       "minRow": 8,
@@ -1668,13 +1668,13 @@
       "value": "Puzzle initials; Lombard initials "
     },
     {
-      "minRow": 700,
-      "maxRow": 703,
-      "minColIndex": 18,
-      "maxColIndex": 18,
-      "minCol": "Columns",
-      "maxCol": "Columns",
-      "value": "Unknown"
+      "minRow": 250,
+      "maxRow": 271,
+      "minColIndex": 16,
+      "maxColIndex": 16,
+      "minCol": "Material",
+      "maxCol": "Material",
+      "value": "Parchment"
     },
     {
       "minRow": 531,
@@ -1866,15 +1866,6 @@
       "value": "Romanesque"
     },
     {
-      "minRow": 208,
-      "maxRow": 215,
-      "minColIndex": 14,
-      "maxColIndex": 14,
-      "minCol": "Production Unit",
-      "maxCol": "Production Unit",
-      "value": "I"
-    },
-    {
       "minRow": 126,
       "maxRow": 127,
       "minColIndex": 9,
@@ -1884,13 +1875,13 @@
       "value": "Ch. Allar þær sektir; Bob ch. 1–16; Kab ch. 28; Bob ch. 17–18; Kab ch. 1–16; Kab (MLL) ch. 18; Kab ch. 18–25; Llb ch. 39; Kab 27; 26; Mhb ch. 21; Lvb ch. 7–8; Mhb ch. 12; 11; 10 "
     },
     {
-      "minRow": 383,
-      "maxRow": 391,
-      "minColIndex": 16,
-      "maxColIndex": 16,
-      "minCol": "Material",
-      "maxCol": "Material",
-      "value": "Parchment"
+      "minRow": 208,
+      "maxRow": 215,
+      "minColIndex": 14,
+      "maxColIndex": 14,
+      "minCol": "Production Unit",
+      "maxCol": "Production Unit",
+      "value": "I"
     },
     {
       "minRow": 522,
@@ -1902,13 +1893,13 @@
       "value": "AM 31 8vo"
     },
     {
-      "minRow": 214,
-      "maxRow": 215,
-      "minColIndex": 21,
-      "maxColIndex": 21,
-      "minCol": "Rubric",
-      "maxCol": "Rubric",
-      "value": "None"
+      "minRow": 383,
+      "maxRow": 391,
+      "minColIndex": 16,
+      "maxColIndex": 16,
+      "minCol": "Material",
+      "maxCol": "Material",
+      "value": "Parchment"
     },
     {
       "minRow": 637,
@@ -1920,13 +1911,13 @@
       "value": ""
     },
     {
-      "minRow": 710,
-      "maxRow": 713,
-      "minColIndex": 18,
-      "maxColIndex": 18,
-      "minCol": "Columns",
-      "maxCol": "Columns",
-      "value": "Unknown"
+      "minRow": 214,
+      "maxRow": 215,
+      "minColIndex": 21,
+      "maxColIndex": 21,
+      "minCol": "Rubric",
+      "maxCol": "Rubric",
+      "value": "None"
     },
     {
       "minRow": 329,
@@ -1938,6 +1929,15 @@
       "value": "LUB"
     },
     {
+      "minRow": 106,
+      "maxRow": 107,
+      "minColIndex": 26,
+      "maxColIndex": 26,
+      "minCol": "Form of Initials",
+      "maxCol": "Form of Initials",
+      "value": "Colour-stroke initials"
+    },
+    {
       "minRow": 272,
       "maxRow": 275,
       "minColIndex": 15,
@@ -1947,13 +1947,13 @@
       "value": "No"
     },
     {
-      "minRow": 106,
-      "maxRow": 107,
-      "minColIndex": 26,
-      "maxColIndex": 26,
-      "minCol": "Form of Initials",
-      "maxCol": "Form of Initials",
-      "value": "Colour-stroke initials"
+      "minRow": 710,
+      "maxRow": 713,
+      "minColIndex": 18,
+      "maxColIndex": 18,
+      "minCol": "Columns",
+      "maxCol": "Columns",
+      "value": "Unknown"
     },
     {
       "minRow": 612,
@@ -2082,15 +2082,6 @@
       "value": "Dry"
     },
     {
-      "minRow": 250,
-      "maxRow": 271,
-      "minColIndex": 24,
-      "maxColIndex": 24,
-      "minCol": "Style",
-      "maxCol": "Style",
-      "value": "Gothic/Romanesque"
-    },
-    {
       "minRow": 615,
       "maxRow": 616,
       "minColIndex": 29,
@@ -2098,6 +2089,15 @@
       "minCol": "Place",
       "maxCol": "Place",
       "value": "Nowhere"
+    },
+    {
+      "minRow": 250,
+      "maxRow": 271,
+      "minColIndex": 24,
+      "maxColIndex": 24,
+      "minCol": "Style",
+      "maxCol": "Style",
+      "value": "Gothic/Romanesque"
     },
     {
       "minRow": 544,
@@ -2136,8 +2136,8 @@
       "value": "Lombard small initials (2 lines)."
     },
     {
-      "minRow": 630,
-      "maxRow": 631,
+      "minRow": 637,
+      "maxRow": 639,
       "minColIndex": 8,
       "maxColIndex": 8,
       "minCol": "Main text",
@@ -2145,8 +2145,8 @@
       "value": ""
     },
     {
-      "minRow": 637,
-      "maxRow": 639,
+      "minRow": 630,
+      "maxRow": 631,
       "minColIndex": 8,
       "maxColIndex": 8,
       "minCol": "Main text",
@@ -2190,6 +2190,15 @@
       "value": "Holm Perg. 32 4to; C 19 (Storm 1885: 664)"
     },
     {
+      "minRow": 494,
+      "maxRow": 495,
+      "minColIndex": 15,
+      "maxColIndex": 15,
+      "minCol": "Pricking",
+      "maxCol": "Pricking",
+      "value": "Yes"
+    },
+    {
       "minRow": 708,
       "maxRow": 709,
       "minColIndex": 3,
@@ -2206,15 +2215,6 @@
       "minCol": "Scribe",
       "maxCol": "Scribe",
       "value": "Hand d"
-    },
-    {
-      "minRow": 494,
-      "maxRow": 495,
-      "minColIndex": 15,
-      "maxColIndex": 15,
-      "minCol": "Pricking",
-      "maxCol": "Pricking",
-      "value": "Yes"
     },
     {
       "minRow": 502,
@@ -2235,15 +2235,6 @@
       "value": "None. Nine ornamented large and three medium initial on f. 1vb11–15, f. 2va30–34, f. 3vb21–25, f. 7vb34–38, f. 15ra1–5, f. 21ra30–34, f. 24vb3–7, f. 37vb4–8, f. 42va17–20 (Medium), f. 12va12–16, f. 48va37–39 (Medium), f. 53va12–15 (Medium). On f. 62va4-7, space was left for a medium initial."
     },
     {
-      "minRow": 177,
-      "maxRow": 207,
-      "minColIndex": 1,
-      "maxColIndex": 1,
-      "minCol": "Name",
-      "maxCol": "Name",
-      "value": ""
-    },
-    {
       "minRow": 228,
       "maxRow": 229,
       "minColIndex": 18,
@@ -2259,6 +2250,15 @@
       "maxColIndex": 2,
       "minCol": "Related Shelfmarks",
       "maxCol": "Related Shelfmarks",
+      "value": ""
+    },
+    {
+      "minRow": 177,
+      "maxRow": 207,
+      "minColIndex": 1,
+      "maxColIndex": 1,
+      "minCol": "Name",
+      "maxCol": "Name",
       "value": ""
     },
     {
@@ -2334,22 +2334,22 @@
       "value": "III"
     },
     {
-      "minRow": 549,
-      "maxRow": 551,
-      "minColIndex": 27,
-      "maxColIndex": 27,
-      "minCol": "Size of Initials",
-      "maxCol": "Size of Initials",
-      "value": ""
-    },
-    {
-      "minRow": 418,
-      "maxRow": 419,
+      "minRow": 615,
+      "maxRow": 619,
       "minColIndex": 21,
       "maxColIndex": 21,
       "minCol": "Rubric",
       "maxCol": "Rubric",
-      "value": "No"
+      "value": "Yes"
+    },
+    {
+      "minRow": 110,
+      "maxRow": 127,
+      "minColIndex": 24,
+      "maxColIndex": 24,
+      "minCol": "Style",
+      "maxCol": "Style",
+      "value": "Romanesque"
     },
     {
       "minRow": 149,
@@ -2370,22 +2370,22 @@
       "value": "Throughout"
     },
     {
-      "minRow": 110,
-      "maxRow": 127,
-      "minColIndex": 24,
-      "maxColIndex": 24,
-      "minCol": "Style",
-      "maxCol": "Style",
-      "value": "Romanesque"
-    },
-    {
-      "minRow": 615,
-      "maxRow": 619,
+      "minRow": 418,
+      "maxRow": 419,
       "minColIndex": 21,
       "maxColIndex": 21,
       "minCol": "Rubric",
       "maxCol": "Rubric",
-      "value": "Yes"
+      "value": "No"
+    },
+    {
+      "minRow": 549,
+      "maxRow": 551,
+      "minColIndex": 27,
+      "maxColIndex": 27,
+      "minCol": "Size of Initials",
+      "maxCol": "Size of Initials",
+      "value": ""
     },
     {
       "minRow": 403,
@@ -2415,15 +2415,6 @@
       "value": "Holm Perg. 35 4to; C 22 (Storm 1885, 672)"
     },
     {
-      "minRow": 59,
-      "maxRow": 99,
-      "minColIndex": 10,
-      "maxColIndex": 10,
-      "minCol": "Gatherings",
-      "maxCol": "Gatherings",
-      "value": "XIV: 8 (4 b; ff. 91-98); XV: 8 (4 b; ff. 99-106); XVI: 8 (4 b; ff. 107-114); XVII: 8 (4 b; ff. 115-122); XVIII: 6 (2 b; 2 f; ff. 123-128)"
-    },
-    {
       "minRow": 318,
       "maxRow": 319,
       "minColIndex": 10,
@@ -2431,6 +2422,15 @@
       "minCol": "Gatherings",
       "maxCol": "Gatherings",
       "value": "Unknown"
+    },
+    {
+      "minRow": 59,
+      "maxRow": 99,
+      "minColIndex": 10,
+      "maxColIndex": 10,
+      "minCol": "Gatherings",
+      "maxCol": "Gatherings",
+      "value": "XIV: 8 (4 b; ff. 91-98); XV: 8 (4 b; ff. 99-106); XVI: 8 (4 b; ff. 107-114); XVII: 8 (4 b; ff. 115-122); XVIII: 6 (2 b; 2 f; ff. 123-128)"
     },
     {
       "minRow": 670,
@@ -2577,13 +2577,13 @@
       "value": "4to"
     },
     {
-      "minRow": 326,
-      "maxRow": 328,
-      "minColIndex": 26,
-      "maxColIndex": 26,
-      "minCol": "Form of Initials",
-      "maxCol": "Form of Initials",
-      "value": "Small lombard initials (2 lines)"
+      "minRow": 533,
+      "maxRow": 535,
+      "minColIndex": 22,
+      "maxColIndex": 22,
+      "minCol": "Scribe",
+      "maxCol": "Scribe",
+      "value": "Hand b (Guðormr Guðbrandsson)"
     },
     {
       "minRow": 288,
@@ -2595,13 +2595,13 @@
       "value": "Small"
     },
     {
-      "minRow": 533,
-      "maxRow": 535,
-      "minColIndex": 22,
-      "maxColIndex": 22,
-      "minCol": "Scribe",
-      "maxCol": "Scribe",
-      "value": "Hand b (Guðormr Guðbrandsson)"
+      "minRow": 326,
+      "maxRow": 328,
+      "minColIndex": 26,
+      "maxColIndex": 26,
+      "minCol": "Form of Initials",
+      "maxCol": "Form of Initials",
+      "value": "Small lombard initials (2 lines)"
     },
     {
       "minRow": 175,
@@ -2622,15 +2622,6 @@
       "value": "None"
     },
     {
-      "minRow": 492,
-      "maxRow": 493,
-      "minColIndex": 22,
-      "maxColIndex": 22,
-      "minCol": "Scribe",
-      "maxCol": "Scribe",
-      "value": "Hand a"
-    },
-    {
       "minRow": 680,
       "maxRow": 682,
       "minColIndex": 19,
@@ -2638,6 +2629,15 @@
       "minCol": "Lines",
       "maxCol": "Lines",
       "value": "Various"
+    },
+    {
+      "minRow": 492,
+      "maxRow": 493,
+      "minColIndex": 22,
+      "maxColIndex": 22,
+      "minCol": "Scribe",
+      "maxCol": "Scribe",
+      "value": "Hand a"
     },
     {
       "minRow": 59,
@@ -2766,15 +2766,6 @@
       "value": ""
     },
     {
-      "minRow": 208,
-      "maxRow": 215,
-      "minColIndex": 4,
-      "maxColIndex": 4,
-      "minCol": "Object",
-      "maxCol": "Object",
-      "value": "Codex"
-    },
-    {
       "minRow": 27,
       "maxRow": 28,
       "minColIndex": 21,
@@ -2791,6 +2782,15 @@
       "minCol": "Name",
       "maxCol": "Name",
       "value": ""
+    },
+    {
+      "minRow": 208,
+      "maxRow": 215,
+      "minColIndex": 4,
+      "maxColIndex": 4,
+      "minCol": "Object",
+      "maxCol": "Object",
+      "value": "Codex"
     },
     {
       "minRow": 177,
@@ -2820,13 +2820,13 @@
       "value": "R, B"
     },
     {
-      "minRow": 418,
-      "maxRow": 419,
-      "minColIndex": 29,
-      "maxColIndex": 29,
-      "minCol": "Place",
-      "maxCol": "Place",
-      "value": "Nowhere"
+      "minRow": 692,
+      "maxRow": 699,
+      "minColIndex": 3,
+      "maxColIndex": 3,
+      "minCol": "Depository",
+      "maxCol": "Depository",
+      "value": "Universitetsbiblioteket i Trondheim; Trondheim"
     },
     {
       "minRow": 390,
@@ -2838,13 +2838,13 @@
       "value": "Unknown"
     },
     {
-      "minRow": 692,
-      "maxRow": 699,
-      "minColIndex": 3,
-      "maxColIndex": 3,
-      "minCol": "Depository",
-      "maxCol": "Depository",
-      "value": "Universitetsbiblioteket i Trondheim; Trondheim"
+      "minRow": 418,
+      "maxRow": 419,
+      "minColIndex": 29,
+      "maxColIndex": 29,
+      "minCol": "Place",
+      "maxCol": "Place",
+      "value": "Nowhere"
     },
     {
       "minRow": 306,
@@ -2892,15 +2892,6 @@
       "value": "2"
     },
     {
-      "minRow": 45,
-      "maxRow": 58,
-      "minColIndex": 18,
-      "maxColIndex": 18,
-      "minCol": "Columns",
-      "maxCol": "Columns",
-      "value": "1"
-    },
-    {
       "minRow": 606,
       "maxRow": 614,
       "minColIndex": 18,
@@ -2908,6 +2899,15 @@
       "minCol": "Columns",
       "maxCol": "Columns",
       "value": "2"
+    },
+    {
+      "minRow": 45,
+      "maxRow": 58,
+      "minColIndex": 18,
+      "maxColIndex": 18,
+      "minCol": "Columns",
+      "maxCol": "Columns",
+      "value": "1"
     },
     {
       "minRow": 549,
@@ -3027,13 +3027,13 @@
       "value": "Codex"
     },
     {
-      "minRow": 230,
-      "maxRow": 234,
-      "minColIndex": 26,
-      "maxColIndex": 26,
-      "minCol": "Form of Initials",
-      "maxCol": "Form of Initials",
-      "value": "None"
+      "minRow": 668,
+      "maxRow": 678,
+      "minColIndex": 13,
+      "maxColIndex": 13,
+      "minCol": "Catch Words and Gatherings",
+      "maxCol": "Catch Words and Gatherings",
+      "value": ""
     },
     {
       "minRow": 344,
@@ -3054,13 +3054,13 @@
       "value": "Fragment"
     },
     {
-      "minRow": 668,
-      "maxRow": 678,
-      "minColIndex": 13,
-      "maxColIndex": 13,
-      "minCol": "Catch Words and Gatherings",
-      "maxCol": "Catch Words and Gatherings",
-      "value": ""
+      "minRow": 230,
+      "maxRow": 234,
+      "minColIndex": 26,
+      "maxColIndex": 26,
+      "minCol": "Form of Initials",
+      "maxCol": "Form of Initials",
+      "value": "None"
     },
     {
       "minRow": 36,
@@ -3091,21 +3091,21 @@
     },
     {
       "minRow": 406,
-      "maxRow": 414,
-      "minColIndex": 24,
-      "maxColIndex": 24,
-      "minCol": "Style",
-      "maxCol": "Style",
-      "value": "Romanesque"
-    },
-    {
-      "minRow": 406,
       "maxRow": 417,
       "minColIndex": 16,
       "maxColIndex": 16,
       "minCol": "Material",
       "maxCol": "Material",
       "value": "Parchment"
+    },
+    {
+      "minRow": 406,
+      "maxRow": 414,
+      "minColIndex": 24,
+      "maxColIndex": 24,
+      "minCol": "Style",
+      "maxCol": "Style",
+      "value": "Romanesque"
     },
     {
       "minRow": 361,
@@ -3468,15 +3468,6 @@
       "value": "Large"
     },
     {
-      "minRow": 314,
-      "maxRow": 316,
-      "minColIndex": 24,
-      "maxColIndex": 24,
-      "minCol": "Style",
-      "maxCol": "Style",
-      "value": "Romanesque"
-    },
-    {
       "minRow": 516,
       "maxRow": 517,
       "minColIndex": 22,
@@ -3484,6 +3475,15 @@
       "minCol": "Scribe",
       "maxCol": "Scribe",
       "value": "Hand b"
+    },
+    {
+      "minRow": 314,
+      "maxRow": 316,
+      "minColIndex": 24,
+      "maxColIndex": 24,
+      "minCol": "Style",
+      "maxCol": "Style",
+      "value": "Romanesque"
     },
     {
       "minRow": 692,
@@ -3567,15 +3567,6 @@
       "value": ""
     },
     {
-      "minRow": 708,
-      "maxRow": 709,
-      "minColIndex": 29,
-      "maxColIndex": 29,
-      "minCol": "Place",
-      "maxCol": "Place",
-      "value": "Throughout"
-    },
-    {
       "minRow": 245,
       "maxRow": 247,
       "minColIndex": 22,
@@ -3592,6 +3583,15 @@
       "minCol": "Rubric",
       "maxCol": "Rubric",
       "value": "Yes"
+    },
+    {
+      "minRow": 708,
+      "maxRow": 709,
+      "minColIndex": 29,
+      "maxColIndex": 29,
+      "minCol": "Place",
+      "maxCol": "Place",
+      "value": "Throughout"
     },
     {
       "minRow": 172,
@@ -3630,15 +3630,6 @@
       "value": "Hand h"
     },
     {
-      "minRow": 361,
-      "maxRow": 375,
-      "minColIndex": 0,
-      "maxColIndex": 0,
-      "minCol": "Shelf mark",
-      "maxCol": "Shelf mark",
-      "value": "AM 322 fol."
-    },
-    {
       "minRow": 668,
       "maxRow": 669,
       "minColIndex": 27,
@@ -3646,6 +3637,15 @@
       "minCol": "Size of Initials",
       "maxCol": "Size of Initials",
       "value": ""
+    },
+    {
+      "minRow": 361,
+      "maxRow": 375,
+      "minColIndex": 0,
+      "maxColIndex": 0,
+      "minCol": "Shelf mark",
+      "maxCol": "Shelf mark",
+      "value": "AM 322 fol."
     },
     {
       "minRow": 531,
@@ -3702,13 +3702,13 @@
       "value": "1350"
     },
     {
-      "minRow": 288,
-      "maxRow": 297,
-      "minColIndex": 24,
-      "maxColIndex": 24,
-      "minCol": "Style",
-      "maxCol": "Style",
-      "value": "Other"
+      "minRow": 533,
+      "maxRow": 535,
+      "minColIndex": 19,
+      "maxColIndex": 19,
+      "minCol": "Lines",
+      "maxCol": "Lines",
+      "value": "31"
     },
     {
       "minRow": 110,
@@ -3720,22 +3720,13 @@
       "value": "Unknown"
     },
     {
-      "minRow": 533,
-      "maxRow": 535,
-      "minColIndex": 19,
-      "maxColIndex": 19,
-      "minCol": "Lines",
-      "maxCol": "Lines",
-      "value": "31"
-    },
-    {
-      "minRow": 710,
-      "maxRow": 713,
-      "minColIndex": 5,
-      "maxColIndex": 5,
-      "minCol": "Size",
-      "maxCol": "Size",
-      "value": "Unknown"
+      "minRow": 288,
+      "maxRow": 297,
+      "minColIndex": 24,
+      "maxColIndex": 24,
+      "minCol": "Style",
+      "maxCol": "Style",
+      "value": "Other"
     },
     {
       "minRow": 392,
@@ -3745,6 +3736,15 @@
       "minCol": "Depository",
       "maxCol": "Depository",
       "value": "AMS"
+    },
+    {
+      "minRow": 710,
+      "maxRow": 713,
+      "minColIndex": 5,
+      "maxColIndex": 5,
+      "minCol": "Size",
+      "maxCol": "Size",
+      "value": "Unknown"
     },
     {
       "minRow": 48,
@@ -3837,12 +3837,39 @@
       "value": "Textualis"
     },
     {
+      "minRow": 492,
+      "maxRow": 493,
+      "minColIndex": 10,
+      "maxColIndex": 10,
+      "minCol": "Gatherings",
+      "maxCol": "Gatherings",
+      "value": "I: 4 (1b, 2f, ff. 1-4); II: 5 (2b, 1f, ff. 5-9); III: 6 (3b, ff. 10-15); IV: 8 (4b, ff. 16-23); V: 7 (3b, 1f, ff. 24-30); VI: 5 (2b, 1f, ff. 31-35)"
+    },
+    {
       "minRow": 27,
       "maxRow": 28,
       "minColIndex": 28,
       "maxColIndex": 28,
       "minCol": "Iconography",
       "maxCol": "Iconography",
+      "value": "None"
+    },
+    {
+      "minRow": 6,
+      "maxRow": 7,
+      "minColIndex": 8,
+      "maxColIndex": 8,
+      "minCol": "Main text",
+      "maxCol": "Main text",
+      "value": "GuL"
+    },
+    {
+      "minRow": 615,
+      "maxRow": 616,
+      "minColIndex": 25,
+      "maxColIndex": 25,
+      "minCol": "Colours",
+      "maxCol": "Colours",
       "value": "None"
     },
     {
@@ -3855,33 +3882,6 @@
       "value": ""
     },
     {
-      "minRow": 6,
-      "maxRow": 7,
-      "minColIndex": 8,
-      "maxColIndex": 8,
-      "minCol": "Main text",
-      "maxCol": "Main text",
-      "value": "GuL"
-    },
-    {
-      "minRow": 492,
-      "maxRow": 493,
-      "minColIndex": 10,
-      "maxColIndex": 10,
-      "minCol": "Gatherings",
-      "maxCol": "Gatherings",
-      "value": "I: 4 (1b, 2f, ff. 1-4); II: 5 (2b, 1f, ff. 5-9); III: 6 (3b, ff. 10-15); IV: 8 (4b, ff. 16-23); V: 7 (3b, 1f, ff. 24-30); VI: 5 (2b, 1f, ff. 31-35)"
-    },
-    {
-      "minRow": 615,
-      "maxRow": 616,
-      "minColIndex": 25,
-      "maxColIndex": 25,
-      "minCol": "Colours",
-      "maxCol": "Colours",
-      "value": "None"
-    },
-    {
       "minRow": 274,
       "maxRow": 275,
       "minColIndex": 6,
@@ -3891,8 +3891,17 @@
       "value": "1300–1350"
     },
     {
-      "minRow": 130,
-      "maxRow": 132,
+      "minRow": 640,
+      "maxRow": 643,
+      "minColIndex": 27,
+      "maxColIndex": 27,
+      "minCol": "Size of Initials",
+      "maxCol": "Size of Initials",
+      "value": "Large"
+    },
+    {
+      "minRow": 123,
+      "maxRow": 124,
       "minColIndex": 19,
       "maxColIndex": 19,
       "minCol": "Lines",
@@ -3900,8 +3909,8 @@
       "value": "Various"
     },
     {
-      "minRow": 123,
-      "maxRow": 124,
+      "minRow": 130,
+      "maxRow": 132,
       "minColIndex": 19,
       "maxColIndex": 19,
       "minCol": "Lines",
@@ -3916,15 +3925,6 @@
       "minCol": "Iconography",
       "maxCol": "Iconography",
       "value": "None. Five ornamented main initials on f. 52rb5-8, f. 102ra13-16, f. 107rb9-12, f. 145ra1-5, f. 159ra4-7. In addition, six medium initials on f. 7ra1-4, f. 51vb2-4, f. 100rb22-24, f. 115ra8-10, f. 121ra9-11. "
-    },
-    {
-      "minRow": 640,
-      "maxRow": 643,
-      "minColIndex": 27,
-      "maxColIndex": 27,
-      "minCol": "Size of Initials",
-      "maxCol": "Size of Initials",
-      "value": "Large"
     },
     {
       "minRow": 250,
@@ -4161,15 +4161,6 @@
       "value": "Incl. RbHh&Mh. In Tfb ch. 5, and in the Epi, Gulaþ is addressed"
     },
     {
-      "minRow": 252,
-      "maxRow": 257,
-      "minColIndex": 6,
-      "maxColIndex": 6,
-      "minCol": "Dating",
-      "maxCol": "Dating",
-      "value": "1300–1350"
-    },
-    {
       "minRow": 8,
       "maxRow": 26,
       "minColIndex": 1,
@@ -4177,6 +4168,15 @@
       "minCol": "Name",
       "maxCol": "Name",
       "value": "Codex Ranzovianus"
+    },
+    {
+      "minRow": 252,
+      "maxRow": 257,
+      "minColIndex": 6,
+      "maxColIndex": 6,
+      "minCol": "Dating",
+      "maxCol": "Dating",
+      "value": "1300–1350"
     },
     {
       "minRow": 383,
@@ -4296,15 +4296,6 @@
       "value": "Ink"
     },
     {
-      "minRow": 361,
-      "maxRow": 375,
-      "minColIndex": 2,
-      "maxColIndex": 2,
-      "minCol": "Related Shelfmarks",
-      "maxCol": "Related Shelfmarks",
-      "value": "AM 733 4to"
-    },
-    {
       "minRow": 392,
       "maxRow": 405,
       "minColIndex": 2,
@@ -4314,13 +4305,13 @@
       "value": ""
     },
     {
-      "minRow": 308,
-      "maxRow": 310,
-      "minColIndex": 23,
-      "maxColIndex": 23,
-      "minCol": "Production",
-      "maxCol": "Production",
-      "value": "Unknown"
+      "minRow": 361,
+      "maxRow": 375,
+      "minColIndex": 2,
+      "maxColIndex": 2,
+      "minCol": "Related Shelfmarks",
+      "maxCol": "Related Shelfmarks",
+      "value": "AM 733 4to"
     },
     {
       "minRow": 172,
@@ -4332,13 +4323,13 @@
       "value": "Codex"
     },
     {
-      "minRow": 644,
-      "maxRow": 645,
-      "minColIndex": 6,
-      "maxColIndex": 6,
-      "minCol": "Dating",
-      "maxCol": "Dating",
-      "value": "1450-1500"
+      "minRow": 308,
+      "maxRow": 310,
+      "minColIndex": 23,
+      "maxColIndex": 23,
+      "minCol": "Production",
+      "maxCol": "Production",
+      "value": "Unknown"
     },
     {
       "minRow": 680,
@@ -4348,6 +4339,15 @@
       "minCol": "Pricking",
       "maxCol": "Pricking",
       "value": "No"
+    },
+    {
+      "minRow": 644,
+      "maxRow": 645,
+      "minColIndex": 6,
+      "maxColIndex": 6,
+      "minCol": "Dating",
+      "maxCol": "Dating",
+      "value": "1450-1500"
     },
     {
       "minRow": 688,
@@ -4512,15 +4512,6 @@
       "value": "Yes"
     },
     {
-      "minRow": 216,
-      "maxRow": 220,
-      "minColIndex": 21,
-      "maxColIndex": 21,
-      "minCol": "Rubric",
-      "maxCol": "Rubric",
-      "value": "Yes"
-    },
-    {
       "minRow": 230,
       "maxRow": 234,
       "minColIndex": 3,
@@ -4537,6 +4528,15 @@
       "minCol": "Dating",
       "maxCol": "Dating",
       "value": "1300"
+    },
+    {
+      "minRow": 216,
+      "maxRow": 220,
+      "minColIndex": 21,
+      "maxColIndex": 21,
+      "minCol": "Rubric",
+      "maxCol": "Rubric",
+      "value": "Yes"
     },
     {
       "minRow": 668,
@@ -4620,15 +4620,6 @@
       "value": "4to"
     },
     {
-      "minRow": 383,
-      "maxRow": 389,
-      "minColIndex": 23,
-      "maxColIndex": 23,
-      "minCol": "Production",
-      "maxCol": "Production",
-      "value": "Bergen ?"
-    },
-    {
       "minRow": 326,
       "maxRow": 328,
       "minColIndex": 2,
@@ -4640,6 +4631,15 @@
     {
       "minRow": 650,
       "maxRow": 667,
+      "minColIndex": 23,
+      "maxColIndex": 23,
+      "minCol": "Production",
+      "maxCol": "Production",
+      "value": "Bergen ?"
+    },
+    {
+      "minRow": 383,
+      "maxRow": 389,
       "minColIndex": 23,
       "maxColIndex": 23,
       "minCol": "Production",
@@ -4674,15 +4674,6 @@
       "value": "Nowhere"
     },
     {
-      "minRow": 615,
-      "maxRow": 628,
-      "minColIndex": 1,
-      "maxColIndex": 1,
-      "minCol": "Name",
-      "maxCol": "Name",
-      "value": ""
-    },
-    {
       "minRow": 633,
       "maxRow": 634,
       "minColIndex": 3,
@@ -4690,6 +4681,15 @@
       "minCol": "Depository",
       "maxCol": "Depository",
       "value": "NRA"
+    },
+    {
+      "minRow": 615,
+      "maxRow": 628,
+      "minColIndex": 1,
+      "maxColIndex": 1,
+      "minCol": "Name",
+      "maxCol": "Name",
+      "value": ""
     },
     {
       "minRow": 555,
@@ -4710,15 +4710,6 @@
       "value": "Textualis"
     },
     {
-      "minRow": 8,
-      "maxRow": 26,
-      "minColIndex": 30,
-      "maxColIndex": 30,
-      "minCol": "Literature",
-      "maxCol": "Literature",
-      "value": "Krarup; Alfr. (1935): Katalog over Universitetsbibliotekets Haandskrifter; del 2; side 66 ; Hødnebø og Rindal: Den eldre Gulatingsloven. Corpus codicum Norvegicorum medii aevi; Quarto series; vol. IX (1995) ; Eithun et.al. (1994:17-20); Gulatinget og Gulatingslova (2001:10-23); Simensen (2021:12); Sunde (2019); Storm (1885:641-44)"
-    },
-    {
       "minRow": 110,
       "maxRow": 122,
       "minColIndex": 6,
@@ -4726,6 +4717,15 @@
       "minCol": "Dating",
       "maxCol": "Dating",
       "value": "1280–1300 (Hand a; Hand b); 1400-1500 (Hand c)"
+    },
+    {
+      "minRow": 8,
+      "maxRow": 26,
+      "minColIndex": 30,
+      "maxColIndex": 30,
+      "minCol": "Literature",
+      "maxCol": "Literature",
+      "value": "Krarup; Alfr. (1935): Katalog over Universitetsbibliotekets Haandskrifter; del 2; side 66 ; Hødnebø og Rindal: Den eldre Gulatingsloven. Corpus codicum Norvegicorum medii aevi; Quarto series; vol. IX (1995) ; Eithun et.al. (1994:17-20); Gulatinget og Gulatingslova (2001:10-23); Simensen (2021:12); Sunde (2019); Storm (1885:641-44)"
     },
     {
       "minRow": 46,
@@ -4782,6 +4782,15 @@
       "value": ""
     },
     {
+      "minRow": 670,
+      "maxRow": 678,
+      "minColIndex": 16,
+      "maxColIndex": 16,
+      "minCol": "Material",
+      "maxCol": "Material",
+      "value": "Parchment"
+    },
+    {
       "minRow": 238,
       "maxRow": 241,
       "minColIndex": 26,
@@ -4798,15 +4807,6 @@
       "minCol": "Pricking",
       "maxCol": "Pricking",
       "value": "No"
-    },
-    {
-      "minRow": 670,
-      "maxRow": 678,
-      "minColIndex": 16,
-      "maxColIndex": 16,
-      "minCol": "Material",
-      "maxCol": "Material",
-      "value": "Parchment"
     },
     {
       "minRow": 235,
@@ -4863,15 +4863,6 @@
       "value": "1"
     },
     {
-      "minRow": 225,
-      "maxRow": 226,
-      "minColIndex": 4,
-      "maxColIndex": 4,
-      "minCol": "Object",
-      "maxCol": "Object",
-      "value": "Codex"
-    },
-    {
       "minRow": 692,
       "maxRow": 699,
       "minColIndex": 0,
@@ -4879,6 +4870,15 @@
       "minCol": "Shelf mark",
       "maxCol": "Shelf mark",
       "value": "Gunnerus qMa Ha1"
+    },
+    {
+      "minRow": 208,
+      "maxRow": 209,
+      "minColIndex": 20,
+      "maxColIndex": 20,
+      "minCol": "Script",
+      "maxCol": "Script",
+      "value": ""
     },
     {
       "minRow": 36,
@@ -4890,13 +4890,13 @@
       "value": "IV"
     },
     {
-      "minRow": 208,
-      "maxRow": 209,
-      "minColIndex": 20,
-      "maxColIndex": 20,
-      "minCol": "Script",
-      "maxCol": "Script",
-      "value": ""
+      "minRow": 225,
+      "maxRow": 226,
+      "minColIndex": 4,
+      "maxColIndex": 4,
+      "minCol": "Object",
+      "maxCol": "Object",
+      "value": "Codex"
     },
     {
       "minRow": 700,
@@ -4926,21 +4926,21 @@
       "value": ""
     },
     {
-      "minRow": 283,
-      "maxRow": 286,
-      "minColIndex": 8,
-      "maxColIndex": 8,
-      "minCol": "Main text",
-      "maxCol": "Main text",
-      "value": ""
-    },
-    {
       "minRow": 544,
       "maxRow": 546,
       "minColIndex": 9,
       "maxColIndex": 9,
       "minCol": "Minor text",
       "maxCol": "Minor text",
+      "value": ""
+    },
+    {
+      "minRow": 283,
+      "maxRow": 286,
+      "minColIndex": 8,
+      "maxColIndex": 8,
+      "minCol": "Main text",
+      "maxCol": "Main text",
       "value": ""
     },
     {
@@ -4998,6 +4998,24 @@
       "value": "265x190"
     },
     {
+      "minRow": 406,
+      "maxRow": 417,
+      "minColIndex": 12,
+      "maxColIndex": 12,
+      "minCol": "Leaf size",
+      "maxCol": "Leaf size",
+      "value": "235x160"
+    },
+    {
+      "minRow": 376,
+      "maxRow": 382,
+      "minColIndex": 4,
+      "maxColIndex": 4,
+      "minCol": "Object",
+      "maxCol": "Object",
+      "value": "Fragment"
+    },
+    {
       "minRow": 216,
       "maxRow": 224,
       "minColIndex": 4,
@@ -5016,24 +5034,6 @@
       "value": "Parchment"
     },
     {
-      "minRow": 376,
-      "maxRow": 382,
-      "minColIndex": 4,
-      "maxColIndex": 4,
-      "minCol": "Object",
-      "maxCol": "Object",
-      "value": "Fragment"
-    },
-    {
-      "minRow": 406,
-      "maxRow": 417,
-      "minColIndex": 12,
-      "maxColIndex": 12,
-      "minCol": "Leaf size",
-      "maxCol": "Leaf size",
-      "value": "235x160"
-    },
-    {
       "minRow": 361,
       "maxRow": 375,
       "minColIndex": 1,
@@ -5041,15 +5041,6 @@
       "minCol": "Name",
       "maxCol": "Name",
       "value": ""
-    },
-    {
-      "minRow": 269,
-      "maxRow": 271,
-      "minColIndex": 19,
-      "maxColIndex": 19,
-      "minCol": "Lines",
-      "maxCol": "Lines",
-      "value": "32"
     },
     {
       "minRow": 172,
@@ -5068,6 +5059,15 @@
       "minCol": "Script",
       "maxCol": "Script",
       "value": "Textualis"
+    },
+    {
+      "minRow": 269,
+      "maxRow": 271,
+      "minColIndex": 19,
+      "maxColIndex": 19,
+      "minCol": "Lines",
+      "maxCol": "Lines",
+      "value": "32"
     },
     {
       "minRow": 606,
@@ -5277,13 +5277,13 @@
       "value": "None"
     },
     {
-      "minRow": 418,
-      "maxRow": 419,
-      "minColIndex": 24,
-      "maxColIndex": 24,
-      "minCol": "Style",
-      "maxCol": "Style",
-      "value": "None"
+      "minRow": 390,
+      "maxRow": 391,
+      "minColIndex": 18,
+      "maxColIndex": 18,
+      "minCol": "Columns",
+      "maxCol": "Columns",
+      "value": "1"
     },
     {
       "minRow": 110,
@@ -5295,13 +5295,13 @@
       "value": "Large"
     },
     {
-      "minRow": 390,
-      "maxRow": 391,
-      "minColIndex": 18,
-      "maxColIndex": 18,
-      "minCol": "Columns",
-      "maxCol": "Columns",
-      "value": "1"
+      "minRow": 418,
+      "maxRow": 419,
+      "minColIndex": 24,
+      "maxColIndex": 24,
+      "minCol": "Style",
+      "maxCol": "Style",
+      "value": "None"
     },
     {
       "minRow": 633,
@@ -5412,15 +5412,6 @@
       "value": ""
     },
     {
-      "minRow": 361,
-      "maxRow": 375,
-      "minColIndex": 30,
-      "maxColIndex": 30,
-      "minCol": "Literature",
-      "maxCol": "Literature",
-      "value": "Storm (1885); Jóhanna Katrín (2024); Jóhanna Katrín et.al. (2023)"
-    },
-    {
       "minRow": 330,
       "maxRow": 360,
       "minColIndex": 6,
@@ -5430,13 +5421,13 @@
       "value": "1305-1320"
     },
     {
-      "minRow": 235,
-      "maxRow": 237,
-      "minColIndex": 14,
-      "maxColIndex": 14,
-      "minCol": "Production Unit",
-      "maxCol": "Production Unit",
-      "value": "I"
+      "minRow": 361,
+      "maxRow": 375,
+      "minColIndex": 30,
+      "maxColIndex": 30,
+      "minCol": "Literature",
+      "maxCol": "Literature",
+      "value": "Storm (1885); Jóhanna Katrín (2024); Jóhanna Katrín et.al. (2023)"
     },
     {
       "minRow": 8,
@@ -5446,6 +5437,15 @@
       "minCol": "Main text",
       "maxCol": "Main text",
       "value": "GuL"
+    },
+    {
+      "minRow": 235,
+      "maxRow": 237,
+      "minColIndex": 14,
+      "maxColIndex": 14,
+      "minCol": "Production Unit",
+      "maxCol": "Production Unit",
+      "value": "I"
     },
     {
       "minRow": 225,
@@ -5502,15 +5502,6 @@
       "value": "R, G"
     },
     {
-      "minRow": 700,
-      "maxRow": 703,
-      "minColIndex": 14,
-      "maxColIndex": 14,
-      "minCol": "Production Unit",
-      "maxCol": "Production Unit",
-      "value": "I"
-    },
-    {
       "minRow": 140,
       "maxRow": 148,
       "minColIndex": 17,
@@ -5518,6 +5509,15 @@
       "minCol": "Ruling",
       "maxCol": "Ruling",
       "value": "Ink"
+    },
+    {
+      "minRow": 700,
+      "maxRow": 703,
+      "minColIndex": 14,
+      "maxColIndex": 14,
+      "minCol": "Production Unit",
+      "maxCol": "Production Unit",
+      "value": "I"
     },
     {
       "minRow": 683,
@@ -5772,15 +5772,6 @@
       "value": "Unknown"
     },
     {
-      "minRow": 306,
-      "maxRow": 307,
-      "minColIndex": 28,
-      "maxColIndex": 28,
-      "minCol": "Iconography",
-      "maxCol": "Iconography",
-      "value": "None"
-    },
-    {
       "minRow": 514,
       "maxRow": 515,
       "minColIndex": 27,
@@ -5797,6 +5788,15 @@
       "minCol": "Columns",
       "maxCol": "Columns",
       "value": "2"
+    },
+    {
+      "minRow": 306,
+      "maxRow": 307,
+      "minColIndex": 28,
+      "maxColIndex": 28,
+      "minCol": "Iconography",
+      "maxCol": "Iconography",
+      "value": "None"
     },
     {
       "minRow": 36,
@@ -5862,15 +5862,6 @@
       "value": "Hand a"
     },
     {
-      "minRow": 281,
-      "maxRow": 282,
-      "minColIndex": 22,
-      "maxColIndex": 22,
-      "minCol": "Scribe",
-      "maxCol": "Scribe",
-      "value": "Hand a"
-    },
-    {
       "minRow": 502,
       "maxRow": 505,
       "minColIndex": 30,
@@ -5878,6 +5869,15 @@
       "minCol": "Literature",
       "maxCol": "Literature",
       "value": ""
+    },
+    {
+      "minRow": 281,
+      "maxRow": 282,
+      "minColIndex": 22,
+      "maxColIndex": 22,
+      "minCol": "Scribe",
+      "maxCol": "Scribe",
+      "value": "Hand a"
     },
     {
       "minRow": 516,
@@ -5916,15 +5916,6 @@
       "value": "Ff. 1ra–35vb"
     },
     {
-      "minRow": 46,
-      "maxRow": 47,
-      "minColIndex": 21,
-      "maxColIndex": 21,
-      "minCol": "Rubric",
-      "maxCol": "Rubric",
-      "value": "None"
-    },
-    {
       "minRow": 225,
       "maxRow": 226,
       "minColIndex": 11,
@@ -5932,6 +5923,15 @@
       "minCol": "Full size",
       "maxCol": "Full size",
       "value": "Unknown"
+    },
+    {
+      "minRow": 46,
+      "maxRow": 47,
+      "minColIndex": 21,
+      "maxColIndex": 21,
+      "minCol": "Rubric",
+      "maxCol": "Rubric",
+      "value": "None"
     },
     {
       "minRow": 208,
@@ -5943,15 +5943,6 @@
       "value": "Unknown"
     },
     {
-      "minRow": 230,
-      "maxRow": 234,
-      "minColIndex": 29,
-      "maxColIndex": 29,
-      "minCol": "Place",
-      "maxCol": "Place",
-      "value": "Nowhere"
-    },
-    {
       "minRow": 36,
       "maxRow": 104,
       "minColIndex": 30,
@@ -5959,6 +5950,15 @@
       "minCol": "Literature",
       "maxCol": "Literature",
       "value": "Storm (1885: 667-672)"
+    },
+    {
+      "minRow": 230,
+      "maxRow": 234,
+      "minColIndex": 29,
+      "maxColIndex": 29,
+      "minCol": "Place",
+      "maxCol": "Place",
+      "value": "Nowhere"
     },
     {
       "minRow": 306,
@@ -5988,15 +5988,6 @@
       "value": "I"
     },
     {
-      "minRow": 289,
-      "maxRow": 297,
-      "minColIndex": 6,
-      "maxColIndex": 6,
-      "minCol": "Dating",
-      "maxCol": "Dating",
-      "value": "1350–1400"
-    },
-    {
       "minRow": 615,
       "maxRow": 620,
       "minColIndex": 10,
@@ -6004,6 +5995,15 @@
       "minCol": "Gatherings",
       "maxCol": "Gatherings",
       "value": "I: 2 (1b, ff. 1-2); II: 9 (4b, 1f, ff. 3-11); III: 6 (3b, ff. 12-17); IV: 5 (2b, 1f, ff. 18-22); V: 4 (2b, ff. 23-26); VI: 6 (2b, 2f, ff. 27-32); VII: 7 (3b, 1f, ff. 33-39); VIII: 6 (3b, ff. 40-45); IX: 5 (2b, 1f, ff. 46-49); X: 9 (3b, 3f, ff. 51-59); XI: 4 (1b, 2f, ff. 60-63); XII: 12 (5b, 2f, ff. 64-76 [f. 64 lost]); XIII: 5 (2b, 1f, ff. 77-82)"
+    },
+    {
+      "minRow": 289,
+      "maxRow": 297,
+      "minColIndex": 6,
+      "maxColIndex": 6,
+      "minCol": "Dating",
+      "maxCol": "Dating",
+      "value": "1350–1400"
     },
     {
       "minRow": 708,
@@ -6033,15 +6033,6 @@
       "value": "None"
     },
     {
-      "minRow": 276,
-      "maxRow": 280,
-      "minColIndex": 12,
-      "maxColIndex": 12,
-      "minCol": "Leaf size",
-      "maxCol": "Leaf size",
-      "value": "180x135"
-    },
-    {
       "minRow": 308,
       "maxRow": 311,
       "minColIndex": 15,
@@ -6049,6 +6040,15 @@
       "minCol": "Pricking",
       "maxCol": "Pricking",
       "value": "No"
+    },
+    {
+      "minRow": 276,
+      "maxRow": 280,
+      "minColIndex": 12,
+      "maxColIndex": 12,
+      "minCol": "Leaf size",
+      "maxCol": "Leaf size",
+      "value": "180x135"
     },
     {
       "minRow": 680,
@@ -6195,15 +6195,6 @@
       "value": "Romanesque"
     },
     {
-      "minRow": 283,
-      "maxRow": 286,
-      "minColIndex": 6,
-      "maxColIndex": 6,
-      "minCol": "Dating",
-      "maxCol": "Dating",
-      "value": "1350–1400"
-    },
-    {
       "minRow": 692,
       "maxRow": 699,
       "minColIndex": 26,
@@ -6211,6 +6202,15 @@
       "minCol": "Form of Initials",
       "maxCol": "Form of Initials",
       "value": "Lombard small initials (2 lines)."
+    },
+    {
+      "minRow": 283,
+      "maxRow": 286,
+      "minColIndex": 6,
+      "maxColIndex": 6,
+      "minCol": "Dating",
+      "maxCol": "Dating",
+      "value": "1350–1400"
     },
     {
       "minRow": 130,
@@ -6276,22 +6276,13 @@
       "value": "None"
     },
     {
-      "minRow": 376,
-      "maxRow": 382,
-      "minColIndex": 2,
-      "maxColIndex": 2,
-      "minCol": "Related Shelfmarks",
-      "maxCol": "Related Shelfmarks",
-      "value": ""
-    },
-    {
-      "minRow": 272,
-      "maxRow": 275,
-      "minColIndex": 19,
-      "maxColIndex": 19,
-      "minCol": "Lines",
-      "maxCol": "Lines",
-      "value": "32"
+      "minRow": 640,
+      "maxRow": 643,
+      "minColIndex": 22,
+      "maxColIndex": 22,
+      "minCol": "Scribe",
+      "maxCol": "Scribe",
+      "value": "Hand c"
     },
     {
       "minRow": 130,
@@ -6303,6 +6294,15 @@
       "value": "I"
     },
     {
+      "minRow": 376,
+      "maxRow": 382,
+      "minColIndex": 2,
+      "maxColIndex": 2,
+      "minCol": "Related Shelfmarks",
+      "maxCol": "Related Shelfmarks",
+      "value": ""
+    },
+    {
       "minRow": 629,
       "maxRow": 631,
       "minColIndex": 17,
@@ -6312,13 +6312,13 @@
       "value": "Ink"
     },
     {
-      "minRow": 640,
-      "maxRow": 643,
-      "minColIndex": 22,
-      "maxColIndex": 22,
-      "minCol": "Scribe",
-      "maxCol": "Scribe",
-      "value": "Hand c"
+      "minRow": 272,
+      "maxRow": 275,
+      "minColIndex": 19,
+      "maxColIndex": 19,
+      "minCol": "Lines",
+      "maxCol": "Lines",
+      "value": "32"
     },
     {
       "minRow": 309,
@@ -6420,15 +6420,6 @@
       "value": "I: 8 (4b, ff. 1-8); II: 8 (4b, ff. 9-16); III: 8 (4b, ff. 17-24); IV: 8 (4b, ff. 25-32); V: 8 (4b, ff. 33-40); VI: 8 (4b, ff. 41-48); VII: 8 (4b, ff. 49-56); VIII: 6 (6f, ff. 57-62) (catchwords at the end of each gathering)"
     },
     {
-      "minRow": 149,
-      "maxRow": 162,
-      "minColIndex": 26,
-      "maxColIndex": 26,
-      "minCol": "Form of Initials",
-      "maxCol": "Form of Initials",
-      "value": "Ornamented large (6-9 lines) and small initials (2 lines)"
-    },
-    {
       "minRow": 492,
       "maxRow": 493,
       "minColIndex": 6,
@@ -6436,6 +6427,15 @@
       "minCol": "Dating",
       "maxCol": "Dating",
       "value": "1320–1350"
+    },
+    {
+      "minRow": 149,
+      "maxRow": 162,
+      "minColIndex": 26,
+      "maxColIndex": 26,
+      "minCol": "Form of Initials",
+      "maxCol": "Form of Initials",
+      "value": "Ornamented large (6-9 lines) and small initials (2 lines)"
     },
     {
       "minRow": 110,
@@ -6474,13 +6474,13 @@
       "value": ""
     },
     {
-      "minRow": 406,
-      "maxRow": 412,
-      "minColIndex": 20,
-      "maxColIndex": 20,
-      "minCol": "Script",
-      "maxCol": "Script",
-      "value": "Textualis"
+      "minRow": 704,
+      "maxRow": 705,
+      "minColIndex": 30,
+      "maxColIndex": 30,
+      "minCol": "Literature",
+      "maxCol": "Literature",
+      "value": ""
     },
     {
       "minRow": 27,
@@ -6492,13 +6492,13 @@
       "value": "Small"
     },
     {
-      "minRow": 704,
-      "maxRow": 705,
-      "minColIndex": 30,
-      "maxColIndex": 30,
-      "minCol": "Literature",
-      "maxCol": "Literature",
-      "value": ""
+      "minRow": 406,
+      "maxRow": 412,
+      "minColIndex": 20,
+      "maxColIndex": 20,
+      "minCol": "Script",
+      "maxCol": "Script",
+      "value": "Textualis"
     },
     {
       "minRow": 708,
@@ -6547,21 +6547,21 @@
     },
     {
       "minRow": 552,
-      "maxRow": 592,
-      "minColIndex": 3,
-      "maxColIndex": 3,
-      "minCol": "Depository",
-      "maxCol": "Depository",
-      "value": "KB"
-    },
-    {
-      "minRow": 552,
       "maxRow": 560,
       "minColIndex": 26,
       "maxColIndex": 26,
       "minCol": "Form of Initials",
       "maxCol": "Form of Initials",
       "value": "Lombard small initials (2 lines)."
+    },
+    {
+      "minRow": 552,
+      "maxRow": 592,
+      "minColIndex": 3,
+      "maxColIndex": 3,
+      "minCol": "Depository",
+      "maxCol": "Depository",
+      "value": "KB"
     },
     {
       "minRow": 710,
@@ -6690,15 +6690,6 @@
       "value": "Unknown"
     },
     {
-      "minRow": 464,
-      "maxRow": 468,
-      "minColIndex": 17,
-      "maxColIndex": 17,
-      "minCol": "Ruling",
-      "maxCol": "Ruling",
-      "value": "Yes"
-    },
-    {
       "minRow": 274,
       "maxRow": 275,
       "minColIndex": 9,
@@ -6706,6 +6697,15 @@
       "minCol": "Minor text",
       "maxCol": "Minor text",
       "value": "ch. 1–19"
+    },
+    {
+      "minRow": 464,
+      "maxRow": 468,
+      "minColIndex": 17,
+      "maxColIndex": 17,
+      "minCol": "Ruling",
+      "maxCol": "Ruling",
+      "value": "Yes"
     },
     {
       "minRow": 130,
@@ -6744,15 +6744,6 @@
       "value": "Divided into three parts; each featuring a table of contents. The third section is a section of Bjarkeyjarréttr Niðarósi; entitled Bœrkonar réttr (on the rights of women in Niðaróss)"
     },
     {
-      "minRow": 36,
-      "maxRow": 44,
-      "minColIndex": 15,
-      "maxColIndex": 15,
-      "minCol": "Pricking",
-      "maxCol": "Pricking",
-      "value": "No"
-    },
-    {
       "minRow": 552,
       "maxRow": 560,
       "minColIndex": 27,
@@ -6769,6 +6760,15 @@
       "minCol": "Size of Initials",
       "maxCol": "Size of Initials",
       "value": "None"
+    },
+    {
+      "minRow": 36,
+      "maxRow": 44,
+      "minColIndex": 15,
+      "maxColIndex": 15,
+      "minCol": "Pricking",
+      "maxCol": "Pricking",
+      "value": "No"
     },
     {
       "minRow": 59,
@@ -6978,15 +6978,6 @@
       "value": "None"
     },
     {
-      "minRow": 8,
-      "maxRow": 26,
-      "minColIndex": 25,
-      "maxColIndex": 25,
-      "minCol": "Colours",
-      "maxCol": "Colours",
-      "value": "R; G"
-    },
-    {
       "minRow": 250,
       "maxRow": 271,
       "minColIndex": 15,
@@ -6994,6 +6985,15 @@
       "minCol": "Pricking",
       "maxCol": "Pricking",
       "value": "No"
+    },
+    {
+      "minRow": 8,
+      "maxRow": 26,
+      "minColIndex": 25,
+      "maxColIndex": 25,
+      "minCol": "Colours",
+      "maxCol": "Colours",
+      "value": "R; G"
     },
     {
       "minRow": 140,
@@ -7131,15 +7131,6 @@
       "value": "1"
     },
     {
-      "minRow": 272,
-      "maxRow": 275,
-      "minColIndex": 13,
-      "maxColIndex": 13,
-      "minCol": "Catch Words and Gatherings",
-      "maxCol": "Catch Words and Gatherings",
-      "value": ""
-    },
-    {
       "minRow": 100,
       "maxRow": 104,
       "minColIndex": 23,
@@ -7147,6 +7138,15 @@
       "minCol": "Production",
       "maxCol": "Production",
       "value": "Pros Lauritsson; Skien (d. 1596)"
+    },
+    {
+      "minRow": 272,
+      "maxRow": 275,
+      "minColIndex": 13,
+      "maxColIndex": 13,
+      "minCol": "Catch Words and Gatherings",
+      "maxCol": "Catch Words and Gatherings",
+      "value": ""
     },
     {
       "minRow": 349,
@@ -7158,15 +7158,6 @@
       "value": "29"
     },
     {
-      "minRow": 346,
-      "maxRow": 348,
-      "minColIndex": 19,
-      "maxColIndex": 19,
-      "minCol": "Lines",
-      "maxCol": "Lines",
-      "value": "35–36"
-    },
-    {
       "minRow": 700,
       "maxRow": 703,
       "minColIndex": 10,
@@ -7174,6 +7165,15 @@
       "minCol": "Gatherings",
       "maxCol": "Gatherings",
       "value": "Unknown"
+    },
+    {
+      "minRow": 346,
+      "maxRow": 348,
+      "minColIndex": 19,
+      "maxColIndex": 19,
+      "minCol": "Lines",
+      "maxCol": "Lines",
+      "value": "35–36"
     },
     {
       "minRow": 306,
@@ -7203,15 +7203,6 @@
       "value": "Ff. 1ra-76"
     },
     {
-      "minRow": 394,
-      "maxRow": 402,
-      "minColIndex": 22,
-      "maxColIndex": 22,
-      "minCol": "Scribe",
-      "maxCol": "Scribe",
-      "value": "Hand b (NgL scribe)"
-    },
-    {
       "minRow": 514,
       "maxRow": 515,
       "minColIndex": 15,
@@ -7219,6 +7210,15 @@
       "minCol": "Pricking",
       "maxCol": "Pricking",
       "value": "Yes"
+    },
+    {
+      "minRow": 394,
+      "maxRow": 402,
+      "minColIndex": 22,
+      "maxColIndex": 22,
+      "minCol": "Scribe",
+      "maxCol": "Scribe",
+      "value": "Hand b (NgL scribe)"
     },
     {
       "minRow": 140,
@@ -7284,6 +7284,15 @@
       "value": "No"
     },
     {
+      "minRow": 516,
+      "maxRow": 517,
+      "minColIndex": 6,
+      "maxColIndex": 6,
+      "minCol": "Dating",
+      "maxCol": "Dating",
+      "value": "1400"
+    },
+    {
       "minRow": 544,
       "maxRow": 547,
       "minColIndex": 0,
@@ -7302,13 +7311,13 @@
       "value": "None"
     },
     {
-      "minRow": 516,
-      "maxRow": 517,
-      "minColIndex": 6,
-      "maxColIndex": 6,
-      "minCol": "Dating",
-      "maxCol": "Dating",
-      "value": "1400"
+      "minRow": 640,
+      "maxRow": 643,
+      "minColIndex": 29,
+      "maxColIndex": 29,
+      "minCol": "Place",
+      "maxCol": "Place",
+      "value": "Throughout"
     },
     {
       "minRow": 130,
@@ -7318,15 +7327,6 @@
       "minCol": "Rubric",
       "maxCol": "Rubric",
       "value": "Yes"
-    },
-    {
-      "minRow": 640,
-      "maxRow": 643,
-      "minColIndex": 29,
-      "maxColIndex": 29,
-      "minCol": "Place",
-      "maxCol": "Place",
-      "value": "Throughout"
     },
     {
       "minRow": 629,
@@ -7347,15 +7347,6 @@
       "value": "KF (FrL); incl. Bjarkeyjarréttr Niðarósi"
     },
     {
-      "minRow": 103,
-      "maxRow": 104,
-      "minColIndex": 22,
-      "maxColIndex": 22,
-      "minCol": "Scribe",
-      "maxCol": "Scribe",
-      "value": "Hand a (Pros Lauritsson)"
-    },
-    {
       "minRow": 630,
       "maxRow": 631,
       "minColIndex": 6,
@@ -7363,6 +7354,15 @@
       "minCol": "Dating",
       "maxCol": "Dating",
       "value": "1350"
+    },
+    {
+      "minRow": 103,
+      "maxRow": 104,
+      "minColIndex": 22,
+      "maxColIndex": 22,
+      "minCol": "Scribe",
+      "maxCol": "Scribe",
+      "value": "Hand a (Pros Lauritsson)"
     },
     {
       "minRow": 106,
@@ -7374,15 +7374,6 @@
       "value": "Unknown"
     },
     {
-      "minRow": 230,
-      "maxRow": 234,
-      "minColIndex": 18,
-      "maxColIndex": 18,
-      "minCol": "Columns",
-      "maxCol": "Columns",
-      "value": "2"
-    },
-    {
       "minRow": 668,
       "maxRow": 678,
       "minColIndex": 5,
@@ -7390,6 +7381,15 @@
       "minCol": "Size",
       "maxCol": "Size",
       "value": "4to"
+    },
+    {
+      "minRow": 230,
+      "maxRow": 234,
+      "minColIndex": 18,
+      "maxColIndex": 18,
+      "minCol": "Columns",
+      "maxCol": "Columns",
+      "value": "2"
     },
     {
       "minRow": 536,
@@ -7419,15 +7419,6 @@
       "value": "Small Lombard initials (2 lines)"
     },
     {
-      "minRow": 281,
-      "maxRow": 307,
-      "minColIndex": 2,
-      "maxColIndex": 2,
-      "minCol": "Related Shelfmarks",
-      "maxCol": "Related Shelfmarks",
-      "value": "Holm Perg. 29 4to; C 16 (Storm 1885: 654)"
-    },
-    {
       "minRow": 522,
       "maxRow": 530,
       "minColIndex": 2,
@@ -7435,6 +7426,15 @@
       "minCol": "Related Shelfmarks",
       "maxCol": "Related Shelfmarks",
       "value": ""
+    },
+    {
+      "minRow": 281,
+      "maxRow": 307,
+      "minColIndex": 2,
+      "maxColIndex": 2,
+      "minCol": "Related Shelfmarks",
+      "maxCol": "Related Shelfmarks",
+      "value": "Holm Perg. 29 4to; C 16 (Storm 1885: 654)"
     },
     {
       "minRow": 244,
@@ -7554,15 +7554,6 @@
       "value": ""
     },
     {
-      "minRow": 6,
-      "maxRow": 7,
-      "minColIndex": 29,
-      "maxColIndex": 29,
-      "minCol": "Place",
-      "maxCol": "Place",
-      "value": "Throughout"
-    },
-    {
       "minRow": 549,
       "maxRow": 551,
       "minColIndex": 12,
@@ -7570,6 +7561,15 @@
       "minCol": "Leaf size",
       "maxCol": "Leaf size",
       "value": "260x180"
+    },
+    {
+      "minRow": 6,
+      "maxRow": 7,
+      "minColIndex": 29,
+      "maxColIndex": 29,
+      "minCol": "Place",
+      "maxCol": "Place",
+      "value": "Throughout"
     },
     {
       "minRow": 502,
@@ -7671,15 +7671,6 @@
       "value": "Small"
     },
     {
-      "minRow": 533,
-      "maxRow": 535,
-      "minColIndex": 20,
-      "maxColIndex": 20,
-      "minCol": "Script",
-      "maxCol": "Script",
-      "value": "Cursiva A."
-    },
-    {
       "minRow": 326,
       "maxRow": 328,
       "minColIndex": 24,
@@ -7687,6 +7678,15 @@
       "minCol": "Style",
       "maxCol": "Style",
       "value": "Romanesque"
+    },
+    {
+      "minRow": 533,
+      "maxRow": 535,
+      "minColIndex": 20,
+      "maxColIndex": 20,
+      "minCol": "Script",
+      "maxCol": "Script",
+      "value": "Cursiva A."
     },
     {
       "minRow": 308,
@@ -7743,15 +7743,6 @@
       "value": "Pen-flourished initials; colour-stroke initials. Large initials (6-8 lines) and minor initials (3 lines)"
     },
     {
-      "minRow": 130,
-      "maxRow": 132,
-      "minColIndex": 29,
-      "maxColIndex": 29,
-      "minCol": "Place",
-      "maxCol": "Place",
-      "value": "Throughout"
-    },
-    {
       "minRow": 502,
       "maxRow": 505,
       "minColIndex": 7,
@@ -7759,6 +7750,15 @@
       "minCol": "Leaves/Pages",
       "maxCol": "Leaves/Pages",
       "value": "Ff. 1–10"
+    },
+    {
+      "minRow": 130,
+      "maxRow": 132,
+      "minColIndex": 29,
+      "maxColIndex": 29,
+      "minCol": "Place",
+      "maxCol": "Place",
+      "value": "Throughout"
     },
     {
       "minRow": 394,
@@ -7797,15 +7797,6 @@
       "value": "Cursiva R"
     },
     {
-      "minRow": 415,
-      "maxRow": 416,
-      "minColIndex": 27,
-      "maxColIndex": 27,
-      "minCol": "Size of Initials",
-      "maxCol": "Size of Initials",
-      "value": "None"
-    },
-    {
       "minRow": 561,
       "maxRow": 592,
       "minColIndex": 22,
@@ -7815,6 +7806,15 @@
       "value": "Hand g"
     },
     {
+      "minRow": 415,
+      "maxRow": 416,
+      "minColIndex": 27,
+      "maxColIndex": 27,
+      "minCol": "Size of Initials",
+      "maxCol": "Size of Initials",
+      "value": "None"
+    },
+    {
       "minRow": 524,
       "maxRow": 530,
       "minColIndex": 19,
@@ -7822,6 +7822,15 @@
       "minCol": "Lines",
       "maxCol": "Lines",
       "value": "34–36"
+    },
+    {
+      "minRow": 518,
+      "maxRow": 521,
+      "minColIndex": 27,
+      "maxColIndex": 27,
+      "minCol": "Size of Initials",
+      "maxCol": "Size of Initials",
+      "value": "Large"
     },
     {
       "minRow": 177,
@@ -7840,15 +7849,6 @@
       "minCol": "Lines",
       "maxCol": "Lines",
       "value": "Various"
-    },
-    {
-      "minRow": 518,
-      "maxRow": 521,
-      "minColIndex": 27,
-      "maxColIndex": 27,
-      "minCol": "Size of Initials",
-      "maxCol": "Size of Initials",
-      "value": "Large"
     },
     {
       "minRow": 708,
@@ -7887,13 +7887,13 @@
       "value": "R, B"
     },
     {
-      "minRow": 308,
-      "maxRow": 311,
-      "minColIndex": 12,
-      "maxColIndex": 12,
-      "minCol": "Leaf size",
-      "maxCol": "Leaf size",
-      "value": "Unknown"
+      "minRow": 522,
+      "maxRow": 530,
+      "minColIndex": 1,
+      "maxColIndex": 1,
+      "minCol": "Name",
+      "maxCol": "Name",
+      "value": ""
     },
     {
       "minRow": 281,
@@ -7905,13 +7905,13 @@
       "value": ""
     },
     {
-      "minRow": 522,
-      "maxRow": 530,
-      "minColIndex": 1,
-      "maxColIndex": 1,
-      "minCol": "Name",
-      "maxCol": "Name",
-      "value": ""
+      "minRow": 308,
+      "maxRow": 311,
+      "minColIndex": 12,
+      "maxColIndex": 12,
+      "minCol": "Leaf size",
+      "maxCol": "Leaf size",
+      "value": "Unknown"
     },
     {
       "minRow": 494,
@@ -7941,15 +7941,6 @@
       "value": "Dry"
     },
     {
-      "minRow": 362,
-      "maxRow": 363,
-      "minColIndex": 19,
-      "maxColIndex": 19,
-      "minCol": "Lines",
-      "maxCol": "Lines",
-      "value": "40"
-    },
-    {
       "minRow": 164,
       "maxRow": 167,
       "minColIndex": 19,
@@ -7959,13 +7950,13 @@
       "value": "28"
     },
     {
-      "minRow": 418,
-      "maxRow": 419,
-      "minColIndex": 27,
-      "maxColIndex": 27,
-      "minCol": "Size of Initials",
-      "maxCol": "Size of Initials",
-      "value": "None"
+      "minRow": 362,
+      "maxRow": 363,
+      "minColIndex": 19,
+      "maxColIndex": 19,
+      "minCol": "Lines",
+      "maxCol": "Lines",
+      "value": "40"
     },
     {
       "minRow": 390,
@@ -7974,6 +7965,15 @@
       "maxColIndex": 21,
       "minCol": "Rubric",
       "maxCol": "Rubric",
+      "value": "None"
+    },
+    {
+      "minRow": 418,
+      "maxRow": 419,
+      "minColIndex": 27,
+      "maxColIndex": 27,
+      "minCol": "Size of Initials",
+      "maxCol": "Size of Initials",
       "value": "None"
     },
     {
@@ -7986,15 +7986,6 @@
       "value": "AMS"
     },
     {
-      "minRow": 130,
-      "maxRow": 132,
-      "minColIndex": 10,
-      "maxColIndex": 10,
-      "minCol": "Gatherings",
-      "maxCol": "Gatherings",
-      "value": "Unknown"
-    },
-    {
       "minRow": 640,
       "maxRow": 643,
       "minColIndex": 18,
@@ -8002,6 +7993,15 @@
       "minCol": "Columns",
       "maxCol": "Columns",
       "value": "2"
+    },
+    {
+      "minRow": 130,
+      "maxRow": 132,
+      "minColIndex": 10,
+      "maxColIndex": 10,
+      "minCol": "Gatherings",
+      "maxCol": "Gatherings",
+      "value": "Unknown"
     },
     {
       "minRow": 110,
@@ -8040,15 +8040,6 @@
       "value": "Parchment"
     },
     {
-      "minRow": 415,
-      "maxRow": 416,
-      "minColIndex": 28,
-      "maxColIndex": 28,
-      "minCol": "Iconography",
-      "maxCol": "Iconography",
-      "value": "None"
-    },
-    {
       "minRow": 48,
       "maxRow": 58,
       "minColIndex": 26,
@@ -8056,6 +8047,15 @@
       "minCol": "Form of Initials",
       "maxCol": "Form of Initials",
       "value": "Large; foliated initials (3-4 lines); Small pen-flourished and Lombard initials (2-3 lines)"
+    },
+    {
+      "minRow": 415,
+      "maxRow": 416,
+      "minColIndex": 28,
+      "maxColIndex": 28,
+      "minCol": "Iconography",
+      "maxCol": "Iconography",
+      "value": "None"
     },
     {
       "minRow": 110,
@@ -8094,15 +8094,6 @@
       "value": "No"
     },
     {
-      "minRow": 485,
-      "maxRow": 491,
-      "minColIndex": 10,
-      "maxColIndex": 10,
-      "minCol": "Gatherings",
-      "maxCol": "Gatherings",
-      "value": "2–21 (ff. 8–128)"
-    },
-    {
       "minRow": 235,
       "maxRow": 237,
       "minColIndex": 17,
@@ -8112,13 +8103,13 @@
       "value": "Ink"
     },
     {
-      "minRow": 238,
-      "maxRow": 241,
-      "minColIndex": 24,
-      "maxColIndex": 24,
-      "minCol": "Style",
-      "maxCol": "Style",
-      "value": "Romanesque"
+      "minRow": 485,
+      "maxRow": 491,
+      "minColIndex": 10,
+      "maxColIndex": 10,
+      "minCol": "Gatherings",
+      "maxCol": "Gatherings",
+      "value": "2–21 (ff. 8–128)"
     },
     {
       "minRow": 225,
@@ -8128,6 +8119,15 @@
       "minCol": "Pricking",
       "maxCol": "Pricking",
       "value": "No"
+    },
+    {
+      "minRow": 238,
+      "maxRow": 241,
+      "minColIndex": 24,
+      "maxColIndex": 24,
+      "minCol": "Style",
+      "maxCol": "Style",
+      "value": "Romanesque"
     },
     {
       "minRow": 502,
@@ -8175,15 +8175,6 @@
       "value": "2"
     },
     {
-      "minRow": 225,
-      "maxRow": 226,
-      "minColIndex": 6,
-      "maxColIndex": 6,
-      "minCol": "Dating",
-      "maxCol": "Dating",
-      "value": "1300–1325"
-    },
-    {
       "minRow": 692,
       "maxRow": 699,
       "minColIndex": 2,
@@ -8193,13 +8184,13 @@
       "value": "Gunnerus XA HA Qv. 1"
     },
     {
-      "minRow": 230,
-      "maxRow": 234,
-      "minColIndex": 24,
-      "maxColIndex": 24,
-      "minCol": "Style",
-      "maxCol": "Style",
-      "value": "Other"
+      "minRow": 225,
+      "maxRow": 226,
+      "minColIndex": 6,
+      "maxColIndex": 6,
+      "minCol": "Dating",
+      "maxCol": "Dating",
+      "value": "1300–1325"
     },
     {
       "minRow": 668,
@@ -8209,6 +8200,15 @@
       "minCol": "Full size",
       "maxCol": "Full size",
       "value": "Unknown"
+    },
+    {
+      "minRow": 230,
+      "maxRow": 234,
+      "minColIndex": 24,
+      "maxColIndex": 24,
+      "minCol": "Style",
+      "maxCol": "Style",
+      "value": "Other"
     },
     {
       "minRow": 306,
@@ -8229,15 +8229,6 @@
       "value": "Hand d (G. Sparfwenfeldt)"
     },
     {
-      "minRow": 418,
-      "maxRow": 481,
-      "minColIndex": 23,
-      "maxColIndex": 23,
-      "minCol": "Production",
-      "maxCol": "Production",
-      "value": "Unknown"
-    },
-    {
       "minRow": 685,
       "maxRow": 687,
       "minColIndex": 16,
@@ -8245,6 +8236,15 @@
       "minCol": "Material",
       "maxCol": "Material",
       "value": "Paper"
+    },
+    {
+      "minRow": 418,
+      "maxRow": 481,
+      "minColIndex": 23,
+      "maxColIndex": 23,
+      "minCol": "Production",
+      "maxCol": "Production",
+      "value": "Unknown"
     },
     {
       "minRow": 531,
@@ -8283,15 +8283,6 @@
       "value": "No"
     },
     {
-      "minRow": 704,
-      "maxRow": 705,
-      "minColIndex": 26,
-      "maxColIndex": 26,
-      "minCol": "Form of Initials",
-      "maxCol": "Form of Initials",
-      "value": "Small Lombard initials (2 lines)"
-    },
-    {
       "minRow": 27,
       "maxRow": 28,
       "minColIndex": 23,
@@ -8299,6 +8290,15 @@
       "minCol": "Production",
       "maxCol": "Production",
       "value": "Unknown"
+    },
+    {
+      "minRow": 704,
+      "maxRow": 705,
+      "minColIndex": 26,
+      "maxColIndex": 26,
+      "minCol": "Form of Initials",
+      "maxCol": "Form of Initials",
+      "value": "Small Lombard initials (2 lines)"
     },
     {
       "minRow": 708,
@@ -8319,15 +8319,6 @@
       "value": ""
     },
     {
-      "minRow": 172,
-      "maxRow": 176,
-      "minColIndex": 5,
-      "maxColIndex": 5,
-      "minCol": "Size",
-      "maxCol": "Size",
-      "value": "4to"
-    },
-    {
       "minRow": 502,
       "maxRow": 505,
       "minColIndex": 15,
@@ -8335,6 +8326,15 @@
       "minCol": "Pricking",
       "maxCol": "Pricking",
       "value": "No"
+    },
+    {
+      "minRow": 172,
+      "maxRow": 176,
+      "minColIndex": 5,
+      "maxColIndex": 5,
+      "minCol": "Size",
+      "maxCol": "Size",
+      "value": "4to"
     },
     {
       "minRow": 238,
@@ -8346,15 +8346,6 @@
       "value": "Throughout"
     },
     {
-      "minRow": 633,
-      "maxRow": 634,
-      "minColIndex": 24,
-      "maxColIndex": 24,
-      "minCol": "Style",
-      "maxCol": "Style",
-      "value": "Romanesque"
-    },
-    {
       "minRow": 522,
       "maxRow": 530,
       "minColIndex": 30,
@@ -8362,6 +8353,15 @@
       "minCol": "Literature",
       "maxCol": "Literature",
       "value": "Jóhanna Katrín et.al. (2023)"
+    },
+    {
+      "minRow": 633,
+      "maxRow": 634,
+      "minColIndex": 24,
+      "maxColIndex": 24,
+      "minCol": "Style",
+      "maxCol": "Style",
+      "value": "Romanesque"
     },
     {
       "minRow": 228,
@@ -8409,15 +8409,6 @@
       "value": "Small"
     },
     {
-      "minRow": 230,
-      "maxRow": 234,
-      "minColIndex": 25,
-      "maxColIndex": 25,
-      "minCol": "Colours",
-      "maxCol": "Colours",
-      "value": "None"
-    },
-    {
       "minRow": 668,
       "maxRow": 678,
       "minColIndex": 12,
@@ -8425,6 +8416,15 @@
       "minCol": "Leaf size",
       "maxCol": "Leaf size",
       "value": "226x175"
+    },
+    {
+      "minRow": 230,
+      "maxRow": 234,
+      "minColIndex": 25,
+      "maxColIndex": 25,
+      "minCol": "Colours",
+      "maxCol": "Colours",
+      "value": "None"
     },
     {
       "minRow": 561,
@@ -8661,15 +8661,6 @@
       "value": "Various "
     },
     {
-      "minRow": 223,
-      "maxRow": 224,
-      "minColIndex": 14,
-      "maxColIndex": 14,
-      "minCol": "Production Unit",
-      "maxCol": "Production Unit",
-      "value": "III"
-    },
-    {
       "minRow": 522,
       "maxRow": 530,
       "minColIndex": 25,
@@ -8677,6 +8668,15 @@
       "minCol": "Colours",
       "maxCol": "Colours",
       "value": "Unknown"
+    },
+    {
+      "minRow": 223,
+      "maxRow": 224,
+      "minColIndex": 14,
+      "maxColIndex": 14,
+      "minCol": "Production Unit",
+      "maxCol": "Production Unit",
+      "value": "III"
     },
     {
       "minRow": 621,
@@ -8706,13 +8706,13 @@
       "value": "Ornamented large (6-8 lines) and small initials (2 lines)"
     },
     {
-      "minRow": 376,
-      "maxRow": 382,
-      "minColIndex": 26,
-      "maxColIndex": 26,
-      "minCol": "Form of Initials",
-      "maxCol": "Form of Initials",
-      "value": "Ornamented and guilded large (5 lines) and ornamented small initials (2 lines)."
+      "minRow": 685,
+      "maxRow": 687,
+      "minColIndex": 24,
+      "maxColIndex": 24,
+      "minCol": "Style",
+      "maxCol": "Style",
+      "value": "Other"
     },
     {
       "minRow": 8,
@@ -8724,13 +8724,13 @@
       "value": "F. 1r1-2: Her heft upp Gula þings boc. hínn fyrsti bolkr bocar þessarrar er um kristíns doms halld várt."
     },
     {
-      "minRow": 685,
-      "maxRow": 687,
-      "minColIndex": 24,
-      "maxColIndex": 24,
-      "minCol": "Style",
-      "maxCol": "Style",
-      "value": "Other"
+      "minRow": 376,
+      "maxRow": 382,
+      "minColIndex": 26,
+      "maxColIndex": 26,
+      "minCol": "Form of Initials",
+      "maxCol": "Form of Initials",
+      "value": "Ornamented and guilded large (5 lines) and ornamented small initials (2 lines)."
     },
     {
       "minRow": 679,
@@ -8787,22 +8787,13 @@
       "value": "Codex"
     },
     {
-      "minRow": 283,
-      "maxRow": 286,
-      "minColIndex": 20,
-      "maxColIndex": 20,
-      "minCol": "Script",
-      "maxCol": "Script",
-      "value": "Cursiva A."
-    },
-    {
-      "minRow": 27,
-      "maxRow": 28,
-      "minColIndex": 22,
-      "maxColIndex": 22,
-      "minCol": "Scribe",
-      "maxCol": "Scribe",
-      "value": "Hand a"
+      "minRow": 615,
+      "maxRow": 628,
+      "minColIndex": 30,
+      "maxColIndex": 30,
+      "minCol": "Literature",
+      "maxCol": "Literature",
+      "value": ""
     },
     {
       "minRow": 244,
@@ -8814,13 +8805,22 @@
       "value": ""
     },
     {
-      "minRow": 615,
-      "maxRow": 628,
-      "minColIndex": 30,
-      "maxColIndex": 30,
-      "minCol": "Literature",
-      "maxCol": "Literature",
-      "value": ""
+      "minRow": 27,
+      "maxRow": 28,
+      "minColIndex": 22,
+      "maxColIndex": 22,
+      "minCol": "Scribe",
+      "maxCol": "Scribe",
+      "value": "Hand a"
+    },
+    {
+      "minRow": 283,
+      "maxRow": 286,
+      "minColIndex": 20,
+      "maxColIndex": 20,
+      "minCol": "Script",
+      "maxCol": "Script",
+      "value": "Cursiva A."
     },
     {
       "minRow": 376,
@@ -8976,15 +8976,6 @@
       "value": "None"
     },
     {
-      "minRow": 130,
-      "maxRow": 132,
-      "minColIndex": 17,
-      "maxColIndex": 17,
-      "minCol": "Ruling",
-      "maxCol": "Ruling",
-      "value": "Dry"
-    },
-    {
       "minRow": 640,
       "maxRow": 643,
       "minColIndex": 25,
@@ -8992,6 +8983,15 @@
       "minCol": "Colours",
       "maxCol": "Colours",
       "value": "R, Black"
+    },
+    {
+      "minRow": 130,
+      "maxRow": 132,
+      "minColIndex": 17,
+      "maxColIndex": 17,
+      "minCol": "Ruling",
+      "maxCol": "Ruling",
+      "value": "Dry"
     },
     {
       "minRow": 329,
@@ -9003,15 +9003,6 @@
       "value": "Hand a"
     },
     {
-      "minRow": 106,
-      "maxRow": 107,
-      "minColIndex": 1,
-      "maxColIndex": 1,
-      "minCol": "Name",
-      "maxCol": "Name",
-      "value": ""
-    },
-    {
       "minRow": 633,
       "maxRow": 634,
       "minColIndex": 23,
@@ -9019,6 +9010,15 @@
       "minCol": "Production",
       "maxCol": "Production",
       "value": "Unknown"
+    },
+    {
+      "minRow": 106,
+      "maxRow": 107,
+      "minColIndex": 1,
+      "maxColIndex": 1,
+      "minCol": "Name",
+      "maxCol": "Name",
+      "value": ""
     },
     {
       "minRow": 668,
@@ -9237,15 +9237,6 @@
       "value": "Hand a"
     },
     {
-      "minRow": 0,
-      "maxRow": 1,
-      "minColIndex": 21,
-      "maxColIndex": 21,
-      "minCol": "Rubric",
-      "maxCol": "Rubric",
-      "value": "No"
-    },
-    {
       "minRow": 484,
       "maxRow": 491,
       "minColIndex": 1,
@@ -9253,6 +9244,15 @@
       "minCol": "Name",
       "maxCol": "Name",
       "value": ""
+    },
+    {
+      "minRow": 0,
+      "maxRow": 1,
+      "minColIndex": 21,
+      "maxColIndex": 21,
+      "minCol": "Rubric",
+      "maxCol": "Rubric",
+      "value": "No"
     },
     {
       "minRow": 250,
@@ -9309,15 +9309,6 @@
       "value": "AMS"
     },
     {
-      "minRow": 376,
-      "maxRow": 382,
-      "minColIndex": 0,
-      "maxColIndex": 0,
-      "minCol": "Shelf mark",
-      "maxCol": "Shelf mark",
-      "value": "NRA 35 A"
-    },
-    {
       "minRow": 612,
       "maxRow": 613,
       "minColIndex": 22,
@@ -9325,6 +9316,15 @@
       "minCol": "Scribe",
       "maxCol": "Scribe",
       "value": "Hand b"
+    },
+    {
+      "minRow": 376,
+      "maxRow": 382,
+      "minColIndex": 0,
+      "maxColIndex": 0,
+      "minCol": "Shelf mark",
+      "maxCol": "Shelf mark",
+      "value": "NRA 35 A"
     },
     {
       "minRow": 668,
@@ -9408,13 +9408,13 @@
       "value": "None"
     },
     {
-      "minRow": 0,
-      "maxRow": 1,
-      "minColIndex": 22,
-      "maxColIndex": 22,
-      "minCol": "Scribe",
-      "maxCol": "Scribe",
-      "value": "Hand a"
+      "minRow": 130,
+      "maxRow": 132,
+      "minColIndex": 25,
+      "maxColIndex": 25,
+      "minCol": "Colours",
+      "maxCol": "Colours",
+      "value": "R"
     },
     {
       "minRow": 406,
@@ -9426,13 +9426,13 @@
       "value": "1320–1350"
     },
     {
-      "minRow": 130,
-      "maxRow": 132,
-      "minColIndex": 25,
-      "maxColIndex": 25,
-      "minCol": "Colours",
-      "maxCol": "Colours",
-      "value": "R"
+      "minRow": 0,
+      "maxRow": 1,
+      "minColIndex": 22,
+      "maxColIndex": 22,
+      "minCol": "Scribe",
+      "maxCol": "Scribe",
+      "value": "Hand a"
     },
     {
       "minRow": 235,
@@ -9462,15 +9462,6 @@
       "value": "1300–1350"
     },
     {
-      "minRow": 110,
-      "maxRow": 124,
-      "minColIndex": 21,
-      "maxColIndex": 21,
-      "minCol": "Rubric",
-      "maxCol": "Rubric",
-      "value": "None"
-    },
-    {
       "minRow": 549,
       "maxRow": 551,
       "minColIndex": 16,
@@ -9480,22 +9471,13 @@
       "value": "Parchment"
     },
     {
-      "minRow": 428,
-      "maxRow": 431,
-      "minColIndex": 22,
-      "maxColIndex": 22,
-      "minCol": "Scribe",
-      "maxCol": "Scribe",
-      "value": "Hand d"
-    },
-    {
-      "minRow": 435,
-      "maxRow": 460,
+      "minRow": 110,
+      "maxRow": 124,
       "minColIndex": 21,
       "maxColIndex": 21,
       "minCol": "Rubric",
       "maxCol": "Rubric",
-      "value": "Yes"
+      "value": "None"
     },
     {
       "minRow": 100,
@@ -9507,13 +9489,22 @@
       "value": "Various"
     },
     {
-      "minRow": 230,
-      "maxRow": 234,
-      "minColIndex": 13,
-      "maxColIndex": 13,
-      "minCol": "Catch Words and Gatherings",
-      "maxCol": "Catch Words and Gatherings",
-      "value": ""
+      "minRow": 435,
+      "maxRow": 460,
+      "minColIndex": 21,
+      "maxColIndex": 21,
+      "minCol": "Rubric",
+      "maxCol": "Rubric",
+      "value": "Yes"
+    },
+    {
+      "minRow": 428,
+      "maxRow": 431,
+      "minColIndex": 22,
+      "maxColIndex": 22,
+      "minCol": "Scribe",
+      "maxCol": "Scribe",
+      "value": "Hand d"
     },
     {
       "minRow": 668,
@@ -9523,6 +9514,15 @@
       "minCol": "Shelf mark",
       "maxCol": "Shelf mark",
       "value": "AM 61 a 4to"
+    },
+    {
+      "minRow": 230,
+      "maxRow": 234,
+      "minColIndex": 13,
+      "maxColIndex": 13,
+      "minCol": "Catch Words and Gatherings",
+      "maxCol": "Catch Words and Gatherings",
+      "value": ""
     },
     {
       "minRow": 392,
@@ -9588,15 +9588,6 @@
       "value": "None"
     },
     {
-      "minRow": 130,
-      "maxRow": 132,
-      "minColIndex": 6,
-      "maxColIndex": 6,
-      "minCol": "Dating",
-      "maxCol": "Dating",
-      "value": "1300"
-    },
-    {
       "minRow": 149,
       "maxRow": 162,
       "minColIndex": 28,
@@ -9604,6 +9595,15 @@
       "minCol": "Iconography",
       "maxCol": "Iconography",
       "value": "None. Eight pen-flourished large initials with oeuf-de-grenouile on f. 1ra7-15, f. 2va1-6, f. 10va6-11, f. 17va19-24, f. 29ra12-17, f. 38va10-17, f. 63ra13-18, f. 71ra20-25."
+    },
+    {
+      "minRow": 130,
+      "maxRow": 132,
+      "minColIndex": 6,
+      "maxColIndex": 6,
+      "minCol": "Dating",
+      "maxCol": "Dating",
+      "value": "1300"
     },
     {
       "minRow": 692,
@@ -9840,15 +9840,6 @@
       "value": ""
     },
     {
-      "minRow": 27,
-      "maxRow": 28,
-      "minColIndex": 19,
-      "maxColIndex": 19,
-      "minCol": "Lines",
-      "maxCol": "Lines",
-      "value": "30"
-    },
-    {
       "minRow": 704,
       "maxRow": 705,
       "minColIndex": 22,
@@ -9856,6 +9847,15 @@
       "minCol": "Scribe",
       "maxCol": "Scribe",
       "value": "Hand a"
+    },
+    {
+      "minRow": 27,
+      "maxRow": 28,
+      "minColIndex": 19,
+      "maxColIndex": 19,
+      "minCol": "Lines",
+      "maxCol": "Lines",
+      "value": "30"
     },
     {
       "minRow": 364,
@@ -9912,6 +9912,15 @@
       "value": "B, Y, R, Brown, "
     },
     {
+      "minRow": 522,
+      "maxRow": 530,
+      "minColIndex": 26,
+      "maxColIndex": 26,
+      "minCol": "Form of Initials",
+      "maxCol": "Form of Initials",
+      "value": "Ornamented large initials (4-7 lines) and medium initials and letters (3 lines) added in some places, perhaps at a later time."
+    },
+    {
       "minRow": 633,
       "maxRow": 634,
       "minColIndex": 20,
@@ -9928,15 +9937,6 @@
       "minCol": "Production Unit",
       "maxCol": "Production Unit",
       "value": "I"
-    },
-    {
-      "minRow": 522,
-      "maxRow": 530,
-      "minColIndex": 26,
-      "maxColIndex": 26,
-      "minCol": "Form of Initials",
-      "maxCol": "Form of Initials",
-      "value": "Ornamented large initials (4-7 lines) and medium initials and letters (3 lines) added in some places, perhaps at a later time."
     },
     {
       "minRow": 123,
@@ -10020,15 +10020,6 @@
       "value": "None"
     },
     {
-      "minRow": 138,
-      "maxRow": 139,
-      "minColIndex": 18,
-      "maxColIndex": 18,
-      "minCol": "Columns",
-      "maxCol": "Columns",
-      "value": "1"
-    },
-    {
       "minRow": 680,
       "maxRow": 681,
       "minColIndex": 29,
@@ -10036,6 +10027,15 @@
       "minCol": "Place",
       "maxCol": "Place",
       "value": "Throughout"
+    },
+    {
+      "minRow": 138,
+      "maxRow": 139,
+      "minColIndex": 18,
+      "maxColIndex": 18,
+      "minCol": "Columns",
+      "maxCol": "Columns",
+      "value": "1"
     },
     {
       "minRow": 428,
@@ -10083,15 +10083,6 @@
       "value": "I: 6 (2 b; 2 f; ff. 1–6); II: 8 (4 b; ff. 7–14); III: 8 (4 b; ff. 15–22); IV: 8 (4 b; ff. 23–30); V: 8 (4 b; ff. 31–38); VI: 8 (4 b; ff. 39–46)"
     },
     {
-      "minRow": 383,
-      "maxRow": 391,
-      "minColIndex": 12,
-      "maxColIndex": 12,
-      "minCol": "Leaf size",
-      "maxCol": "Leaf size",
-      "value": "300x190"
-    },
-    {
       "minRow": 276,
       "maxRow": 280,
       "minColIndex": 4,
@@ -10099,6 +10090,15 @@
       "minCol": "Object",
       "maxCol": "Object",
       "value": "Codex"
+    },
+    {
+      "minRow": 383,
+      "maxRow": 391,
+      "minColIndex": 12,
+      "maxColIndex": 12,
+      "minCol": "Leaf size",
+      "maxCol": "Leaf size",
+      "value": "300x190"
     },
     {
       "minRow": 688,
@@ -10209,6 +10209,15 @@
       "value": "1350"
     },
     {
+      "minRow": 549,
+      "maxRow": 551,
+      "minColIndex": 15,
+      "maxColIndex": 15,
+      "minCol": "Pricking",
+      "maxCol": "Pricking",
+      "value": "No"
+    },
+    {
       "minRow": 110,
       "maxRow": 127,
       "minColIndex": 12,
@@ -10218,12 +10227,12 @@
       "value": "238x170"
     },
     {
-      "minRow": 549,
-      "maxRow": 551,
-      "minColIndex": 15,
-      "maxColIndex": 15,
-      "minCol": "Pricking",
-      "maxCol": "Pricking",
+      "minRow": 522,
+      "maxRow": 530,
+      "minColIndex": 21,
+      "maxColIndex": 21,
+      "minCol": "Rubric",
+      "maxCol": "Rubric",
       "value": "No"
     },
     {
@@ -10234,15 +10243,6 @@
       "minCol": "Gatherings",
       "maxCol": "Gatherings",
       "value": "12 (ff. 76–78)"
-    },
-    {
-      "minRow": 522,
-      "maxRow": 530,
-      "minColIndex": 21,
-      "maxColIndex": 21,
-      "minCol": "Rubric",
-      "maxCol": "Rubric",
-      "value": "No"
     },
     {
       "minRow": 502,
@@ -10332,7 +10332,7 @@
       "maxColIndex": 15,
       "minCol": "Pricking",
       "maxCol": "Pricking",
-      "value": "267 x 200"
+      "value": "Unknown"
     },
     {
       "minRow": 376,
@@ -10371,15 +10371,6 @@
       "value": "Dry"
     },
     {
-      "minRow": 647,
-      "maxRow": 648,
-      "minColIndex": 22,
-      "maxColIndex": 22,
-      "minCol": "Scribe",
-      "maxCol": "Scribe",
-      "value": "Hand h"
-    },
-    {
       "minRow": 635,
       "maxRow": 667,
       "minColIndex": 13,
@@ -10387,6 +10378,15 @@
       "minCol": "Catch Words and Gatherings",
       "maxCol": "Catch Words and Gatherings",
       "value": ""
+    },
+    {
+      "minRow": 647,
+      "maxRow": 648,
+      "minColIndex": 22,
+      "maxColIndex": 22,
+      "minCol": "Scribe",
+      "maxCol": "Scribe",
+      "value": "Hand h"
     },
     {
       "minRow": 272,
@@ -10506,15 +10506,6 @@
       "value": "None"
     },
     {
-      "minRow": 37,
-      "maxRow": 38,
-      "minColIndex": 22,
-      "maxColIndex": 22,
-      "minCol": "Scribe",
-      "maxCol": "Scribe",
-      "value": "Hand b"
-    },
-    {
       "minRow": 177,
       "maxRow": 178,
       "minColIndex": 9,
@@ -10524,8 +10515,17 @@
       "value": "Incl. RBHK & RBMK to Gulaþ; and Epi to Borgþ"
     },
     {
-      "minRow": 281,
-      "maxRow": 307,
+      "minRow": 37,
+      "maxRow": 38,
+      "minColIndex": 22,
+      "maxColIndex": 22,
+      "minCol": "Scribe",
+      "maxCol": "Scribe",
+      "value": "Hand b"
+    },
+    {
+      "minRow": 522,
+      "maxRow": 530,
       "minColIndex": 4,
       "maxColIndex": 4,
       "minCol": "Object",
@@ -10533,8 +10533,8 @@
       "value": "Codex"
     },
     {
-      "minRow": 522,
-      "maxRow": 530,
+      "minRow": 281,
+      "maxRow": 307,
       "minColIndex": 4,
       "maxColIndex": 4,
       "minCol": "Object",
@@ -10560,15 +10560,6 @@
       "value": "1300"
     },
     {
-      "minRow": 164,
-      "maxRow": 167,
-      "minColIndex": 22,
-      "maxColIndex": 22,
-      "minCol": "Scribe",
-      "maxCol": "Scribe",
-      "value": "Hand e"
-    },
-    {
       "minRow": 362,
       "maxRow": 363,
       "minColIndex": 22,
@@ -10576,6 +10567,15 @@
       "minCol": "Scribe",
       "maxCol": "Scribe",
       "value": "Hand c (NgL scribe)"
+    },
+    {
+      "minRow": 164,
+      "maxRow": 167,
+      "minColIndex": 22,
+      "maxColIndex": 22,
+      "minCol": "Scribe",
+      "maxCol": "Scribe",
+      "value": "Hand e"
     },
     {
       "minRow": 276,
@@ -10614,15 +10614,6 @@
       "value": "Parchment"
     },
     {
-      "minRow": 130,
-      "maxRow": 132,
-      "minColIndex": 13,
-      "maxColIndex": 13,
-      "minCol": "Catch Words and Gatherings",
-      "maxCol": "Catch Words and Gatherings",
-      "value": ""
-    },
-    {
       "minRow": 640,
       "maxRow": 643,
       "minColIndex": 21,
@@ -10630,6 +10621,15 @@
       "minCol": "Rubric",
       "maxCol": "Rubric",
       "value": "Yes"
+    },
+    {
+      "minRow": 130,
+      "maxRow": 132,
+      "minColIndex": 13,
+      "maxColIndex": 13,
+      "minCol": "Catch Words and Gatherings",
+      "maxCol": "Catch Words and Gatherings",
+      "value": ""
     },
     {
       "minRow": 329,
@@ -10659,15 +10659,6 @@
       "value": ""
     },
     {
-      "minRow": 394,
-      "maxRow": 402,
-      "minColIndex": 28,
-      "maxColIndex": 28,
-      "minCol": "Iconography",
-      "maxCol": "Iconography",
-      "value": "None. Large and medium ornamented initials on f. 21va1–3, f. 99ra12–14, f 100ra13–15, f. 102va3–5, and space left for large and medium initials on f. 8rb27–30, f. 16ra11–14, f. 22va26–30, f. 26rb17–20, f. 27rb27–30, f. 30ra7–10, f. 35vb26–29, f. 45rb13–17, f. 53ra30–33, f. 57va20–23, f. 73va29–33, f. 79va4–7, f. 81va23–26, f. 84va14–17, f. 89rb22–25. A medium initial was later inserted on f. 93vb31–33."
-    },
-    {
       "minRow": 216,
       "maxRow": 224,
       "minColIndex": 29,
@@ -10675,6 +10666,15 @@
       "minCol": "Place",
       "maxCol": "Place",
       "value": "Throughout"
+    },
+    {
+      "minRow": 394,
+      "maxRow": 402,
+      "minColIndex": 28,
+      "maxColIndex": 28,
+      "minCol": "Iconography",
+      "maxCol": "Iconography",
+      "value": "None. Large and medium ornamented initials on f. 21va1–3, f. 99ra12–14, f 100ra13–15, f. 102va3–5, and space left for large and medium initials on f. 8rb27–30, f. 16ra11–14, f. 22va26–30, f. 26rb17–20, f. 27rb27–30, f. 30ra7–10, f. 35vb26–29, f. 45rb13–17, f. 53ra30–33, f. 57va20–23, f. 73va29–33, f. 79va4–7, f. 81va23–26, f. 84va14–17, f. 89rb22–25. A medium initial was later inserted on f. 93vb31–33."
     },
     {
       "minRow": 700,
@@ -10785,13 +10785,13 @@
       "value": "Small"
     },
     {
-      "minRow": 242,
-      "maxRow": 243,
-      "minColIndex": 25,
-      "maxColIndex": 25,
-      "minCol": "Colours",
-      "maxCol": "Colours",
-      "value": "None"
+      "minRow": 177,
+      "maxRow": 207,
+      "minColIndex": 26,
+      "maxColIndex": 26,
+      "minCol": "Form of Initials",
+      "maxCol": "Form of Initials",
+      "value": "At times ornamented, two-coloured and gabled medium 3 (3 lines) and small initials (2 lines), but often Lombard-styled initials. In some cases, the margin is embellished with Romanesque-styled ranked ornaments."
     },
     {
       "minRow": 516,
@@ -10803,6 +10803,15 @@
       "value": ""
     },
     {
+      "minRow": 681,
+      "maxRow": 682,
+      "minColIndex": 18,
+      "maxColIndex": 18,
+      "minCol": "Columns",
+      "maxCol": "Columns",
+      "value": "1"
+    },
+    {
       "minRow": 492,
       "maxRow": 493,
       "minColIndex": 5,
@@ -10812,22 +10821,13 @@
       "value": "4to"
     },
     {
-      "minRow": 177,
-      "maxRow": 207,
-      "minColIndex": 26,
-      "maxColIndex": 26,
-      "minCol": "Form of Initials",
-      "maxCol": "Form of Initials",
-      "value": "At times ornamented, two-coloured and gabled medium 3 (3 lines) and small initials (2 lines), but often Lombard-styled initials. In some cases, the margin is embellished with Romanesque-styled ranked ornaments."
-    },
-    {
-      "minRow": 681,
-      "maxRow": 682,
-      "minColIndex": 18,
-      "maxColIndex": 18,
-      "minCol": "Columns",
-      "maxCol": "Columns",
-      "value": "1"
+      "minRow": 242,
+      "maxRow": 243,
+      "minColIndex": 25,
+      "maxColIndex": 25,
+      "minCol": "Colours",
+      "maxCol": "Colours",
+      "value": "None"
     },
     {
       "minRow": 544,
@@ -10992,15 +10992,6 @@
       "value": "I"
     },
     {
-      "minRow": 177,
-      "maxRow": 195,
-      "minColIndex": 19,
-      "maxColIndex": 19,
-      "minCol": "Lines",
-      "maxCol": "Lines",
-      "value": "30"
-    },
-    {
       "minRow": 383,
       "maxRow": 389,
       "minColIndex": 10,
@@ -11008,6 +10999,15 @@
       "minCol": "Gatherings",
       "maxCol": "Gatherings",
       "value": "I: 6 (2b, 2f, ff. 1-6); II: 8 (4b, ff. 7-14); III: 8 (4b, ff. 15-22); IV: 8 (4b, ff. 23-30); V: 8 (4b, ff. 31-38); VI: 8 (4b, ff. 39-46); VII: 8 (4b, ff. 47-54); VIII: 8 (4b, ff. 55-62); IX: 3 (1b, 1f, ff. 63-65)"
+    },
+    {
+      "minRow": 177,
+      "maxRow": 195,
+      "minColIndex": 19,
+      "maxColIndex": 19,
+      "minCol": "Lines",
+      "maxCol": "Lines",
+      "value": "30"
     },
     {
       "minRow": 149,
@@ -11028,15 +11028,6 @@
       "value": "32–33"
     },
     {
-      "minRow": 364,
-      "maxRow": 365,
-      "minColIndex": 19,
-      "maxColIndex": 19,
-      "minCol": "Lines",
-      "maxCol": "Lines",
-      "value": "45"
-    },
-    {
       "minRow": 542,
       "maxRow": 543,
       "minColIndex": 6,
@@ -11044,6 +11035,15 @@
       "minCol": "Dating",
       "maxCol": "Dating",
       "value": "1677"
+    },
+    {
+      "minRow": 364,
+      "maxRow": 365,
+      "minColIndex": 19,
+      "maxColIndex": 19,
+      "minCol": "Lines",
+      "maxCol": "Lines",
+      "value": "45"
     },
     {
       "minRow": 59,
@@ -11082,15 +11082,6 @@
       "value": "Unknown"
     },
     {
-      "minRow": 670,
-      "maxRow": 678,
-      "minColIndex": 27,
-      "maxColIndex": 27,
-      "minCol": "Size of Initials",
-      "maxCol": "Size of Initials",
-      "value": "Large"
-    },
-    {
       "minRow": 692,
       "maxRow": 699,
       "minColIndex": 24,
@@ -11098,6 +11089,15 @@
       "minCol": "Style",
       "maxCol": "Style",
       "value": "Romanesque"
+    },
+    {
+      "minRow": 670,
+      "maxRow": 678,
+      "minColIndex": 27,
+      "maxColIndex": 27,
+      "minCol": "Size of Initials",
+      "maxCol": "Size of Initials",
+      "value": "Large"
     },
     {
       "minRow": 604,
@@ -11136,15 +11136,6 @@
       "value": "No"
     },
     {
-      "minRow": 593,
-      "maxRow": 595,
-      "minColIndex": 12,
-      "maxColIndex": 12,
-      "minCol": "Leaf size",
-      "maxCol": "Leaf size",
-      "value": "255x183"
-    },
-    {
       "minRow": 208,
       "maxRow": 215,
       "minColIndex": 0,
@@ -11152,6 +11143,15 @@
       "minCol": "Shelf mark",
       "maxCol": "Shelf mark",
       "value": "AM 68 4to"
+    },
+    {
+      "minRow": 593,
+      "maxRow": 595,
+      "minColIndex": 12,
+      "maxColIndex": 12,
+      "minCol": "Leaf size",
+      "maxCol": "Leaf size",
+      "value": "255x183"
     },
     {
       "minRow": 130,
@@ -11316,15 +11316,6 @@
       "value": ""
     },
     {
-      "minRow": 415,
-      "maxRow": 416,
-      "minColIndex": 20,
-      "maxColIndex": 20,
-      "minCol": "Script",
-      "maxCol": "Script",
-      "value": "Cursiva A."
-    },
-    {
       "minRow": 629,
       "maxRow": 631,
       "minColIndex": 16,
@@ -11332,6 +11323,15 @@
       "minCol": "Material",
       "maxCol": "Material",
       "value": "Parchment"
+    },
+    {
+      "minRow": 415,
+      "maxRow": 416,
+      "minColIndex": 20,
+      "maxColIndex": 20,
+      "minCol": "Script",
+      "maxCol": "Script",
+      "value": "Cursiva A."
     },
     {
       "minRow": 620,
@@ -11505,15 +11505,6 @@
       "value": "AMS"
     },
     {
-      "minRow": 227,
-      "maxRow": 229,
-      "minColIndex": 10,
-      "maxColIndex": 10,
-      "minCol": "Gatherings",
-      "maxCol": "Gatherings",
-      "value": "I: 8 (4b, ff. 1-8); II: 8 (4b, ff. 9-16); III: 8 (4b, ff. 17-24); IV: 8 (4b, ff. 25-32); V: 8 (4b, ff. 33-40); VI: 8 (4b, ff. 41-48); VII: 8 (4b, ff. 49-56); VIII: 8 (4b, ff. 57-64); IX: 8 (4b, ff. 56-72); X: 8 (4b, ff. 73-80); XI: 8 (4b, ff. 81-88); XII: 2 (1b, ff. 89-90)"
-    },
-    {
       "minRow": 533,
       "maxRow": 543,
       "minColIndex": 21,
@@ -11521,6 +11512,15 @@
       "minCol": "Rubric",
       "maxCol": "Rubric",
       "value": "No"
+    },
+    {
+      "minRow": 227,
+      "maxRow": 229,
+      "minColIndex": 10,
+      "maxColIndex": 10,
+      "minCol": "Gatherings",
+      "maxCol": "Gatherings",
+      "value": "I: 8 (4b, ff. 1-8); II: 8 (4b, ff. 9-16); III: 8 (4b, ff. 17-24); IV: 8 (4b, ff. 25-32); V: 8 (4b, ff. 33-40); VI: 8 (4b, ff. 41-48); VII: 8 (4b, ff. 49-56); VIII: 8 (4b, ff. 57-64); IX: 8 (4b, ff. 56-72); X: 8 (4b, ff. 73-80); XI: 8 (4b, ff. 81-88); XII: 2 (1b, ff. 89-90)"
     },
     {
       "minRow": 308,
@@ -11559,15 +11559,6 @@
       "value": ""
     },
     {
-      "minRow": 274,
-      "maxRow": 275,
-      "minColIndex": 7,
-      "maxColIndex": 7,
-      "minCol": "Leaves/Pages",
-      "maxCol": "Leaves/Pages",
-      "value": "Ff. 53v–57v"
-    },
-    {
       "minRow": 692,
       "maxRow": 699,
       "minColIndex": 23,
@@ -11575,6 +11566,15 @@
       "minCol": "Production",
       "maxCol": "Production",
       "value": "Oslo ?"
+    },
+    {
+      "minRow": 274,
+      "maxRow": 275,
+      "minColIndex": 7,
+      "maxColIndex": 7,
+      "minCol": "Leaves/Pages",
+      "maxCol": "Leaves/Pages",
+      "value": "Ff. 53v–57v"
     },
     {
       "minRow": 130,
@@ -11802,15 +11802,6 @@
       "value": "G, B, R"
     },
     {
-      "minRow": 274,
-      "maxRow": 275,
-      "minColIndex": 8,
-      "maxColIndex": 8,
-      "minCol": "Main text",
-      "maxCol": "Main text",
-      "value": "Fml"
-    },
-    {
       "minRow": 361,
       "maxRow": 362,
       "minColIndex": 10,
@@ -11818,6 +11809,15 @@
       "minCol": "Gatherings",
       "maxCol": "Gatherings",
       "value": "I: 10 (5b, ff. 1-10); II: 9 (4b, 2f, ff. 11-20)"
+    },
+    {
+      "minRow": 274,
+      "maxRow": 275,
+      "minColIndex": 8,
+      "maxColIndex": 8,
+      "minCol": "Main text",
+      "maxCol": "Main text",
+      "value": "Fml"
     },
     {
       "minRow": 418,
@@ -11892,15 +11892,6 @@
       "value": "19"
     },
     {
-      "minRow": 0,
-      "maxRow": 1,
-      "minColIndex": 24,
-      "maxColIndex": 24,
-      "minCol": "Style",
-      "maxCol": "Style",
-      "value": "Unknown"
-    },
-    {
       "minRow": 484,
       "maxRow": 491,
       "minColIndex": 4,
@@ -11908,6 +11899,15 @@
       "minCol": "Object",
       "maxCol": "Object",
       "value": "Codex"
+    },
+    {
+      "minRow": 0,
+      "maxRow": 1,
+      "minColIndex": 24,
+      "maxColIndex": 24,
+      "minCol": "Style",
+      "maxCol": "Style",
+      "value": "Unknown"
     },
     {
       "minRow": 27,
@@ -12036,13 +12036,13 @@
       "value": "AM 56 4to"
     },
     {
-      "minRow": 266,
-      "maxRow": 268,
-      "minColIndex": 19,
-      "maxColIndex": 19,
-      "minCol": "Lines",
-      "maxCol": "Lines",
-      "value": "Various"
+      "minRow": 474,
+      "maxRow": 476,
+      "minColIndex": 18,
+      "maxColIndex": 18,
+      "minCol": "Columns",
+      "maxCol": "Columns",
+      "value": "2"
     },
     {
       "minRow": 276,
@@ -12054,13 +12054,13 @@
       "value": "1"
     },
     {
-      "minRow": 474,
-      "maxRow": 476,
-      "minColIndex": 18,
-      "maxColIndex": 18,
-      "minCol": "Columns",
-      "maxCol": "Columns",
-      "value": "2"
+      "minRow": 266,
+      "maxRow": 268,
+      "minColIndex": 19,
+      "maxColIndex": 19,
+      "minCol": "Lines",
+      "maxCol": "Lines",
+      "value": "Various"
     },
     {
       "minRow": 314,
@@ -12135,15 +12135,6 @@
       "value": "Throughout"
     },
     {
-      "minRow": 230,
-      "maxRow": 234,
-      "minColIndex": 16,
-      "maxColIndex": 16,
-      "minCol": "Material",
-      "maxCol": "Material",
-      "value": "Parchment"
-    },
-    {
       "minRow": 668,
       "maxRow": 678,
       "minColIndex": 3,
@@ -12151,6 +12142,15 @@
       "minCol": "Depository",
       "maxCol": "Depository",
       "value": "AMS"
+    },
+    {
+      "minRow": 230,
+      "maxRow": 234,
+      "minColIndex": 16,
+      "maxColIndex": 16,
+      "minCol": "Material",
+      "maxCol": "Material",
+      "value": "Parchment"
     },
     {
       "minRow": 281,
@@ -12441,15 +12441,6 @@
       "value": ""
     },
     {
-      "minRow": 306,
-      "maxRow": 307,
-      "minColIndex": 23,
-      "maxColIndex": 23,
-      "minCol": "Production",
-      "maxCol": "Production",
-      "value": "Skien"
-    },
-    {
       "minRow": 700,
       "maxRow": 703,
       "minColIndex": 28,
@@ -12457,6 +12448,15 @@
       "minCol": "Iconography",
       "maxCol": "Iconography",
       "value": "None"
+    },
+    {
+      "minRow": 306,
+      "maxRow": 307,
+      "minColIndex": 23,
+      "maxColIndex": 23,
+      "minCol": "Production",
+      "maxCol": "Production",
+      "value": "Skien"
     },
     {
       "minRow": 138,
@@ -12747,15 +12747,6 @@
       "value": ""
     },
     {
-      "minRow": 130,
-      "maxRow": 132,
-      "minColIndex": 8,
-      "maxColIndex": 8,
-      "minCol": "Main text",
-      "maxCol": "Main text",
-      "value": "MLL (GuL [?])"
-    },
-    {
       "minRow": 123,
       "maxRow": 124,
       "minColIndex": 8,
@@ -12765,13 +12756,13 @@
       "value": ""
     },
     {
-      "minRow": 329,
-      "maxRow": 360,
-      "minColIndex": 13,
-      "maxColIndex": 13,
-      "minCol": "Catch Words and Gatherings",
-      "maxCol": "Catch Words and Gatherings",
-      "value": ""
+      "minRow": 130,
+      "maxRow": 132,
+      "minColIndex": 8,
+      "maxColIndex": 8,
+      "minCol": "Main text",
+      "maxCol": "Main text",
+      "value": "MLL (GuL [?])"
     },
     {
       "minRow": 461,
@@ -12781,6 +12772,15 @@
       "minCol": "Colours",
       "maxCol": "Colours",
       "value": "None"
+    },
+    {
+      "minRow": 329,
+      "maxRow": 360,
+      "minColIndex": 13,
+      "maxColIndex": 13,
+      "minCol": "Catch Words and Gatherings",
+      "maxCol": "Catch Words and Gatherings",
+      "value": ""
     },
     {
       "minRow": 415,
@@ -12828,15 +12828,6 @@
       "value": "Nowhere"
     },
     {
-      "minRow": 406,
-      "maxRow": 414,
-      "minColIndex": 27,
-      "maxColIndex": 27,
-      "minCol": "Size of Initials",
-      "maxCol": "Size of Initials",
-      "value": "Medium"
-    },
-    {
       "minRow": 175,
       "maxRow": 176,
       "minColIndex": 28,
@@ -12844,6 +12835,15 @@
       "minCol": "Iconography",
       "maxCol": "Iconography",
       "value": "None. Ten large and one medium Lombard letters on f. 20r1-6, f. 21r16-20, f. 27r21-25, f. 32v25-29, f. 42r1-5, f. 44v18-21 (medium), f. 47r3-7, f. 50v5-9, f. 55v8-12, f. 74v1-6, f. 81v9-13."
+    },
+    {
+      "minRow": 406,
+      "maxRow": 414,
+      "minColIndex": 27,
+      "maxColIndex": 27,
+      "minCol": "Size of Initials",
+      "maxCol": "Size of Initials",
+      "value": "Medium"
     },
     {
       "minRow": 326,
@@ -12891,15 +12891,6 @@
       "value": "9–18 (ff. 61–139)"
     },
     {
-      "minRow": 6,
-      "maxRow": 7,
-      "minColIndex": 22,
-      "maxColIndex": 22,
-      "minCol": "Scribe",
-      "maxCol": "Scribe",
-      "value": "Hand a"
-    },
-    {
       "minRow": 668,
       "maxRow": 678,
       "minColIndex": 30,
@@ -12909,13 +12900,13 @@
       "value": "Jóhanna Katrín et.al. (2023)"
     },
     {
-      "minRow": 242,
-      "maxRow": 243,
-      "minColIndex": 20,
-      "maxColIndex": 20,
-      "minCol": "Script",
-      "maxCol": "Script",
-      "value": "Cursiva R"
+      "minRow": 6,
+      "maxRow": 7,
+      "minColIndex": 22,
+      "maxColIndex": 22,
+      "minCol": "Scribe",
+      "maxCol": "Scribe",
+      "value": "Hand a"
     },
     {
       "minRow": 190,
@@ -12936,6 +12927,15 @@
       "value": "Parchment"
     },
     {
+      "minRow": 138,
+      "maxRow": 139,
+      "minColIndex": 25,
+      "maxColIndex": 25,
+      "minCol": "Colours",
+      "maxCol": "Colours",
+      "value": "R, G, B, Y"
+    },
+    {
       "minRow": 461,
       "maxRow": 468,
       "minColIndex": 22,
@@ -12945,13 +12945,13 @@
       "value": "Hand f"
     },
     {
-      "minRow": 138,
-      "maxRow": 139,
-      "minColIndex": 25,
-      "maxColIndex": 25,
-      "minCol": "Colours",
-      "maxCol": "Colours",
-      "value": "R, G, B, Y"
+      "minRow": 242,
+      "maxRow": 243,
+      "minColIndex": 20,
+      "maxColIndex": 20,
+      "minCol": "Script",
+      "maxCol": "Script",
+      "value": "Cursiva R"
     },
     {
       "minRow": 376,
@@ -12981,13 +12981,13 @@
       "value": "Krb ch. 12; Lvb ch. 1–2; 16–17; Mhb; ch. 1–2; 5–8 14–17"
     },
     {
-      "minRow": 45,
-      "maxRow": 99,
-      "minColIndex": 16,
-      "maxColIndex": 16,
-      "minCol": "Material",
-      "maxCol": "Material",
-      "value": "Parchment"
+      "minRow": 629,
+      "maxRow": 631,
+      "minColIndex": 12,
+      "maxColIndex": 12,
+      "minCol": "Leaf size",
+      "maxCol": "Leaf size",
+      "value": "250x160"
     },
     {
       "minRow": 225,
@@ -12999,17 +12999,17 @@
       "value": "AM 72 4to"
     },
     {
-      "minRow": 629,
-      "maxRow": 631,
-      "minColIndex": 12,
-      "maxColIndex": 12,
-      "minCol": "Leaf size",
-      "maxCol": "Leaf size",
-      "value": "250x160"
-    },
-    {
       "minRow": 138,
       "maxRow": 139,
+      "minColIndex": 16,
+      "maxColIndex": 16,
+      "minCol": "Material",
+      "maxCol": "Material",
+      "value": "Parchment"
+    },
+    {
+      "minRow": 45,
+      "maxRow": 99,
       "minColIndex": 16,
       "maxColIndex": 16,
       "minCol": "Material",
@@ -13053,13 +13053,13 @@
       "value": "II"
     },
     {
-      "minRow": 708,
-      "maxRow": 709,
-      "minColIndex": 13,
-      "maxColIndex": 13,
-      "minCol": "Catch Words and Gatherings",
-      "maxCol": "Catch Words and Gatherings",
-      "value": ""
+      "minRow": 266,
+      "maxRow": 271,
+      "minColIndex": 18,
+      "maxColIndex": 18,
+      "minCol": "Columns",
+      "maxCol": "Columns",
+      "value": "2"
     },
     {
       "minRow": 245,
@@ -13071,13 +13071,13 @@
       "value": "1350"
     },
     {
-      "minRow": 266,
-      "maxRow": 271,
-      "minColIndex": 18,
-      "maxColIndex": 18,
-      "minCol": "Columns",
-      "maxCol": "Columns",
-      "value": "2"
+      "minRow": 708,
+      "maxRow": 709,
+      "minColIndex": 13,
+      "maxColIndex": 13,
+      "minCol": "Catch Words and Gatherings",
+      "maxCol": "Catch Words and Gatherings",
+      "value": ""
     },
     {
       "minRow": 6,
@@ -13134,6 +13134,15 @@
       "value": "None"
     },
     {
+      "minRow": 672,
+      "maxRow": 674,
+      "minColIndex": 10,
+      "maxColIndex": 10,
+      "minCol": "Gatherings",
+      "maxCol": "Gatherings",
+      "value": "IX: 7 (3b, 1f, ff. 65-71)"
+    },
+    {
       "minRow": 679,
       "maxRow": 682,
       "minColIndex": 10,
@@ -13143,13 +13152,22 @@
       "value": "1–10 (ff. 1–40) (with catchwords at the end of each gathering)"
     },
     {
-      "minRow": 672,
-      "maxRow": 674,
-      "minColIndex": 10,
-      "maxColIndex": 10,
-      "minCol": "Gatherings",
-      "maxCol": "Gatherings",
-      "value": "IX: 7 (3b, 1f, ff. 65-71)"
+      "minRow": 201,
+      "maxRow": 202,
+      "minColIndex": 22,
+      "maxColIndex": 22,
+      "minCol": "Scribe",
+      "maxCol": "Scribe",
+      "value": "Hand h"
+    },
+    {
+      "minRow": 230,
+      "maxRow": 234,
+      "minColIndex": 23,
+      "maxColIndex": 23,
+      "minCol": "Production",
+      "maxCol": "Production",
+      "value": "Unknown"
     },
     {
       "minRow": 392,
@@ -13168,24 +13186,6 @@
       "minCol": "Leaf size",
       "maxCol": "Leaf size",
       "value": "210x156"
-    },
-    {
-      "minRow": 230,
-      "maxRow": 234,
-      "minColIndex": 23,
-      "maxColIndex": 23,
-      "minCol": "Production",
-      "maxCol": "Production",
-      "value": "Unknown"
-    },
-    {
-      "minRow": 201,
-      "maxRow": 202,
-      "minColIndex": 22,
-      "maxColIndex": 22,
-      "minCol": "Scribe",
-      "maxCol": "Scribe",
-      "value": "Hand h"
     },
     {
       "minRow": 39,
@@ -13287,15 +13287,6 @@
       "value": "Throughout"
     },
     {
-      "minRow": 0,
-      "maxRow": 1,
-      "minColIndex": 13,
-      "maxColIndex": 13,
-      "minCol": "Catch Words and Gatherings",
-      "maxCol": "Catch Words and Gatherings",
-      "value": ""
-    },
-    {
       "minRow": 130,
       "maxRow": 132,
       "minColIndex": 16,
@@ -13305,13 +13296,13 @@
       "value": "Parchment"
     },
     {
-      "minRow": 329,
-      "maxRow": 360,
-      "minColIndex": 21,
-      "maxColIndex": 21,
-      "minCol": "Rubric",
-      "maxCol": "Rubric",
-      "value": "Yes"
+      "minRow": 0,
+      "maxRow": 1,
+      "minColIndex": 13,
+      "maxColIndex": 13,
+      "minCol": "Catch Words and Gatherings",
+      "maxCol": "Catch Words and Gatherings",
+      "value": ""
     },
     {
       "minRow": 204,
@@ -13321,6 +13312,15 @@
       "minCol": "Main text",
       "maxCol": "Main text",
       "value": ""
+    },
+    {
+      "minRow": 329,
+      "maxRow": 360,
+      "minColIndex": 21,
+      "maxColIndex": 21,
+      "minCol": "Rubric",
+      "maxCol": "Rubric",
+      "value": "Yes"
     },
     {
       "minRow": 8,
@@ -13386,24 +13386,6 @@
       "value": "I: 8 (4b, ff. 1-8); II: 8 (4b, ff. 9-16); III: 8 (4b, ff. 17-24); IV: 8 (4b, ff. 25-32); V: 8 (4b, ff. 33-40); VI: 8 (4b, ff. 41-48); VII: 8 (4b, ff. 49-56); VIII: 8 (4b, ff. 57-64); IX: 8 (4b, ff. 65-72); X: 6 (3b, ff. 73-78); XI: 8 (4b, ff. 79-86); XII: 8 (4b, ff. 87-94); XIII: 8 (4b, ff. 95-102); XIV: 8 (4b, ff. 103-110); XV: 6 (3b, ff. 111-116); "
     },
     {
-      "minRow": 329,
-      "maxRow": 360,
-      "minColIndex": 12,
-      "maxColIndex": 12,
-      "minCol": "Leaf size",
-      "maxCol": "Leaf size",
-      "value": "295x210"
-    },
-    {
-      "minRow": 710,
-      "maxRow": 713,
-      "minColIndex": 27,
-      "maxColIndex": 27,
-      "minCol": "Size of Initials",
-      "maxCol": "Size of Initials",
-      "value": "Unknown"
-    },
-    {
       "minRow": 461,
       "maxRow": 481,
       "minColIndex": 24,
@@ -13413,13 +13395,13 @@
       "value": "Other"
     },
     {
-      "minRow": 390,
-      "maxRow": 391,
-      "minColIndex": 14,
-      "maxColIndex": 14,
-      "minCol": "Production Unit",
-      "maxCol": "Production Unit",
-      "value": "II"
+      "minRow": 710,
+      "maxRow": 713,
+      "minColIndex": 27,
+      "maxColIndex": 27,
+      "minCol": "Size of Initials",
+      "maxCol": "Size of Initials",
+      "value": "Unknown"
     },
     {
       "minRow": 110,
@@ -13438,6 +13420,24 @@
       "minCol": "Minor text",
       "maxCol": "Minor text",
       "value": ""
+    },
+    {
+      "minRow": 390,
+      "maxRow": 391,
+      "minColIndex": 14,
+      "maxColIndex": 14,
+      "minCol": "Production Unit",
+      "maxCol": "Production Unit",
+      "value": "II"
+    },
+    {
+      "minRow": 329,
+      "maxRow": 360,
+      "minColIndex": 12,
+      "maxColIndex": 12,
+      "minCol": "Leaf size",
+      "maxCol": "Leaf size",
+      "value": "295x210"
     },
     {
       "minRow": 100,
@@ -13503,15 +13503,6 @@
       "value": "260x175"
     },
     {
-      "minRow": 48,
-      "maxRow": 58,
-      "minColIndex": 19,
-      "maxColIndex": 19,
-      "minCol": "Lines",
-      "maxCol": "Lines",
-      "value": "28"
-    },
-    {
       "minRow": 383,
       "maxRow": 391,
       "minColIndex": 4,
@@ -13519,6 +13510,15 @@
       "minCol": "Object",
       "maxCol": "Object",
       "value": "Codex"
+    },
+    {
+      "minRow": 48,
+      "maxRow": 58,
+      "minColIndex": 19,
+      "maxColIndex": 19,
+      "minCol": "Lines",
+      "maxCol": "Lines",
+      "value": "28"
     },
     {
       "minRow": 177,
@@ -13647,15 +13647,6 @@
       "value": "Yes"
     },
     {
-      "minRow": 635,
-      "maxRow": 667,
-      "minColIndex": 2,
-      "maxColIndex": 2,
-      "minCol": "Related Shelfmarks",
-      "maxCol": "Related Shelfmarks",
-      "value": ""
-    },
-    {
       "minRow": 484,
       "maxRow": 491,
       "minColIndex": 0,
@@ -13672,6 +13663,15 @@
       "minCol": "Iconography",
       "maxCol": "Iconography",
       "value": "None"
+    },
+    {
+      "minRow": 635,
+      "maxRow": 667,
+      "minColIndex": 2,
+      "maxColIndex": 2,
+      "minCol": "Related Shelfmarks",
+      "maxCol": "Related Shelfmarks",
+      "value": ""
     },
     {
       "minRow": 175,
@@ -13710,15 +13710,6 @@
       "value": "250x180"
     },
     {
-      "minRow": 238,
-      "maxRow": 243,
-      "minColIndex": 17,
-      "maxColIndex": 17,
-      "minCol": "Ruling",
-      "maxCol": "Ruling",
-      "value": "Ink"
-    },
-    {
       "minRow": 6,
       "maxRow": 7,
       "minColIndex": 11,
@@ -13726,6 +13717,15 @@
       "minCol": "Full size",
       "maxCol": "Full size",
       "value": "Unknown"
+    },
+    {
+      "minRow": 238,
+      "maxRow": 243,
+      "minColIndex": 17,
+      "maxColIndex": 17,
+      "minCol": "Ruling",
+      "maxCol": "Ruling",
+      "value": "Ink"
     },
     {
       "minRow": 242,
@@ -13926,15 +13926,6 @@
       "value": "Textualis"
     },
     {
-      "minRow": 329,
-      "maxRow": 360,
-      "minColIndex": 20,
-      "maxColIndex": 20,
-      "minCol": "Script",
-      "maxCol": "Script",
-      "value": "Textualis"
-    },
-    {
       "minRow": 197,
       "maxRow": 198,
       "minColIndex": 7,
@@ -13944,13 +13935,13 @@
       "value": "F. 70v"
     },
     {
-      "minRow": 36,
-      "maxRow": 104,
-      "minColIndex": 13,
-      "maxColIndex": 13,
-      "minCol": "Catch Words and Gatherings",
-      "maxCol": "Catch Words and Gatherings",
-      "value": ""
+      "minRow": 329,
+      "maxRow": 360,
+      "minColIndex": 20,
+      "maxColIndex": 20,
+      "minCol": "Script",
+      "maxCol": "Script",
+      "value": "Textualis"
     },
     {
       "minRow": 230,
@@ -13978,6 +13969,15 @@
       "minCol": "Scribe",
       "maxCol": "Scribe",
       "value": "Hand d "
+    },
+    {
+      "minRow": 36,
+      "maxRow": 104,
+      "minColIndex": 13,
+      "maxColIndex": 13,
+      "minCol": "Catch Words and Gatherings",
+      "maxCol": "Catch Words and Gatherings",
+      "value": ""
     },
     {
       "minRow": 188,
@@ -14133,22 +14133,13 @@
       "value": "NRA 4"
     },
     {
-      "minRow": 536,
-      "maxRow": 539,
-      "minColIndex": 20,
-      "maxColIndex": 20,
-      "minCol": "Script",
-      "maxCol": "Script",
-      "value": "Hybrida"
-    },
-    {
-      "minRow": 415,
-      "maxRow": 416,
-      "minColIndex": 14,
-      "maxColIndex": 14,
-      "minCol": "Production Unit",
-      "maxCol": "Production Unit",
-      "value": "II"
+      "minRow": 522,
+      "maxRow": 523,
+      "minColIndex": 8,
+      "maxColIndex": 8,
+      "minCol": "Main text",
+      "maxCol": "Main text",
+      "value": "KF (BorgL)"
     },
     {
       "minRow": 175,
@@ -14160,13 +14151,22 @@
       "value": "R"
     },
     {
-      "minRow": 522,
-      "maxRow": 523,
-      "minColIndex": 8,
-      "maxColIndex": 8,
-      "minCol": "Main text",
-      "maxCol": "Main text",
-      "value": "KF (BorgL)"
+      "minRow": 415,
+      "maxRow": 416,
+      "minColIndex": 14,
+      "maxColIndex": 14,
+      "minCol": "Production Unit",
+      "maxCol": "Production Unit",
+      "value": "II"
+    },
+    {
+      "minRow": 536,
+      "maxRow": 539,
+      "minColIndex": 20,
+      "maxColIndex": 20,
+      "minCol": "Script",
+      "maxCol": "Script",
+      "value": "Hybrida"
     },
     {
       "minRow": 110,
@@ -14250,15 +14250,6 @@
       "value": ""
     },
     {
-      "minRow": 36,
-      "maxRow": 44,
-      "minColIndex": 23,
-      "maxColIndex": 23,
-      "minCol": "Production",
-      "maxCol": "Production",
-      "value": "Pros Lauritsson; Skien (d. 1596)"
-    },
-    {
       "minRow": 208,
       "maxRow": 215,
       "minColIndex": 13,
@@ -14268,13 +14259,13 @@
       "value": ""
     },
     {
-      "minRow": 306,
-      "maxRow": 307,
-      "minColIndex": 19,
-      "maxColIndex": 19,
-      "minCol": "Lines",
-      "maxCol": "Lines",
-      "value": "Various"
+      "minRow": 36,
+      "maxRow": 44,
+      "minColIndex": 23,
+      "maxColIndex": 23,
+      "minCol": "Production",
+      "maxCol": "Production",
+      "value": "Pros Lauritsson; Skien (d. 1596)"
     },
     {
       "minRow": 700,
@@ -14286,8 +14277,26 @@
       "value": "Romanesque"
     },
     {
+      "minRow": 306,
+      "maxRow": 307,
+      "minColIndex": 19,
+      "maxColIndex": 19,
+      "minCol": "Lines",
+      "maxCol": "Lines",
+      "value": "Various"
+    },
+    {
       "minRow": 172,
       "maxRow": 174,
+      "minColIndex": 26,
+      "maxColIndex": 26,
+      "minCol": "Form of Initials",
+      "maxCol": "Form of Initials",
+      "value": "None"
+    },
+    {
+      "minRow": 309,
+      "maxRow": 311,
       "minColIndex": 26,
       "maxColIndex": 26,
       "minCol": "Form of Initials",
@@ -14304,15 +14313,6 @@
       "value": ""
     },
     {
-      "minRow": 309,
-      "maxRow": 311,
-      "minColIndex": 26,
-      "maxColIndex": 26,
-      "minCol": "Form of Initials",
-      "maxCol": "Form of Initials",
-      "value": "None"
-    },
-    {
       "minRow": 392,
       "maxRow": 405,
       "minColIndex": 19,
@@ -14322,15 +14322,6 @@
       "value": "33"
     },
     {
-      "minRow": 390,
-      "maxRow": 391,
-      "minColIndex": 8,
-      "maxColIndex": 8,
-      "minCol": "Main text",
-      "maxCol": "Main text",
-      "value": "Hrðs"
-    },
-    {
       "minRow": 637,
       "maxRow": 639,
       "minColIndex": 26,
@@ -14338,6 +14329,15 @@
       "minCol": "Form of Initials",
       "maxCol": "Form of Initials",
       "value": "None"
+    },
+    {
+      "minRow": 390,
+      "maxRow": 391,
+      "minColIndex": 8,
+      "maxColIndex": 8,
+      "minCol": "Main text",
+      "maxCol": "Main text",
+      "value": "Hrðs"
     },
     {
       "minRow": 250,
@@ -14430,15 +14430,6 @@
       "value": "Hand a"
     },
     {
-      "minRow": 222,
-      "maxRow": 224,
-      "minColIndex": 25,
-      "maxColIndex": 25,
-      "minCol": "Colours",
-      "maxCol": "Colours",
-      "value": "Black"
-    },
-    {
       "minRow": 235,
       "maxRow": 237,
       "minColIndex": 4,
@@ -14446,6 +14437,15 @@
       "minCol": "Object",
       "maxCol": "Object",
       "value": "Fragment"
+    },
+    {
+      "minRow": 222,
+      "maxRow": 224,
+      "minColIndex": 25,
+      "maxColIndex": 25,
+      "minCol": "Colours",
+      "maxCol": "Colours",
+      "value": "Black"
     },
     {
       "minRow": 208,
@@ -14493,15 +14493,6 @@
       "value": "Unknown"
     },
     {
-      "minRow": 635,
-      "maxRow": 667,
-      "minColIndex": 5,
-      "maxColIndex": 5,
-      "minCol": "Size",
-      "maxCol": "Size",
-      "value": "Fol."
-    },
-    {
       "minRow": 700,
       "maxRow": 703,
       "minColIndex": 4,
@@ -14509,6 +14500,15 @@
       "minCol": "Object",
       "maxCol": "Object",
       "value": "Fragment"
+    },
+    {
+      "minRow": 635,
+      "maxRow": 667,
+      "minColIndex": 5,
+      "maxColIndex": 5,
+      "minCol": "Size",
+      "maxCol": "Size",
+      "value": "Fol."
     },
     {
       "minRow": 326,
@@ -14556,15 +14556,6 @@
       "value": "Cursiva A."
     },
     {
-      "minRow": 326,
-      "maxRow": 328,
-      "minColIndex": 10,
-      "maxColIndex": 10,
-      "minCol": "Gatherings",
-      "maxCol": "Gatherings",
-      "value": "Unknown"
-    },
-    {
       "minRow": 708,
       "maxRow": 709,
       "minColIndex": 2,
@@ -14572,6 +14563,15 @@
       "minCol": "Related Shelfmarks",
       "maxCol": "Related Shelfmarks",
       "value": "Could be two separated manuscripts"
+    },
+    {
+      "minRow": 326,
+      "maxRow": 328,
+      "minColIndex": 10,
+      "maxColIndex": 10,
+      "minCol": "Gatherings",
+      "maxCol": "Gatherings",
+      "value": "Unknown"
     },
     {
       "minRow": 208,
@@ -14601,15 +14601,6 @@
       "value": "Maybe fragments of individual manuscripts"
     },
     {
-      "minRow": 130,
-      "maxRow": 132,
-      "minColIndex": 4,
-      "maxColIndex": 4,
-      "minCol": "Object",
-      "maxCol": "Object",
-      "value": "Fragment"
-    },
-    {
       "minRow": 0,
       "maxRow": 1,
       "minColIndex": 1,
@@ -14617,6 +14608,15 @@
       "minCol": "Name",
       "maxCol": "Name",
       "value": ""
+    },
+    {
+      "minRow": 130,
+      "maxRow": 132,
+      "minColIndex": 4,
+      "maxColIndex": 4,
+      "minCol": "Object",
+      "maxCol": "Object",
+      "value": "Fragment"
     },
     {
       "minRow": 688,
@@ -14718,15 +14718,6 @@
       "value": "Fml"
     },
     {
-      "minRow": 6,
-      "maxRow": 7,
-      "minColIndex": 18,
-      "maxColIndex": 18,
-      "minCol": "Columns",
-      "maxCol": "Columns",
-      "value": "1"
-    },
-    {
       "minRow": 558,
       "maxRow": 559,
       "minColIndex": 19,
@@ -14734,6 +14725,15 @@
       "minCol": "Lines",
       "maxCol": "Lines",
       "value": "29"
+    },
+    {
+      "minRow": 6,
+      "maxRow": 7,
+      "minColIndex": 18,
+      "maxColIndex": 18,
+      "minCol": "Columns",
+      "maxCol": "Columns",
+      "value": "1"
     },
     {
       "minRow": 597,
@@ -14781,15 +14781,6 @@
       "value": "Unknown"
     },
     {
-      "minRow": 306,
-      "maxRow": 307,
-      "minColIndex": 18,
-      "maxColIndex": 18,
-      "minCol": "Columns",
-      "maxCol": "Columns",
-      "value": "Various"
-    },
-    {
       "minRow": 700,
       "maxRow": 703,
       "minColIndex": 23,
@@ -14797,6 +14788,15 @@
       "minCol": "Production",
       "maxCol": "Production",
       "value": "Unknown"
+    },
+    {
+      "minRow": 306,
+      "maxRow": 307,
+      "minColIndex": 18,
+      "maxColIndex": 18,
+      "minCol": "Columns",
+      "maxCol": "Columns",
+      "value": "Various"
     },
     {
       "minRow": 138,
@@ -14862,15 +14862,6 @@
       "value": "1"
     },
     {
-      "minRow": 704,
-      "maxRow": 705,
-      "minColIndex": 20,
-      "maxColIndex": 20,
-      "minCol": "Script",
-      "maxCol": "Script",
-      "value": "Cursiva A/R"
-    },
-    {
       "minRow": 272,
       "maxRow": 275,
       "minColIndex": 1,
@@ -14880,13 +14871,13 @@
       "value": ""
     },
     {
-      "minRow": 238,
-      "maxRow": 243,
-      "minColIndex": 15,
-      "maxColIndex": 15,
-      "minCol": "Pricking",
-      "maxCol": "Pricking",
-      "value": "No"
+      "minRow": 704,
+      "maxRow": 705,
+      "minColIndex": 20,
+      "maxColIndex": 20,
+      "minCol": "Script",
+      "maxCol": "Script",
+      "value": "Cursiva A/R"
     },
     {
       "minRow": 597,
@@ -14896,6 +14887,15 @@
       "minCol": "Object",
       "maxCol": "Object",
       "value": "Codex"
+    },
+    {
+      "minRow": 238,
+      "maxRow": 243,
+      "minColIndex": 15,
+      "maxColIndex": 15,
+      "minCol": "Pricking",
+      "maxCol": "Pricking",
+      "value": "No"
     },
     {
       "minRow": 552,
@@ -14943,15 +14943,6 @@
       "value": "1350-1400 (1325–1350)"
     },
     {
-      "minRow": 615,
-      "maxRow": 616,
-      "minColIndex": 24,
-      "maxColIndex": 24,
-      "minCol": "Style",
-      "maxCol": "Style",
-      "value": "Other"
-    },
-    {
       "minRow": 492,
       "maxRow": 493,
       "minColIndex": 21,
@@ -14959,6 +14950,15 @@
       "minCol": "Rubric",
       "maxCol": "Rubric",
       "value": "Yes"
+    },
+    {
+      "minRow": 615,
+      "maxRow": 616,
+      "minColIndex": 24,
+      "maxColIndex": 24,
+      "minCol": "Style",
+      "maxCol": "Style",
+      "value": "Other"
     },
     {
       "minRow": 238,
@@ -15033,15 +15033,6 @@
       "value": "Unknown"
     },
     {
-      "minRow": 276,
-      "maxRow": 280,
-      "minColIndex": 2,
-      "maxColIndex": 2,
-      "minCol": "Related Shelfmarks",
-      "maxCol": "Related Shelfmarks",
-      "value": ""
-    },
-    {
       "minRow": 308,
       "maxRow": 311,
       "minColIndex": 5,
@@ -15049,6 +15040,15 @@
       "minCol": "Size",
       "maxCol": "Size",
       "value": "4to"
+    },
+    {
+      "minRow": 276,
+      "maxRow": 280,
+      "minColIndex": 2,
+      "maxColIndex": 2,
+      "minCol": "Related Shelfmarks",
+      "maxCol": "Related Shelfmarks",
+      "value": ""
     },
     {
       "minRow": 470,
@@ -15069,13 +15069,13 @@
       "value": "Gothic/Romanesque"
     },
     {
-      "minRow": 228,
-      "maxRow": 229,
-      "minColIndex": 25,
-      "maxColIndex": 25,
-      "minCol": "Colours",
-      "maxCol": "Colours",
-      "value": "R, B"
+      "minRow": 544,
+      "maxRow": 547,
+      "minColIndex": 30,
+      "maxColIndex": 30,
+      "minCol": "Literature",
+      "maxCol": "Literature",
+      "value": "Jóhanna Katrín et.al. (2023)"
     },
     {
       "minRow": 0,
@@ -15087,22 +15087,13 @@
       "value": "ch. 9–12; 20–22; 152–53; 156; 224–28; 301–05"
     },
     {
-      "minRow": 544,
-      "maxRow": 547,
-      "minColIndex": 30,
-      "maxColIndex": 30,
-      "minCol": "Literature",
-      "maxCol": "Literature",
-      "value": "Jóhanna Katrín et.al. (2023)"
-    },
-    {
-      "minRow": 250,
-      "maxRow": 271,
-      "minColIndex": 1,
-      "maxColIndex": 1,
-      "minCol": "Name",
-      "maxCol": "Name",
-      "value": ""
+      "minRow": 228,
+      "maxRow": 229,
+      "minColIndex": 25,
+      "maxColIndex": 25,
+      "minCol": "Colours",
+      "maxCol": "Colours",
+      "value": "R, B"
     },
     {
       "minRow": 8,
@@ -15112,6 +15103,15 @@
       "minCol": "Full size",
       "maxCol": "Full size",
       "value": "Unknown"
+    },
+    {
+      "minRow": 250,
+      "maxRow": 271,
+      "minColIndex": 1,
+      "maxColIndex": 1,
+      "minCol": "Name",
+      "maxCol": "Name",
+      "value": ""
     },
     {
       "minRow": 552,
@@ -15132,15 +15132,6 @@
       "value": "III"
     },
     {
-      "minRow": 710,
-      "maxRow": 713,
-      "minColIndex": 23,
-      "maxColIndex": 23,
-      "minCol": "Production",
-      "maxCol": "Production",
-      "value": "Unknown"
-    },
-    {
       "minRow": 421,
       "maxRow": 480,
       "minColIndex": 10,
@@ -15148,6 +15139,15 @@
       "minCol": "Gatherings",
       "maxCol": "Gatherings",
       "value": "1–22 (ff. 10–177)"
+    },
+    {
+      "minRow": 710,
+      "maxRow": 713,
+      "minColIndex": 23,
+      "maxColIndex": 23,
+      "minCol": "Production",
+      "maxCol": "Production",
+      "value": "Unknown"
     },
     {
       "minRow": 149,
@@ -15159,15 +15159,6 @@
       "value": "Yes"
     },
     {
-      "minRow": 201,
-      "maxRow": 202,
-      "minColIndex": 19,
-      "maxColIndex": 19,
-      "minCol": "Lines",
-      "maxCol": "Lines",
-      "value": "30"
-    },
-    {
       "minRow": 100,
       "maxRow": 104,
       "minColIndex": 6,
@@ -15175,6 +15166,15 @@
       "minCol": "Dating",
       "maxCol": "Dating",
       "value": "1575-1600"
+    },
+    {
+      "minRow": 201,
+      "maxRow": 202,
+      "minColIndex": 19,
+      "maxColIndex": 19,
+      "minCol": "Lines",
+      "maxCol": "Lines",
+      "value": "30"
     },
     {
       "minRow": 350,
@@ -15330,13 +15330,13 @@
       "value": "Textualis"
     },
     {
-      "minRow": 376,
-      "maxRow": 382,
-      "minColIndex": 16,
-      "maxColIndex": 16,
-      "minCol": "Material",
-      "maxCol": "Material",
-      "value": "Parchment"
+      "minRow": 166,
+      "maxRow": 167,
+      "minColIndex": 7,
+      "maxColIndex": 7,
+      "minCol": "Leaves/Pages",
+      "maxCol": "Leaves/Pages",
+      "value": "ff. 91va3-100vb"
     },
     {
       "minRow": 615,
@@ -15348,13 +15348,13 @@
       "value": "1550-1600"
     },
     {
-      "minRow": 166,
-      "maxRow": 167,
-      "minColIndex": 7,
-      "maxColIndex": 7,
-      "minCol": "Leaves/Pages",
-      "maxCol": "Leaves/Pages",
-      "value": "ff. 91va3-100vb"
+      "minRow": 376,
+      "maxRow": 382,
+      "minColIndex": 16,
+      "maxColIndex": 16,
+      "minCol": "Material",
+      "maxCol": "Material",
+      "value": "Parchment"
     },
     {
       "minRow": 710,
@@ -15364,15 +15364,6 @@
       "minCol": "Style",
       "maxCol": "Style",
       "value": "Unknown"
-    },
-    {
-      "minRow": 418,
-      "maxRow": 481,
-      "minColIndex": 12,
-      "maxColIndex": 12,
-      "minCol": "Leaf size",
-      "maxCol": "Leaf size",
-      "value": "240x200"
     },
     {
       "minRow": 362,
@@ -15391,6 +15382,15 @@
       "minCol": "Scribe",
       "maxCol": "Scribe",
       "value": "Hand b"
+    },
+    {
+      "minRow": 418,
+      "maxRow": 481,
+      "minColIndex": 12,
+      "maxColIndex": 12,
+      "minCol": "Leaf size",
+      "maxCol": "Leaf size",
+      "value": "240x200"
     },
     {
       "minRow": 650,
@@ -15438,15 +15438,6 @@
       "value": "ByL (BGO)"
     },
     {
-      "minRow": 214,
-      "maxRow": 215,
-      "minColIndex": 6,
-      "maxColIndex": 6,
-      "minCol": "Dating",
-      "maxCol": "Dating",
-      "value": "1350"
-    },
-    {
       "minRow": 6,
       "maxRow": 7,
       "minColIndex": 7,
@@ -15454,6 +15445,15 @@
       "minCol": "Leaves/Pages",
       "maxCol": "Leaves/Pages",
       "value": "Ff. 1–2"
+    },
+    {
+      "minRow": 214,
+      "maxRow": 215,
+      "minColIndex": 6,
+      "maxColIndex": 6,
+      "minCol": "Dating",
+      "maxCol": "Dating",
+      "value": "1350"
     },
     {
       "minRow": 485,
@@ -15609,15 +15609,6 @@
       "value": "19-20"
     },
     {
-      "minRow": 276,
-      "maxRow": 280,
-      "minColIndex": 1,
-      "maxColIndex": 1,
-      "minCol": "Name",
-      "maxCol": "Name",
-      "value": ""
-    },
-    {
       "minRow": 603,
       "maxRow": 604,
       "minColIndex": 8,
@@ -15625,6 +15616,15 @@
       "minCol": "Main text",
       "maxCol": "Main text",
       "value": "MLL (GuL)"
+    },
+    {
+      "minRow": 276,
+      "maxRow": 280,
+      "minColIndex": 1,
+      "maxColIndex": 1,
+      "minCol": "Name",
+      "maxCol": "Name",
+      "value": ""
     },
     {
       "minRow": 593,
@@ -15699,15 +15699,6 @@
       "value": ""
     },
     {
-      "minRow": 415,
-      "maxRow": 416,
-      "minColIndex": 29,
-      "maxColIndex": 29,
-      "minCol": "Place",
-      "maxCol": "Place",
-      "value": "Nowhere"
-    },
-    {
       "minRow": 514,
       "maxRow": 521,
       "minColIndex": 18,
@@ -15717,13 +15708,13 @@
       "value": "1"
     },
     {
-      "minRow": 248,
-      "maxRow": 249,
-      "minColIndex": 26,
-      "maxColIndex": 26,
-      "minCol": "Form of Initials",
-      "maxCol": "Form of Initials",
-      "value": "Few Arabesque initials"
+      "minRow": 415,
+      "maxRow": 416,
+      "minColIndex": 29,
+      "maxColIndex": 29,
+      "minCol": "Place",
+      "maxCol": "Place",
+      "value": "Nowhere"
     },
     {
       "minRow": 370,
@@ -15742,6 +15733,15 @@
       "minCol": "Scribe",
       "maxCol": "Scribe",
       "value": "Hand a (Þorgeirr Hákonarson)"
+    },
+    {
+      "minRow": 248,
+      "maxRow": 249,
+      "minColIndex": 26,
+      "maxColIndex": 26,
+      "minCol": "Form of Initials",
+      "maxCol": "Form of Initials",
+      "value": "Few Arabesque initials"
     },
     {
       "minRow": 390,
@@ -15942,15 +15942,6 @@
       "value": "XVI: 8 (4b, ff. 117-124); XVII: 9 (ff. 125-133)"
     },
     {
-      "minRow": 418,
-      "maxRow": 481,
-      "minColIndex": 11,
-      "maxColIndex": 11,
-      "minCol": "Full size",
-      "maxCol": "Full size",
-      "value": "Unknown"
-    },
-    {
       "minRow": 362,
       "maxRow": 375,
       "minColIndex": 26,
@@ -15958,6 +15949,15 @@
       "minCol": "Form of Initials",
       "maxCol": "Form of Initials",
       "value": "Ornamented and guilded large (5 lines), medium (3-4 lines) and small initials (2 lines)."
+    },
+    {
+      "minRow": 418,
+      "maxRow": 481,
+      "minColIndex": 11,
+      "maxColIndex": 11,
+      "minCol": "Full size",
+      "maxCol": "Full size",
+      "value": "Unknown"
     },
     {
       "minRow": 615,
@@ -16005,15 +16005,6 @@
       "value": "NRA"
     },
     {
-      "minRow": 531,
-      "maxRow": 543,
-      "minColIndex": 12,
-      "maxColIndex": 12,
-      "minCol": "Leaf size",
-      "maxCol": "Leaf size",
-      "value": "270x193"
-    },
-    {
       "minRow": 644,
       "maxRow": 667,
       "minColIndex": 28,
@@ -16021,6 +16012,15 @@
       "minCol": "Iconography",
       "maxCol": "Iconography",
       "value": "None"
+    },
+    {
+      "minRow": 531,
+      "maxRow": 543,
+      "minColIndex": 12,
+      "maxColIndex": 12,
+      "minCol": "Leaf size",
+      "maxCol": "Leaf size",
+      "value": "270x193"
     },
     {
       "minRow": 679,
@@ -16050,15 +16050,6 @@
       "value": "Hand a"
     },
     {
-      "minRow": 710,
-      "maxRow": 713,
-      "minColIndex": 2,
-      "maxColIndex": 2,
-      "minCol": "Related Shelfmarks",
-      "maxCol": "Related Shelfmarks",
-      "value": ""
-    },
-    {
       "minRow": 502,
       "maxRow": 505,
       "minColIndex": 3,
@@ -16066,6 +16057,15 @@
       "minCol": "Depository",
       "maxCol": "Depository",
       "value": "NRA"
+    },
+    {
+      "minRow": 710,
+      "maxRow": 713,
+      "minColIndex": 2,
+      "maxColIndex": 2,
+      "minCol": "Related Shelfmarks",
+      "maxCol": "Related Shelfmarks",
+      "value": ""
     },
     {
       "minRow": 149,
@@ -16140,15 +16140,6 @@
       "value": "1"
     },
     {
-      "minRow": 555,
-      "maxRow": 556,
-      "minColIndex": 21,
-      "maxColIndex": 21,
-      "minCol": "Rubric",
-      "maxCol": "Rubric",
-      "value": "Yes"
-    },
-    {
       "minRow": 692,
       "maxRow": 699,
       "minColIndex": 18,
@@ -16156,6 +16147,15 @@
       "minCol": "Columns",
       "maxCol": "Columns",
       "value": "1"
+    },
+    {
+      "minRow": 555,
+      "maxRow": 556,
+      "minColIndex": 21,
+      "maxColIndex": 21,
+      "minCol": "Rubric",
+      "maxCol": "Rubric",
+      "value": "Yes"
     },
     {
       "minRow": 235,
@@ -16212,13 +16212,13 @@
       "value": "No"
     },
     {
-      "minRow": 710,
-      "maxRow": 713,
-      "minColIndex": 30,
-      "maxColIndex": 30,
-      "minCol": "Literature",
-      "maxCol": "Literature",
-      "value": "Spørck 2006 (226-230)"
+      "minRow": 289,
+      "maxRow": 297,
+      "minColIndex": 17,
+      "maxColIndex": 17,
+      "minCol": "Ruling",
+      "maxCol": "Ruling",
+      "value": "None"
     },
     {
       "minRow": 329,
@@ -16230,15 +16230,6 @@
       "value": "Yes"
     },
     {
-      "minRow": 289,
-      "maxRow": 297,
-      "minColIndex": 17,
-      "maxColIndex": 17,
-      "minCol": "Ruling",
-      "maxCol": "Ruling",
-      "value": "None"
-    },
-    {
       "minRow": 214,
       "maxRow": 215,
       "minColIndex": 29,
@@ -16248,6 +16239,15 @@
       "value": "Nowhere"
     },
     {
+      "minRow": 710,
+      "maxRow": 713,
+      "minColIndex": 30,
+      "maxColIndex": 30,
+      "minCol": "Literature",
+      "maxCol": "Literature",
+      "value": "Spørck 2006 (226-230)"
+    },
+    {
       "minRow": 244,
       "maxRow": 247,
       "minColIndex": 27,
@@ -16255,6 +16255,15 @@
       "minCol": "Size of Initials",
       "maxCol": "Size of Initials",
       "value": "Large"
+    },
+    {
+      "minRow": 700,
+      "maxRow": 703,
+      "minColIndex": 0,
+      "maxColIndex": 0,
+      "minCol": "Shelf mark",
+      "maxCol": "Shelf mark",
+      "value": "NRA 25"
     },
     {
       "minRow": 635,
@@ -16275,13 +16284,13 @@
       "value": "VII: 3 (1 b; 1 f; ff. 47–49); VIII: 8 (3b; 2f; ff. 50–57); IX: 8 (4 b; ff. 58–65); X: 4 (4 f; ff. 66–69) "
     },
     {
-      "minRow": 700,
-      "maxRow": 703,
-      "minColIndex": 0,
-      "maxColIndex": 0,
-      "minCol": "Shelf mark",
-      "maxCol": "Shelf mark",
-      "value": "NRA 25"
+      "minRow": 98,
+      "maxRow": 99,
+      "minColIndex": 8,
+      "maxColIndex": 8,
+      "minCol": "Main text",
+      "maxCol": "Main text",
+      "value": "Hrðs"
     },
     {
       "minRow": 406,
@@ -16291,15 +16300,6 @@
       "minCol": "Literature",
       "maxCol": "Literature",
       "value": "Jóhanna Katrín et.al. (2023)"
-    },
-    {
-      "minRow": 98,
-      "maxRow": 99,
-      "minColIndex": 8,
-      "maxColIndex": 8,
-      "minCol": "Main text",
-      "maxCol": "Main text",
-      "value": "Hrðs"
     },
     {
       "minRow": 248,
@@ -16320,15 +16320,6 @@
       "value": "Throughout"
     },
     {
-      "minRow": 514,
-      "maxRow": 521,
-      "minColIndex": 13,
-      "maxColIndex": 13,
-      "minCol": "Catch Words and Gatherings",
-      "maxCol": "Catch Words and Gatherings",
-      "value": ""
-    },
-    {
       "minRow": 48,
       "maxRow": 58,
       "minColIndex": 22,
@@ -16336,6 +16327,15 @@
       "minCol": "Scribe",
       "maxCol": "Scribe",
       "value": "Hand f (Eiríkr Þrondarson)"
+    },
+    {
+      "minRow": 514,
+      "maxRow": 521,
+      "minColIndex": 13,
+      "maxColIndex": 13,
+      "minCol": "Catch Words and Gatherings",
+      "maxCol": "Catch Words and Gatherings",
+      "value": ""
     },
     {
       "minRow": 272,
@@ -16356,15 +16356,6 @@
       "value": "Large"
     },
     {
-      "minRow": 406,
-      "maxRow": 414,
-      "minColIndex": 29,
-      "maxColIndex": 29,
-      "minCol": "Place",
-      "maxCol": "Place",
-      "value": "Throughout"
-    },
-    {
       "minRow": 27,
       "maxRow": 28,
       "minColIndex": 6,
@@ -16374,40 +16365,13 @@
       "value": "1250"
     },
     {
-      "minRow": 383,
-      "maxRow": 389,
-      "minColIndex": 27,
-      "maxColIndex": 27,
-      "minCol": "Size of Initials",
-      "maxCol": "Size of Initials",
-      "value": "Large"
-    },
-    {
-      "minRow": 183,
-      "maxRow": 189,
-      "minColIndex": 17,
-      "maxColIndex": 17,
-      "minCol": "Ruling",
-      "maxCol": "Ruling",
-      "value": "Dry"
-    },
-    {
-      "minRow": 326,
-      "maxRow": 328,
-      "minColIndex": 6,
-      "maxColIndex": 6,
-      "minCol": "Dating",
-      "maxCol": "Dating",
-      "value": "1302–1310"
-    },
-    {
-      "minRow": 208,
-      "maxRow": 213,
-      "minColIndex": 21,
-      "maxColIndex": 21,
-      "minCol": "Rubric",
-      "maxCol": "Rubric",
-      "value": "Yes"
+      "minRow": 406,
+      "maxRow": 414,
+      "minColIndex": 29,
+      "maxColIndex": 29,
+      "minCol": "Place",
+      "maxCol": "Place",
+      "value": "Throughout"
     },
     {
       "minRow": 516,
@@ -16419,6 +16383,42 @@
       "value": "Nowhere"
     },
     {
+      "minRow": 326,
+      "maxRow": 328,
+      "minColIndex": 6,
+      "maxColIndex": 6,
+      "minCol": "Dating",
+      "maxCol": "Dating",
+      "value": "1302–1310"
+    },
+    {
+      "minRow": 183,
+      "maxRow": 189,
+      "minColIndex": 17,
+      "maxColIndex": 17,
+      "minCol": "Ruling",
+      "maxCol": "Ruling",
+      "value": "Dry"
+    },
+    {
+      "minRow": 208,
+      "maxRow": 213,
+      "minColIndex": 21,
+      "maxColIndex": 21,
+      "minCol": "Rubric",
+      "maxCol": "Rubric",
+      "value": "Yes"
+    },
+    {
+      "minRow": 383,
+      "maxRow": 389,
+      "minColIndex": 27,
+      "maxColIndex": 27,
+      "minCol": "Size of Initials",
+      "maxCol": "Size of Initials",
+      "value": "Large"
+    },
+    {
       "minRow": 519,
       "maxRow": 521,
       "minColIndex": 8,
@@ -16426,24 +16426,6 @@
       "minCol": "Main text",
       "maxCol": "Main text",
       "value": ""
-    },
-    {
-      "minRow": 593,
-      "maxRow": 595,
-      "minColIndex": 0,
-      "maxColIndex": 0,
-      "minCol": "Shelf mark",
-      "maxCol": "Shelf mark",
-      "value": "AM 307 fol."
-    },
-    {
-      "minRow": 484,
-      "maxRow": 491,
-      "minColIndex": 24,
-      "maxColIndex": 24,
-      "minCol": "Style",
-      "maxCol": "Style",
-      "value": "Romanesque"
     },
     {
       "minRow": 670,
@@ -16455,13 +16437,22 @@
       "value": "Lombard large (4 lines), medium (3 lines) and minor initials (2 lines)."
     },
     {
-      "minRow": 432,
-      "maxRow": 459,
-      "minColIndex": 8,
-      "maxColIndex": 8,
-      "minCol": "Main text",
-      "maxCol": "Main text",
-      "value": ""
+      "minRow": 484,
+      "maxRow": 491,
+      "minColIndex": 24,
+      "maxColIndex": 24,
+      "minCol": "Style",
+      "maxCol": "Style",
+      "value": "Romanesque"
+    },
+    {
+      "minRow": 593,
+      "maxRow": 595,
+      "minColIndex": 0,
+      "maxColIndex": 0,
+      "minCol": "Shelf mark",
+      "maxCol": "Shelf mark",
+      "value": "AM 307 fol."
     },
     {
       "minRow": 485,
@@ -16471,6 +16462,15 @@
       "minCol": "Dating",
       "maxCol": "Dating",
       "value": "1320–1350"
+    },
+    {
+      "minRow": 432,
+      "maxRow": 459,
+      "minColIndex": 8,
+      "maxColIndex": 8,
+      "minCol": "Main text",
+      "maxCol": "Main text",
+      "value": ""
     },
     {
       "minRow": 106,
@@ -16509,15 +16509,6 @@
       "value": "Unknown"
     },
     {
-      "minRow": 287,
-      "maxRow": 288,
-      "minColIndex": 15,
-      "maxColIndex": 15,
-      "minCol": "Pricking",
-      "maxCol": "Pricking",
-      "value": "Yes"
-    },
-    {
       "minRow": 208,
       "maxRow": 215,
       "minColIndex": 17,
@@ -16534,6 +16525,15 @@
       "minCol": "Production Unit",
       "maxCol": "Production Unit",
       "value": "I"
+    },
+    {
+      "minRow": 287,
+      "maxRow": 288,
+      "minColIndex": 15,
+      "maxColIndex": 15,
+      "minCol": "Pricking",
+      "maxCol": "Pricking",
+      "value": "Yes"
     },
     {
       "minRow": 177,
@@ -16590,15 +16590,6 @@
       "value": "Unknown"
     },
     {
-      "minRow": 130,
-      "maxRow": 132,
-      "minColIndex": 1,
-      "maxColIndex": 1,
-      "minCol": "Name",
-      "maxCol": "Name",
-      "value": ""
-    },
-    {
       "minRow": 679,
       "maxRow": 682,
       "minColIndex": 12,
@@ -16608,13 +16599,22 @@
       "value": "278x205"
     },
     {
-      "minRow": 306,
-      "maxRow": 307,
-      "minColIndex": 14,
-      "maxColIndex": 14,
-      "minCol": "Production Unit",
-      "maxCol": "Production Unit",
-      "value": "III"
+      "minRow": 130,
+      "maxRow": 132,
+      "minColIndex": 1,
+      "maxColIndex": 1,
+      "minCol": "Name",
+      "maxCol": "Name",
+      "value": ""
+    },
+    {
+      "minRow": 700,
+      "maxRow": 703,
+      "minColIndex": 19,
+      "maxColIndex": 19,
+      "minCol": "Lines",
+      "maxCol": "Lines",
+      "value": "Various"
     },
     {
       "minRow": 235,
@@ -16626,13 +16626,13 @@
       "value": "Throughout"
     },
     {
-      "minRow": 700,
-      "maxRow": 703,
-      "minColIndex": 19,
-      "maxColIndex": 19,
-      "minCol": "Lines",
-      "maxCol": "Lines",
-      "value": "Various"
+      "minRow": 306,
+      "maxRow": 307,
+      "minColIndex": 14,
+      "maxColIndex": 14,
+      "minCol": "Production Unit",
+      "maxCol": "Production Unit",
+      "value": "III"
     },
     {
       "minRow": 309,
@@ -16680,15 +16680,6 @@
       "value": "Dry"
     },
     {
-      "minRow": 308,
-      "maxRow": 309,
-      "minColIndex": 14,
-      "maxColIndex": 14,
-      "minCol": "Production Unit",
-      "maxCol": "Production Unit",
-      "value": "I"
-    },
-    {
       "minRow": 255,
       "maxRow": 265,
       "minColIndex": 18,
@@ -16696,6 +16687,15 @@
       "minCol": "Columns",
       "maxCol": "Columns",
       "value": "2"
+    },
+    {
+      "minRow": 308,
+      "maxRow": 309,
+      "minColIndex": 14,
+      "maxColIndex": 14,
+      "minCol": "Production Unit",
+      "maxCol": "Production Unit",
+      "value": "I"
     },
     {
       "minRow": 635,
@@ -16788,15 +16788,6 @@
       "value": "Unknown"
     },
     {
-      "minRow": 238,
-      "maxRow": 241,
-      "minColIndex": 6,
-      "maxColIndex": 6,
-      "minCol": "Dating",
-      "maxCol": "Dating",
-      "value": "1300–!50"
-    },
-    {
       "minRow": 559,
       "maxRow": 560,
       "minColIndex": 9,
@@ -16804,6 +16795,15 @@
       "minCol": "Minor text",
       "maxCol": "Minor text",
       "value": ""
+    },
+    {
+      "minRow": 238,
+      "maxRow": 241,
+      "minColIndex": 6,
+      "maxColIndex": 6,
+      "minCol": "Dating",
+      "maxCol": "Dating",
+      "value": "1300–!50"
     },
     {
       "minRow": 633,
@@ -16815,15 +16815,6 @@
       "value": ""
     },
     {
-      "minRow": 230,
-      "maxRow": 234,
-      "minColIndex": 15,
-      "maxColIndex": 15,
-      "minCol": "Pricking",
-      "maxCol": "Pricking",
-      "value": "No"
-    },
-    {
       "minRow": 536,
       "maxRow": 539,
       "minColIndex": 6,
@@ -16831,6 +16822,15 @@
       "minCol": "Dating",
       "maxCol": "Dating",
       "value": "1575-1600"
+    },
+    {
+      "minRow": 230,
+      "maxRow": 234,
+      "minColIndex": 15,
+      "maxColIndex": 15,
+      "minCol": "Pricking",
+      "maxCol": "Pricking",
+      "value": "No"
     },
     {
       "minRow": 36,
@@ -16959,13 +16959,13 @@
       "value": "No"
     },
     {
-      "minRow": 228,
-      "maxRow": 229,
-      "minColIndex": 21,
-      "maxColIndex": 21,
-      "minCol": "Rubric",
-      "maxCol": "Rubric",
-      "value": "Yes"
+      "minRow": 544,
+      "maxRow": 547,
+      "minColIndex": 26,
+      "maxColIndex": 26,
+      "minCol": "Form of Initials",
+      "maxCol": "Form of Initials",
+      "value": "One ornamented large initial (4 lines), otherwise Lombard medium (3 lines) and small initials (2 lines) up until f. 16v. Afterwards sporadically small initials in black (likely added later)."
     },
     {
       "minRow": 0,
@@ -16986,15 +16986,6 @@
       "value": ""
     },
     {
-      "minRow": 288,
-      "maxRow": 297,
-      "minColIndex": 26,
-      "maxColIndex": 26,
-      "minCol": "Form of Initials",
-      "maxCol": "Form of Initials",
-      "value": "None"
-    },
-    {
       "minRow": 27,
       "maxRow": 28,
       "minColIndex": 5,
@@ -17004,13 +16995,13 @@
       "value": "Fol."
     },
     {
-      "minRow": 8,
-      "maxRow": 26,
-      "minColIndex": 7,
-      "maxColIndex": 7,
-      "minCol": "Leaves/Pages",
-      "maxCol": "Leaves/Pages",
-      "value": "Ff. 1–146 (Storm 1885: 641); 144 (Eithun et al. 1994: 15); 147 (DS; DKB)"
+      "minRow": 228,
+      "maxRow": 229,
+      "minColIndex": 21,
+      "maxColIndex": 21,
+      "minCol": "Rubric",
+      "maxCol": "Rubric",
+      "value": "Yes"
     },
     {
       "minRow": 56,
@@ -17022,13 +17013,22 @@
       "value": "Ff. 75r–84v"
     },
     {
-      "minRow": 544,
-      "maxRow": 547,
+      "minRow": 8,
+      "maxRow": 26,
+      "minColIndex": 7,
+      "maxColIndex": 7,
+      "minCol": "Leaves/Pages",
+      "maxCol": "Leaves/Pages",
+      "value": "Ff. 1–146 (Storm 1885: 641); 144 (Eithun et al. 1994: 15); 147 (DS; DKB)"
+    },
+    {
+      "minRow": 288,
+      "maxRow": 297,
       "minColIndex": 26,
       "maxColIndex": 26,
       "minCol": "Form of Initials",
       "maxCol": "Form of Initials",
-      "value": "One ornamented large initial (4 lines), otherwise Lombard medium (3 lines) and small initials (2 lines) up until f. 16v. Afterwards sporadically small initials in black (likely added later)."
+      "value": "None"
     },
     {
       "minRow": 392,
@@ -17058,13 +17058,13 @@
       "value": "Unknown"
     },
     {
-      "minRow": 383,
-      "maxRow": 389,
-      "minColIndex": 22,
-      "maxColIndex": 22,
-      "minCol": "Scribe",
-      "maxCol": "Scribe",
-      "value": "Hand a (NgL scribe)"
+      "minRow": 637,
+      "maxRow": 639,
+      "minColIndex": 28,
+      "maxColIndex": 28,
+      "minCol": "Iconography",
+      "maxCol": "Iconography",
+      "value": "None"
     },
     {
       "minRow": 326,
@@ -17085,17 +17085,17 @@
       "value": ""
     },
     {
-      "minRow": 418,
-      "maxRow": 419,
-      "minColIndex": 28,
-      "maxColIndex": 28,
-      "minCol": "Iconography",
-      "maxCol": "Iconography",
-      "value": "None"
+      "minRow": 383,
+      "maxRow": 389,
+      "minColIndex": 22,
+      "maxColIndex": 22,
+      "minCol": "Scribe",
+      "maxCol": "Scribe",
+      "value": "Hand a (NgL scribe)"
     },
     {
-      "minRow": 637,
-      "maxRow": 639,
+      "minRow": 418,
+      "maxRow": 419,
       "minColIndex": 28,
       "maxColIndex": 28,
       "minCol": "Iconography",
@@ -17247,15 +17247,6 @@
       "value": "Small"
     },
     {
-      "minRow": 177,
-      "maxRow": 207,
-      "minColIndex": 12,
-      "maxColIndex": 12,
-      "minCol": "Leaf size",
-      "maxCol": "Leaf size",
-      "value": "283x203"
-    },
-    {
       "minRow": 620,
       "maxRow": 624,
       "minColIndex": 8,
@@ -17263,6 +17254,15 @@
       "minCol": "Main text",
       "maxCol": "Main text",
       "value": ""
+    },
+    {
+      "minRow": 177,
+      "maxRow": 207,
+      "minColIndex": 12,
+      "maxColIndex": 12,
+      "minCol": "Leaf size",
+      "maxCol": "Leaf size",
+      "value": "283x203"
     },
     {
       "minRow": 281,
@@ -17310,15 +17310,6 @@
       "value": "Fol."
     },
     {
-      "minRow": 59,
-      "maxRow": 104,
-      "minColIndex": 29,
-      "maxColIndex": 29,
-      "minCol": "Place",
-      "maxCol": "Place",
-      "value": "Throughout"
-    },
-    {
       "minRow": 629,
       "maxRow": 631,
       "minColIndex": 3,
@@ -17326,6 +17317,15 @@
       "minCol": "Depository",
       "maxCol": "Depository",
       "value": "NRA"
+    },
+    {
+      "minRow": 59,
+      "maxRow": 104,
+      "minColIndex": 29,
+      "maxColIndex": 29,
+      "minCol": "Place",
+      "maxCol": "Place",
+      "value": "Throughout"
     },
     {
       "minRow": 216,
@@ -17382,13 +17382,13 @@
       "value": "Various"
     },
     {
-      "minRow": 489,
-      "maxRow": 491,
-      "minColIndex": 22,
-      "maxColIndex": 22,
-      "minCol": "Scribe",
-      "maxCol": "Scribe",
-      "value": "Hand b"
+      "minRow": 492,
+      "maxRow": 493,
+      "minColIndex": 16,
+      "maxColIndex": 16,
+      "minCol": "Material",
+      "maxCol": "Material",
+      "value": "Parchment"
     },
     {
       "minRow": 615,
@@ -17400,22 +17400,13 @@
       "value": "Various"
     },
     {
-      "minRow": 492,
-      "maxRow": 493,
-      "minColIndex": 16,
-      "maxColIndex": 16,
-      "minCol": "Material",
-      "maxCol": "Material",
-      "value": "Parchment"
-    },
-    {
-      "minRow": 250,
-      "maxRow": 271,
-      "minColIndex": 26,
-      "maxColIndex": 26,
-      "minCol": "Form of Initials",
-      "maxCol": "Form of Initials",
-      "value": "Ornamented large (4-7 lines), medium (3 lines) and small (2 lines) initials."
+      "minRow": 489,
+      "maxRow": 491,
+      "minColIndex": 22,
+      "maxColIndex": 22,
+      "minCol": "Scribe",
+      "maxCol": "Scribe",
+      "value": "Hand b"
     },
     {
       "minRow": 635,
@@ -17425,6 +17416,15 @@
       "minCol": "Gatherings",
       "maxCol": "Gatherings",
       "value": "I: 7 (3 b; 1 f; ff. 1-7); II: 8 (4 b; ff. 8–15); III: 8 (4 b; ff. 16–23); VI: 8 (4 b; ff. 24–31); V: 6 (3 b; ff. 32–37); VI: 8 (4 b; ff. 38–45); VII: 7 (3 b; 1 f; (ff. 46–52); VIII: 8 (4 b; ff. 53–60)"
+    },
+    {
+      "minRow": 250,
+      "maxRow": 271,
+      "minColIndex": 26,
+      "maxColIndex": 26,
+      "minCol": "Form of Initials",
+      "maxCol": "Form of Initials",
+      "value": "Ornamented large (4-7 lines), medium (3 lines) and small (2 lines) initials."
     },
     {
       "minRow": 518,
@@ -17481,15 +17481,6 @@
       "value": "Textualis"
     },
     {
-      "minRow": 230,
-      "maxRow": 234,
-      "minColIndex": 1,
-      "maxColIndex": 1,
-      "minCol": "Name",
-      "maxCol": "Name",
-      "value": ""
-    },
-    {
       "minRow": 708,
       "maxRow": 709,
       "minColIndex": 5,
@@ -17499,13 +17490,13 @@
       "value": "Unknown"
     },
     {
-      "minRow": 710,
-      "maxRow": 713,
-      "minColIndex": 28,
-      "maxColIndex": 28,
-      "minCol": "Iconography",
-      "maxCol": "Iconography",
-      "value": "Unknown"
+      "minRow": 230,
+      "maxRow": 234,
+      "minColIndex": 1,
+      "maxColIndex": 1,
+      "minCol": "Name",
+      "maxCol": "Name",
+      "value": ""
     },
     {
       "minRow": 208,
@@ -17515,6 +17506,15 @@
       "minCol": "Iconography",
       "maxCol": "Iconography",
       "value": "None"
+    },
+    {
+      "minRow": 710,
+      "maxRow": 713,
+      "minColIndex": 28,
+      "maxColIndex": 28,
+      "minCol": "Iconography",
+      "maxCol": "Iconography",
+      "value": "Unknown"
     },
     {
       "minRow": 145,
@@ -17616,15 +17616,6 @@
       "value": "Ink"
     },
     {
-      "minRow": 514,
-      "maxRow": 515,
-      "minColIndex": 6,
-      "maxColIndex": 6,
-      "minCol": "Dating",
-      "maxCol": "Dating",
-      "value": "1325–1350"
-    },
-    {
       "minRow": 606,
       "maxRow": 614,
       "minColIndex": 21,
@@ -17632,6 +17623,15 @@
       "minCol": "Rubric",
       "maxCol": "Rubric",
       "value": "Yes"
+    },
+    {
+      "minRow": 514,
+      "maxRow": 515,
+      "minColIndex": 6,
+      "maxColIndex": 6,
+      "minCol": "Dating",
+      "maxCol": "Dating",
+      "value": "1325–1350"
     },
     {
       "minRow": 403,
@@ -17652,13 +17652,13 @@
       "value": "1350–1400"
     },
     {
-      "minRow": 175,
-      "maxRow": 176,
-      "minColIndex": 27,
-      "maxColIndex": 27,
-      "minCol": "Size of Initials",
-      "maxCol": "Size of Initials",
-      "value": "Large"
+      "minRow": 704,
+      "maxRow": 705,
+      "minColIndex": 6,
+      "maxColIndex": 6,
+      "minCol": "Dating",
+      "maxCol": "Dating",
+      "value": "1375–1400"
     },
     {
       "minRow": 406,
@@ -17679,13 +17679,13 @@
       "value": "Yes"
     },
     {
-      "minRow": 704,
-      "maxRow": 705,
-      "minColIndex": 6,
-      "maxColIndex": 6,
-      "minCol": "Dating",
-      "maxCol": "Dating",
-      "value": "1375–1400"
+      "minRow": 175,
+      "maxRow": 176,
+      "minColIndex": 27,
+      "maxColIndex": 27,
+      "minCol": "Size of Initials",
+      "maxCol": "Size of Initials",
+      "value": "Large"
     },
     {
       "minRow": 318,
@@ -17715,15 +17715,6 @@
       "value": "Only on f. 5v"
     },
     {
-      "minRow": 544,
-      "maxRow": 547,
-      "minColIndex": 15,
-      "maxColIndex": 15,
-      "minCol": "Pricking",
-      "maxCol": "Pricking",
-      "value": "No"
-    },
-    {
       "minRow": 597,
       "maxRow": 614,
       "minColIndex": 28,
@@ -17731,6 +17722,15 @@
       "minCol": "Iconography",
       "maxCol": "Iconography",
       "value": "None. Twelve ornamented large initials on f. 1va1-5, f. 2va1-5, f. 5va24-27, f. 9rb17-20, f. 14ra2-5, f. 21va10-14, f. 28rb1-4, f. 29vb15-18, f. 43rb12-16, f. 48ra23-28, f. 52va10-14, f. 56va3-8. In addition, sixteen ornamented middle initials are found on f. 2vb9-11, f. 7va1-3, f. 11rb22-24, f. 11vb21-23, f. 12rb27-29, f. 15rb10-12, f. 15va21-23, f. 20rb8-10, f. 26rb30-32, f. 40rb17-19, f. 42rb30-32, f. 49ra5-7, f. 51ra6-8, f. 54ra7-9, f. 54rb17-19, f. 54va4-6. In the margin on f. 6v, a Janus head is painted, and on f. 17r a human head."
+    },
+    {
+      "minRow": 544,
+      "maxRow": 547,
+      "minColIndex": 15,
+      "maxColIndex": 15,
+      "minCol": "Pricking",
+      "maxCol": "Pricking",
+      "value": "No"
     },
     {
       "minRow": 522,
@@ -17787,15 +17787,6 @@
       "value": "Small Lombard initials (2 lines)"
     },
     {
-      "minRow": 309,
-      "maxRow": 311,
-      "minColIndex": 28,
-      "maxColIndex": 28,
-      "minCol": "Iconography",
-      "maxCol": "Iconography",
-      "value": "None"
-    },
-    {
       "minRow": 138,
       "maxRow": 139,
       "minColIndex": 15,
@@ -17803,6 +17794,15 @@
       "minCol": "Pricking",
       "maxCol": "Pricking",
       "value": "No"
+    },
+    {
+      "minRow": 309,
+      "maxRow": 311,
+      "minColIndex": 28,
+      "maxColIndex": 28,
+      "minCol": "Iconography",
+      "maxCol": "Iconography",
+      "value": "None"
     },
     {
       "minRow": 106,
@@ -17868,15 +17868,6 @@
       "value": "Unknown"
     },
     {
-      "minRow": 415,
-      "maxRow": 416,
-      "minColIndex": 6,
-      "maxColIndex": 6,
-      "minCol": "Dating",
-      "maxCol": "Dating",
-      "value": "1350"
-    },
-    {
       "minRow": 629,
       "maxRow": 631,
       "minColIndex": 2,
@@ -17884,6 +17875,15 @@
       "minCol": "Related Shelfmarks",
       "maxCol": "Related Shelfmarks",
       "value": ""
+    },
+    {
+      "minRow": 415,
+      "maxRow": 416,
+      "minColIndex": 6,
+      "maxColIndex": 6,
+      "minCol": "Dating",
+      "maxCol": "Dating",
+      "value": "1350"
     },
     {
       "minRow": 244,
@@ -17901,15 +17901,6 @@
       "maxColIndex": 17,
       "minCol": "Ruling",
       "maxCol": "Ruling",
-      "value": "None"
-    },
-    {
-      "minRow": 299,
-      "maxRow": 305,
-      "minColIndex": 27,
-      "maxColIndex": 27,
-      "minCol": "Size of Initials",
-      "maxCol": "Size of Initials",
       "value": "None"
     },
     {
@@ -17931,6 +17922,15 @@
       "value": "Romanesque"
     },
     {
+      "minRow": 299,
+      "maxRow": 305,
+      "minColIndex": 27,
+      "maxColIndex": 27,
+      "minCol": "Size of Initials",
+      "maxCol": "Size of Initials",
+      "value": "None"
+    },
+    {
       "minRow": 6,
       "maxRow": 7,
       "minColIndex": 2,
@@ -17940,15 +17940,6 @@
       "value": ""
     },
     {
-      "minRow": 225,
-      "maxRow": 226,
-      "minColIndex": 28,
-      "maxColIndex": 28,
-      "minCol": "Iconography",
-      "maxCol": "Iconography",
-      "value": "None.Seven ornamented large initials on f. 2v1-4, f. 3r1-4, f. 9v1-5, f. 16r6-9, f. 29r21-24, f. 47r25-27, f. 54v1-4. In the lower margin on f. 10r, a devilish creature is painted on a boat."
-    },
-    {
       "minRow": 238,
       "maxRow": 239,
       "minColIndex": 7,
@@ -17956,6 +17947,15 @@
       "minCol": "Leaves/Pages",
       "maxCol": "Leaves/Pages",
       "value": "Ff. 1va–8ra "
+    },
+    {
+      "minRow": 225,
+      "maxRow": 226,
+      "minColIndex": 28,
+      "maxColIndex": 28,
+      "minCol": "Iconography",
+      "maxCol": "Iconography",
+      "value": "None.Seven ornamented large initials on f. 2v1-4, f. 3r1-4, f. 9v1-5, f. 16r6-9, f. 29r21-24, f. 47r25-27, f. 54v1-4. In the lower margin on f. 10r, a devilish creature is painted on a boat."
     },
     {
       "minRow": 216,
@@ -17976,15 +17976,6 @@
       "value": ""
     },
     {
-      "minRow": 250,
-      "maxRow": 271,
-      "minColIndex": 25,
-      "maxColIndex": 25,
-      "minCol": "Colours",
-      "maxCol": "Colours",
-      "value": "R, G, B, Black"
-    },
-    {
       "minRow": 163,
       "maxRow": 167,
       "minColIndex": 21,
@@ -17992,6 +17983,15 @@
       "minCol": "Rubric",
       "maxCol": "Rubric",
       "value": "None"
+    },
+    {
+      "minRow": 250,
+      "maxRow": 271,
+      "minColIndex": 25,
+      "maxColIndex": 25,
+      "minCol": "Colours",
+      "maxCol": "Colours",
+      "value": "R, G, B, Black"
     },
     {
       "minRow": 679,
@@ -18066,6 +18066,24 @@
       "value": "238x177"
     },
     {
+      "minRow": 8,
+      "maxRow": 26,
+      "minColIndex": 14,
+      "maxColIndex": 14,
+      "minCol": "Production Unit",
+      "maxCol": "Production Unit",
+      "value": "I"
+    },
+    {
+      "minRow": 250,
+      "maxRow": 271,
+      "minColIndex": 4,
+      "maxColIndex": 4,
+      "minCol": "Object",
+      "maxCol": "Object",
+      "value": "Codex"
+    },
+    {
       "minRow": 227,
       "maxRow": 229,
       "minColIndex": 27,
@@ -18084,22 +18102,13 @@
       "value": "Hand b"
     },
     {
-      "minRow": 250,
-      "maxRow": 271,
-      "minColIndex": 4,
-      "maxColIndex": 4,
-      "minCol": "Object",
-      "maxCol": "Object",
-      "value": "Codex"
-    },
-    {
-      "minRow": 8,
-      "maxRow": 26,
-      "minColIndex": 14,
-      "maxColIndex": 14,
-      "minCol": "Production Unit",
-      "maxCol": "Production Unit",
-      "value": "I"
+      "minRow": 494,
+      "maxRow": 495,
+      "minColIndex": 16,
+      "maxColIndex": 16,
+      "minCol": "Material",
+      "maxCol": "Material",
+      "value": "Parchment"
     },
     {
       "minRow": 708,
@@ -18109,15 +18118,6 @@
       "minCol": "Object",
       "maxCol": "Object",
       "value": "Fragment"
-    },
-    {
-      "minRow": 494,
-      "maxRow": 495,
-      "minColIndex": 16,
-      "maxColIndex": 16,
-      "minCol": "Material",
-      "maxCol": "Material",
-      "value": "Parchment"
     },
     {
       "minRow": 502,
@@ -18210,15 +18210,6 @@
       "value": "None"
     },
     {
-      "minRow": 406,
-      "maxRow": 414,
-      "minColIndex": 25,
-      "maxColIndex": 25,
-      "minCol": "Colours",
-      "maxCol": "Colours",
-      "value": "R, B"
-    },
-    {
       "minRow": 704,
       "maxRow": 705,
       "minColIndex": 5,
@@ -18228,13 +18219,13 @@
       "value": "Unknown"
     },
     {
-      "minRow": 392,
-      "maxRow": 393,
-      "minColIndex": 26,
-      "maxColIndex": 26,
-      "minCol": "Form of Initials",
-      "maxCol": "Form of Initials",
-      "value": "Small lombard initials (2 lines)"
+      "minRow": 406,
+      "maxRow": 414,
+      "minColIndex": 25,
+      "maxColIndex": 25,
+      "minCol": "Colours",
+      "maxCol": "Colours",
+      "value": "R, B"
     },
     {
       "minRow": 235,
@@ -18244,6 +18235,15 @@
       "minCol": "Colours",
       "maxCol": "Colours",
       "value": "G, R"
+    },
+    {
+      "minRow": 392,
+      "maxRow": 393,
+      "minColIndex": 26,
+      "maxColIndex": 26,
+      "minCol": "Form of Initials",
+      "maxCol": "Form of Initials",
+      "value": "Small lombard initials (2 lines)"
     },
     {
       "minRow": 670,
@@ -18264,13 +18264,13 @@
       "value": "Oslo ?"
     },
     {
-      "minRow": 252,
-      "maxRow": 257,
-      "minColIndex": 20,
-      "maxColIndex": 20,
-      "minCol": "Script",
-      "maxCol": "Script",
-      "value": "Textualis"
+      "minRow": 597,
+      "maxRow": 614,
+      "minColIndex": 27,
+      "maxColIndex": 27,
+      "minCol": "Size of Initials",
+      "maxCol": "Size of Initials",
+      "value": "Large"
     },
     {
       "minRow": 544,
@@ -18282,22 +18282,22 @@
       "value": "I"
     },
     {
-      "minRow": 597,
-      "maxRow": 614,
-      "minColIndex": 27,
-      "maxColIndex": 27,
-      "minCol": "Size of Initials",
-      "maxCol": "Size of Initials",
-      "value": "Large"
+      "minRow": 252,
+      "maxRow": 257,
+      "minColIndex": 20,
+      "maxColIndex": 20,
+      "minCol": "Script",
+      "maxCol": "Script",
+      "value": "Textualis"
     },
     {
-      "minRow": 208,
-      "maxRow": 213,
-      "minColIndex": 27,
-      "maxColIndex": 27,
-      "minCol": "Size of Initials",
-      "maxCol": "Size of Initials",
-      "value": "Medium"
+      "minRow": 700,
+      "maxRow": 703,
+      "minColIndex": 25,
+      "maxColIndex": 25,
+      "minCol": "Colours",
+      "maxCol": "Colours",
+      "value": "R"
     },
     {
       "minRow": 629,
@@ -18309,13 +18309,13 @@
       "value": "Unknown"
     },
     {
-      "minRow": 700,
-      "maxRow": 703,
-      "minColIndex": 25,
-      "maxColIndex": 25,
-      "minCol": "Colours",
-      "maxCol": "Colours",
-      "value": "R"
+      "minRow": 208,
+      "maxRow": 213,
+      "minColIndex": 27,
+      "maxColIndex": 27,
+      "minCol": "Size of Initials",
+      "maxCol": "Size of Initials",
+      "value": "Medium"
     },
     {
       "minRow": 309,
@@ -18408,15 +18408,6 @@
       "value": "No"
     },
     {
-      "minRow": 177,
-      "maxRow": 206,
-      "minColIndex": 23,
-      "maxColIndex": 23,
-      "minCol": "Production",
-      "maxCol": "Production",
-      "value": "Oslo (?)"
-    },
-    {
       "minRow": 326,
       "maxRow": 328,
       "minColIndex": 3,
@@ -18424,6 +18415,15 @@
       "minCol": "Depository",
       "maxCol": "Depository",
       "value": "NRA"
+    },
+    {
+      "minRow": 177,
+      "maxRow": 206,
+      "minColIndex": 23,
+      "maxColIndex": 23,
+      "minCol": "Production",
+      "maxCol": "Production",
+      "value": "Oslo (?)"
     },
     {
       "minRow": 366,
@@ -18534,6 +18534,15 @@
       "value": "Ornamented large (4-6 lines), medium (3 lines) and small initials (3 lines). Often, medium and sometimes small initials are inhabited."
     },
     {
+      "minRow": 629,
+      "maxRow": 631,
+      "minColIndex": 14,
+      "maxColIndex": 14,
+      "minCol": "Production Unit",
+      "maxCol": "Production Unit",
+      "value": "I"
+    },
+    {
       "minRow": 276,
       "maxRow": 280,
       "minColIndex": 0,
@@ -18552,13 +18561,13 @@
       "value": "Unknown"
     },
     {
-      "minRow": 629,
-      "maxRow": 631,
-      "minColIndex": 14,
-      "maxColIndex": 14,
-      "minCol": "Production Unit",
-      "maxCol": "Production Unit",
-      "value": "I"
+      "minRow": 250,
+      "maxRow": 271,
+      "minColIndex": 3,
+      "maxColIndex": 3,
+      "minCol": "Depository",
+      "maxCol": "Depository",
+      "value": "NB"
     },
     {
       "minRow": 8,
@@ -18568,15 +18577,6 @@
       "minCol": "Catch Words and Gatherings",
       "maxCol": "Catch Words and Gatherings",
       "value": ""
-    },
-    {
-      "minRow": 250,
-      "maxRow": 271,
-      "minColIndex": 3,
-      "maxColIndex": 3,
-      "minCol": "Depository",
-      "maxCol": "Depository",
-      "value": "NB"
     },
     {
       "minRow": 692,
@@ -18651,15 +18651,6 @@
       "value": "Hand a"
     },
     {
-      "minRow": 227,
-      "maxRow": 229,
-      "minColIndex": 5,
-      "maxColIndex": 5,
-      "minCol": "Size",
-      "maxCol": "Size",
-      "value": "4to"
-    },
-    {
       "minRow": 514,
       "maxRow": 515,
       "minColIndex": 24,
@@ -18667,6 +18658,15 @@
       "minCol": "Style",
       "maxCol": "Style",
       "value": "Romanesque"
+    },
+    {
+      "minRow": 227,
+      "maxRow": 229,
+      "minColIndex": 5,
+      "maxColIndex": 5,
+      "minCol": "Size",
+      "maxCol": "Size",
+      "value": "4to"
     },
     {
       "minRow": 309,
@@ -18696,15 +18696,6 @@
       "value": "Throughout"
     },
     {
-      "minRow": 27,
-      "maxRow": 28,
-      "minColIndex": 1,
-      "maxColIndex": 1,
-      "minCol": "Name",
-      "maxCol": "Name",
-      "value": ""
-    },
-    {
       "minRow": 704,
       "maxRow": 705,
       "minColIndex": 4,
@@ -18723,6 +18714,15 @@
       "value": "2"
     },
     {
+      "minRow": 27,
+      "maxRow": 28,
+      "minColIndex": 1,
+      "maxColIndex": 1,
+      "minCol": "Name",
+      "maxCol": "Name",
+      "value": ""
+    },
+    {
       "minRow": 617,
       "maxRow": 619,
       "minColIndex": 25,
@@ -18730,15 +18730,6 @@
       "minCol": "Colours",
       "maxCol": "Colours",
       "value": "R, G"
-    },
-    {
-      "minRow": 266,
-      "maxRow": 268,
-      "minColIndex": 6,
-      "maxColIndex": 6,
-      "minCol": "Dating",
-      "maxCol": "Dating",
-      "value": "1347"
     },
     {
       "minRow": 392,
@@ -18757,6 +18748,15 @@
       "minCol": "Style",
       "maxCol": "Style",
       "value": "Other"
+    },
+    {
+      "minRow": 266,
+      "maxRow": 268,
+      "minColIndex": 6,
+      "maxColIndex": 6,
+      "minCol": "Dating",
+      "maxCol": "Dating",
+      "value": "1347"
     },
     {
       "minRow": 383,
@@ -18930,15 +18930,6 @@
       "value": "Romanesque"
     },
     {
-      "minRow": 531,
-      "maxRow": 535,
-      "minColIndex": 27,
-      "maxColIndex": 27,
-      "minCol": "Size of Initials",
-      "maxCol": "Size of Initials",
-      "value": "Large"
-    },
-    {
       "minRow": 644,
       "maxRow": 667,
       "minColIndex": 18,
@@ -18946,6 +18937,15 @@
       "minCol": "Columns",
       "maxCol": "Columns",
       "value": "1"
+    },
+    {
+      "minRow": 531,
+      "maxRow": 535,
+      "minColIndex": 27,
+      "maxColIndex": 27,
+      "minCol": "Size of Initials",
+      "maxCol": "Size of Initials",
+      "value": "Large"
     },
     {
       "minRow": 383,
@@ -19020,15 +19020,6 @@
       "value": "205x145"
     },
     {
-      "minRow": 281,
-      "maxRow": 287,
-      "minColIndex": 25,
-      "maxColIndex": 25,
-      "minCol": "Colours",
-      "maxCol": "Colours",
-      "value": "R, G, Y"
-    },
-    {
       "minRow": 27,
       "maxRow": 28,
       "minColIndex": 30,
@@ -19038,13 +19029,22 @@
       "value": "Kålund (1886:263); Storm (1885:492)"
     },
     {
-      "minRow": 6,
-      "maxRow": 7,
-      "minColIndex": 10,
-      "maxColIndex": 10,
-      "minCol": "Gatherings",
-      "maxCol": "Gatherings",
-      "value": "Unknown"
+      "minRow": 597,
+      "maxRow": 603,
+      "minColIndex": 15,
+      "maxColIndex": 15,
+      "minCol": "Pricking",
+      "maxCol": "Pricking",
+      "value": "Yes"
+    },
+    {
+      "minRow": 615,
+      "maxRow": 616,
+      "minColIndex": 27,
+      "maxColIndex": 27,
+      "minCol": "Size of Initials",
+      "maxCol": "Size of Initials",
+      "value": ""
     },
     {
       "minRow": 242,
@@ -19056,13 +19056,22 @@
       "value": ""
     },
     {
-      "minRow": 298,
-      "maxRow": 305,
-      "minColIndex": 14,
-      "maxColIndex": 14,
-      "minCol": "Production Unit",
-      "maxCol": "Production Unit",
-      "value": "II"
+      "minRow": 544,
+      "maxRow": 547,
+      "minColIndex": 4,
+      "maxColIndex": 4,
+      "minCol": "Object",
+      "maxCol": "Object",
+      "value": "Codex"
+    },
+    {
+      "minRow": 6,
+      "maxRow": 7,
+      "minColIndex": 10,
+      "maxColIndex": 10,
+      "minCol": "Gatherings",
+      "maxCol": "Gatherings",
+      "value": "Unknown"
     },
     {
       "minRow": 0,
@@ -19083,31 +19092,22 @@
       "value": "Storm (1885:477-82)"
     },
     {
-      "minRow": 544,
-      "maxRow": 547,
-      "minColIndex": 4,
-      "maxColIndex": 4,
-      "minCol": "Object",
-      "maxCol": "Object",
-      "value": "Codex"
+      "minRow": 298,
+      "maxRow": 305,
+      "minColIndex": 14,
+      "maxColIndex": 14,
+      "minCol": "Production Unit",
+      "maxCol": "Production Unit",
+      "value": "II"
     },
     {
-      "minRow": 615,
-      "maxRow": 616,
-      "minColIndex": 27,
-      "maxColIndex": 27,
-      "minCol": "Size of Initials",
-      "maxCol": "Size of Initials",
-      "value": ""
-    },
-    {
-      "minRow": 597,
-      "maxRow": 603,
-      "minColIndex": 15,
-      "maxColIndex": 15,
-      "minCol": "Pricking",
-      "maxCol": "Pricking",
-      "value": "Yes"
+      "minRow": 281,
+      "maxRow": 287,
+      "minColIndex": 25,
+      "maxColIndex": 25,
+      "minCol": "Colours",
+      "maxCol": "Colours",
+      "value": "R, G, Y"
     },
     {
       "minRow": 692,
@@ -19128,15 +19128,6 @@
       "value": "Dry"
     },
     {
-      "minRow": 36,
-      "maxRow": 104,
-      "minColIndex": 11,
-      "maxColIndex": 11,
-      "minCol": "Full size",
-      "maxCol": "Full size",
-      "value": "Unknown"
-    },
-    {
       "minRow": 230,
       "maxRow": 234,
       "minColIndex": 10,
@@ -19153,6 +19144,15 @@
       "minCol": "Minor text",
       "maxCol": "Minor text",
       "value": ""
+    },
+    {
+      "minRow": 36,
+      "maxRow": 104,
+      "minColIndex": 11,
+      "maxColIndex": 11,
+      "minCol": "Full size",
+      "maxCol": "Full size",
+      "value": "Unknown"
     },
     {
       "minRow": 686,
@@ -19209,15 +19209,6 @@
       "value": "Nowhere"
     },
     {
-      "minRow": 704,
-      "maxRow": 705,
-      "minColIndex": 12,
-      "maxColIndex": 12,
-      "minCol": "Leaf size",
-      "maxCol": "Leaf size",
-      "value": "250x180"
-    },
-    {
       "minRow": 428,
       "maxRow": 431,
       "minColIndex": 6,
@@ -19227,22 +19218,13 @@
       "value": "1320–1330"
     },
     {
-      "minRow": 708,
-      "maxRow": 709,
-      "minColIndex": 1,
-      "maxColIndex": 1,
-      "minCol": "Name",
-      "maxCol": "Name",
-      "value": ""
-    },
-    {
-      "minRow": 435,
-      "maxRow": 460,
-      "minColIndex": 20,
-      "maxColIndex": 20,
-      "minCol": "Script",
-      "maxCol": "Script",
-      "value": "Textualis"
+      "minRow": 704,
+      "maxRow": 705,
+      "minColIndex": 12,
+      "maxColIndex": 12,
+      "minCol": "Leaf size",
+      "maxCol": "Leaf size",
+      "value": "250x180"
     },
     {
       "minRow": 362,
@@ -19254,6 +19236,24 @@
       "value": "Bergen ?"
     },
     {
+      "minRow": 125,
+      "maxRow": 127,
+      "minColIndex": 21,
+      "maxColIndex": 21,
+      "minCol": "Rubric",
+      "maxCol": "Rubric",
+      "value": "Yes; throughout"
+    },
+    {
+      "minRow": 435,
+      "maxRow": 460,
+      "minColIndex": 20,
+      "maxColIndex": 20,
+      "minCol": "Script",
+      "maxCol": "Script",
+      "value": "Textualis"
+    },
+    {
       "minRow": 208,
       "maxRow": 213,
       "minColIndex": 24,
@@ -19263,13 +19263,13 @@
       "value": "Romanesque"
     },
     {
-      "minRow": 125,
-      "maxRow": 127,
-      "minColIndex": 21,
-      "maxColIndex": 21,
-      "minCol": "Rubric",
-      "maxCol": "Rubric",
-      "value": "Yes; throughout"
+      "minRow": 708,
+      "maxRow": 709,
+      "minColIndex": 1,
+      "maxColIndex": 1,
+      "minCol": "Name",
+      "maxCol": "Name",
+      "value": ""
     },
     {
       "minRow": 309,
@@ -19281,15 +19281,6 @@
       "value": "Other"
     },
     {
-      "minRow": 238,
-      "maxRow": 239,
-      "minColIndex": 9,
-      "maxColIndex": 9,
-      "minCol": "Minor text",
-      "maxCol": "Minor text",
-      "value": "Comp"
-    },
-    {
       "minRow": 670,
       "maxRow": 678,
       "minColIndex": 29,
@@ -19297,6 +19288,15 @@
       "minCol": "Place",
       "maxCol": "Place",
       "value": "Throughout"
+    },
+    {
+      "minRow": 238,
+      "maxRow": 239,
+      "minColIndex": 9,
+      "maxColIndex": 9,
+      "minCol": "Minor text",
+      "maxCol": "Minor text",
+      "value": "Comp"
     },
     {
       "minRow": 326,
@@ -19308,15 +19308,6 @@
       "value": "Unknown"
     },
     {
-      "minRow": 0,
-      "maxRow": 1,
-      "minColIndex": 0,
-      "maxColIndex": 0,
-      "minCol": "Shelf mark",
-      "maxCol": "Shelf mark",
-      "value": "AM 315 f fol."
-    },
-    {
       "minRow": 221,
       "maxRow": 224,
       "minColIndex": 8,
@@ -19326,15 +19317,6 @@
       "value": ""
     },
     {
-      "minRow": 288,
-      "maxRow": 297,
-      "minColIndex": 21,
-      "maxColIndex": 21,
-      "minCol": "Rubric",
-      "maxCol": "Rubric",
-      "value": "No"
-    },
-    {
       "minRow": 522,
       "maxRow": 530,
       "minColIndex": 16,
@@ -19342,6 +19324,24 @@
       "minCol": "Material",
       "maxCol": "Material",
       "value": "Parchment"
+    },
+    {
+      "minRow": 0,
+      "maxRow": 1,
+      "minColIndex": 0,
+      "maxColIndex": 0,
+      "minCol": "Shelf mark",
+      "maxCol": "Shelf mark",
+      "value": "AM 315 f fol."
+    },
+    {
+      "minRow": 288,
+      "maxRow": 297,
+      "minColIndex": 21,
+      "maxColIndex": 21,
+      "minCol": "Rubric",
+      "maxCol": "Rubric",
+      "value": "No"
     },
     {
       "minRow": 8,
@@ -19398,15 +19398,6 @@
       "value": "None"
     },
     {
-      "minRow": 421,
-      "maxRow": 423,
-      "minColIndex": 22,
-      "maxColIndex": 22,
-      "minCol": "Scribe",
-      "maxCol": "Scribe",
-      "value": "Hand d"
-    },
-    {
       "minRow": 413,
       "maxRow": 414,
       "minColIndex": 19,
@@ -19414,6 +19405,15 @@
       "minCol": "Lines",
       "maxCol": "Lines",
       "value": "37"
+    },
+    {
+      "minRow": 421,
+      "maxRow": 423,
+      "minColIndex": 22,
+      "maxColIndex": 22,
+      "minCol": "Scribe",
+      "maxCol": "Scribe",
+      "value": "Hand d"
     },
     {
       "minRow": 172,
@@ -19425,15 +19425,6 @@
       "value": "Parchment"
     },
     {
-      "minRow": 177,
-      "maxRow": 205,
-      "minColIndex": 21,
-      "maxColIndex": 21,
-      "minCol": "Rubric",
-      "maxCol": "Rubric",
-      "value": "Yes"
-    },
-    {
       "minRow": 604,
       "maxRow": 605,
       "minColIndex": 14,
@@ -19441,6 +19432,15 @@
       "minCol": "Production Unit",
       "maxCol": "Production Unit",
       "value": "II"
+    },
+    {
+      "minRow": 177,
+      "maxRow": 205,
+      "minColIndex": 21,
+      "maxColIndex": 21,
+      "minCol": "Rubric",
+      "maxCol": "Rubric",
+      "value": "Yes"
     },
     {
       "minRow": 36,
@@ -19470,15 +19470,6 @@
       "value": "DKB"
     },
     {
-      "minRow": 138,
-      "maxRow": 139,
-      "minColIndex": 11,
-      "maxColIndex": 11,
-      "minCol": "Full size",
-      "maxCol": "Full size",
-      "value": "Unknown"
-    },
-    {
       "minRow": 644,
       "maxRow": 667,
       "minColIndex": 26,
@@ -19486,6 +19477,15 @@
       "minCol": "Form of Initials",
       "maxCol": "Form of Initials",
       "value": "None"
+    },
+    {
+      "minRow": 138,
+      "maxRow": 139,
+      "minColIndex": 11,
+      "maxColIndex": 11,
+      "minCol": "Full size",
+      "maxCol": "Full size",
+      "value": "Unknown"
     },
     {
       "minRow": 668,
@@ -19533,13 +19533,13 @@
       "value": "AM 305 fol."
     },
     {
-      "minRow": 710,
-      "maxRow": 713,
-      "minColIndex": 15,
-      "maxColIndex": 15,
-      "minCol": "Pricking",
-      "maxCol": "Pricking",
-      "value": "Unknown"
+      "minRow": 329,
+      "maxRow": 360,
+      "minColIndex": 0,
+      "maxColIndex": 0,
+      "minCol": "Shelf mark",
+      "maxCol": "Shelf mark",
+      "value": "Mh 15"
     },
     {
       "minRow": 461,
@@ -19551,13 +19551,13 @@
       "value": "No"
     },
     {
-      "minRow": 329,
-      "maxRow": 360,
-      "minColIndex": 0,
-      "maxColIndex": 0,
-      "minCol": "Shelf mark",
-      "maxCol": "Shelf mark",
-      "value": "Mh 15"
+      "minRow": 710,
+      "maxRow": 713,
+      "minColIndex": 15,
+      "maxColIndex": 15,
+      "minCol": "Pricking",
+      "maxCol": "Pricking",
+      "value": "Unknown"
     },
     {
       "minRow": 227,
@@ -19578,15 +19578,6 @@
       "value": "None"
     },
     {
-      "minRow": 362,
-      "maxRow": 375,
-      "minColIndex": 18,
-      "maxColIndex": 18,
-      "minCol": "Columns",
-      "maxCol": "Columns",
-      "value": "2"
-    },
-    {
       "minRow": 418,
       "maxRow": 481,
       "minColIndex": 3,
@@ -19594,6 +19585,15 @@
       "minCol": "Depository",
       "maxCol": "Depository",
       "value": "GKS"
+    },
+    {
+      "minRow": 362,
+      "maxRow": 375,
+      "minColIndex": 18,
+      "maxColIndex": 18,
+      "minCol": "Columns",
+      "maxCol": "Columns",
+      "value": "2"
     },
     {
       "minRow": 288,
@@ -19632,15 +19632,6 @@
       "value": "Ornamented large (6-8 lines) and small initials (2 lines)"
     },
     {
-      "minRow": 180,
-      "maxRow": 207,
-      "minColIndex": 15,
-      "maxColIndex": 15,
-      "minCol": "Pricking",
-      "maxCol": "Pricking",
-      "value": "No"
-    },
-    {
       "minRow": 492,
       "maxRow": 493,
       "minColIndex": 20,
@@ -19648,6 +19639,15 @@
       "minCol": "Script",
       "maxCol": "Script",
       "value": "Cursiva A."
+    },
+    {
+      "minRow": 180,
+      "maxRow": 207,
+      "minColIndex": 15,
+      "maxColIndex": 15,
+      "minCol": "Pricking",
+      "maxCol": "Pricking",
+      "value": "No"
     },
     {
       "minRow": 0,
@@ -19659,15 +19659,6 @@
       "value": "1"
     },
     {
-      "minRow": 392,
-      "maxRow": 393,
-      "minColIndex": 27,
-      "maxColIndex": 27,
-      "minCol": "Size of Initials",
-      "maxCol": "Size of Initials",
-      "value": "Small"
-    },
-    {
       "minRow": 485,
       "maxRow": 491,
       "minColIndex": 19,
@@ -19675,6 +19666,15 @@
       "minCol": "Lines",
       "maxCol": "Lines",
       "value": "26"
+    },
+    {
+      "minRow": 392,
+      "maxRow": 393,
+      "minColIndex": 27,
+      "maxColIndex": 27,
+      "minCol": "Size of Initials",
+      "maxCol": "Size of Initials",
+      "value": "Small"
     },
     {
       "minRow": 688,
@@ -19704,15 +19704,6 @@
       "value": "Fragment"
     },
     {
-      "minRow": 163,
-      "maxRow": 167,
-      "minColIndex": 17,
-      "maxColIndex": 17,
-      "minCol": "Ruling",
-      "maxCol": "Ruling",
-      "value": "Dry"
-    },
-    {
       "minRow": 250,
       "maxRow": 271,
       "minColIndex": 21,
@@ -19720,6 +19711,15 @@
       "minCol": "Rubric",
       "maxCol": "Rubric",
       "value": "Yes"
+    },
+    {
+      "minRow": 163,
+      "maxRow": 167,
+      "minColIndex": 17,
+      "maxColIndex": 17,
+      "minCol": "Ruling",
+      "maxCol": "Ruling",
+      "value": "Dry"
     },
     {
       "minRow": 289,
@@ -19875,15 +19875,6 @@
       "value": " X: 8 (4b, ff. 66-73); XI: 8 (4b, ff. 74-81); XII: 6 (2b, 2f, ff. 82-87)"
     },
     {
-      "minRow": 238,
-      "maxRow": 239,
-      "minColIndex": 8,
-      "maxColIndex": 8,
-      "minCol": "Main text",
-      "maxCol": "Main text",
-      "value": "MLL (FrL)"
-    },
-    {
       "minRow": 593,
       "maxRow": 595,
       "minColIndex": 2,
@@ -19893,13 +19884,13 @@
       "value": ""
     },
     {
-      "minRow": 383,
-      "maxRow": 389,
-      "minColIndex": 25,
-      "maxColIndex": 25,
-      "minCol": "Colours",
-      "maxCol": "Colours",
-      "value": "R, B"
+      "minRow": 238,
+      "maxRow": 239,
+      "minColIndex": 8,
+      "maxColIndex": 8,
+      "minCol": "Main text",
+      "maxCol": "Main text",
+      "value": "MLL (FrL)"
     },
     {
       "minRow": 502,
@@ -19909,6 +19900,15 @@
       "minCol": "Shelf mark",
       "maxCol": "Shelf mark",
       "value": "NRA 30, NRA 31, NRA 32, NRA 33"
+    },
+    {
+      "minRow": 383,
+      "maxRow": 389,
+      "minColIndex": 25,
+      "maxColIndex": 25,
+      "minCol": "Colours",
+      "maxCol": "Colours",
+      "value": "R, B"
     },
     {
       "minRow": 225,
@@ -19929,15 +19929,6 @@
       "value": "Eken (1963:56-66); Jóhanna Katrín et.al. (2023)"
     },
     {
-      "minRow": 216,
-      "maxRow": 224,
-      "minColIndex": 15,
-      "maxColIndex": 15,
-      "minCol": "Pricking",
-      "maxCol": "Pricking",
-      "value": "No"
-    },
-    {
       "minRow": 692,
       "maxRow": 699,
       "minColIndex": 1,
@@ -19945,6 +19936,15 @@
       "minCol": "Name",
       "maxCol": "Name",
       "value": ""
+    },
+    {
+      "minRow": 216,
+      "maxRow": 224,
+      "minColIndex": 15,
+      "maxColIndex": 15,
+      "minCol": "Pricking",
+      "maxCol": "Pricking",
+      "value": "No"
     },
     {
       "minRow": 45,
@@ -19983,6 +19983,15 @@
       "value": "I: 6 (4 b; ff. 1–8); II: 6 (2 b; 2 f; ff. 9–14)"
     },
     {
+      "minRow": 175,
+      "maxRow": 176,
+      "minColIndex": 22,
+      "maxColIndex": 22,
+      "minCol": "Scribe",
+      "maxCol": "Scribe",
+      "value": "Hand b"
+    },
+    {
       "minRow": 704,
       "maxRow": 705,
       "minColIndex": 1,
@@ -20001,15 +20010,6 @@
       "value": ""
     },
     {
-      "minRow": 175,
-      "maxRow": 176,
-      "minColIndex": 22,
-      "maxColIndex": 22,
-      "minCol": "Scribe",
-      "maxCol": "Scribe",
-      "value": "Hand b"
-    },
-    {
       "minRow": 250,
       "maxRow": 271,
       "minColIndex": 29,
@@ -20019,15 +20019,6 @@
       "value": "Throughout"
     },
     {
-      "minRow": 392,
-      "maxRow": 393,
-      "minColIndex": 22,
-      "maxColIndex": 22,
-      "minCol": "Scribe",
-      "maxCol": "Scribe",
-      "value": "Hand a"
-    },
-    {
       "minRow": 235,
       "maxRow": 237,
       "minColIndex": 21,
@@ -20035,6 +20026,15 @@
       "minCol": "Rubric",
       "maxCol": "Rubric",
       "value": "Yes"
+    },
+    {
+      "minRow": 392,
+      "maxRow": 393,
+      "minColIndex": 22,
+      "maxColIndex": 22,
+      "minCol": "Scribe",
+      "maxCol": "Scribe",
+      "value": "Hand a"
     },
     {
       "minRow": 238,
@@ -20262,21 +20262,21 @@
       "value": "Codex"
     },
     {
-      "minRow": 418,
-      "maxRow": 419,
-      "minColIndex": 25,
-      "maxColIndex": 25,
-      "minCol": "Colours",
-      "maxCol": "Colours",
-      "value": "None"
-    },
-    {
       "minRow": 130,
       "maxRow": 132,
       "minColIndex": 28,
       "maxColIndex": 28,
       "minCol": "Iconography",
       "maxCol": "Iconography",
+      "value": "None"
+    },
+    {
+      "minRow": 418,
+      "maxRow": 419,
+      "minColIndex": 25,
+      "maxColIndex": 25,
+      "minCol": "Colours",
+      "maxCol": "Colours",
       "value": "None"
     },
     {
@@ -20298,15 +20298,6 @@
       "value": ""
     },
     {
-      "minRow": 59,
-      "maxRow": 99,
-      "minColIndex": 14,
-      "maxColIndex": 14,
-      "minCol": "Production Unit",
-      "maxCol": "Production Unit",
-      "value": "II"
-    },
-    {
       "minRow": 140,
       "maxRow": 148,
       "minColIndex": 28,
@@ -20314,6 +20305,15 @@
       "minCol": "Iconography",
       "maxCol": "Iconography",
       "value": "None. Four pen-flourished large initials with oeuf-de-grenouile on f. 1ra2-8, f. 9ra8-13, f. 29va3-8, f. 61ra22-26. "
+    },
+    {
+      "minRow": 59,
+      "maxRow": 99,
+      "minColIndex": 14,
+      "maxColIndex": 14,
+      "minCol": "Production Unit",
+      "maxCol": "Production Unit",
+      "value": "II"
     },
     {
       "minRow": 230,
@@ -20379,15 +20379,6 @@
       "value": "255x180"
     },
     {
-      "minRow": 164,
-      "maxRow": 167,
-      "minColIndex": 6,
-      "maxColIndex": 6,
-      "minCol": "Dating",
-      "maxCol": "Dating",
-      "value": "1450"
-    },
-    {
       "minRow": 362,
       "maxRow": 363,
       "minColIndex": 6,
@@ -20395,6 +20386,15 @@
       "minCol": "Dating",
       "maxCol": "Dating",
       "value": "1320"
+    },
+    {
+      "minRow": 164,
+      "maxRow": 167,
+      "minColIndex": 6,
+      "maxColIndex": 6,
+      "minCol": "Dating",
+      "maxCol": "Dating",
+      "value": "1450"
     },
     {
       "minRow": 383,
