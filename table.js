@@ -26,6 +26,14 @@ function escapeHtml(text) {
     .replace(/'/g, '&#39;');
 }
 
+function normalizeLeavesPages(value) {
+  if (value === null || value === undefined) return '';
+  const s = String(value);
+  // Ensure exactly one space after f./p. when immediately followed by a non-space character.
+  // Examples: "f.1r" -> "f. 1r", "p.12" -> "p. 12", "f. 1r" stays unchanged.
+  return s.replace(/\b([fFpP])\.\s*/g, '$1. ');
+}
+
 // Column title overrides (display-only)
 const COLUMN_TITLE_OVERRIDES = {
   "Shelf mark": "Shelfmark",
@@ -41,6 +49,20 @@ function isSafeHttpUrl(url) {
   return typeof url === 'string' && /^https?:\/\//i.test(url.trim());
 }
 
+function expandDatabaseLinkLabel(label) {
+  const s = (label === null || label === undefined) ? '' : String(label).trim();
+  if (!s) return s;
+  const parenMatch = s.match(/^([A-Za-z]{1,5})(\s*\(.*\))$/);
+  const base = (parenMatch ? parenMatch[1] : s).toLowerCase();
+  const suffix = parenMatch ? parenMatch[2] : '';
+
+  if (base === 'ms') return 'manuscripta.se' + suffix;
+  if (base === 'av') return 'Alvin' + suffix;
+  if (base === 'hr') return 'handrit.is' + suffix;
+  if (base === 'cf') return 'Codices Fennici' + suffix;
+  return s;
+}
+
 function normalizeLinksToDatabase(value) {
   if (!value || typeof value !== 'string') return '';
   let v = value.trim();
@@ -53,8 +75,8 @@ function normalizeLinksToDatabase(value) {
     if (!m) m = v.match(/=HYPERLINK\(["']([^"']+)["'],["']([^"']+)["']\)/i);
     if (m && isSafeHttpUrl(m[1])) {
       const href = m[1].trim();
-      const label = m[2] ? m[2].trim() : href;
-      return `<a href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a>`;
+      const label = expandDatabaseLinkLabel(m[2] ? m[2].trim() : href);
+      return `<a href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label || href)}</a>`;
     }
   }
 
@@ -68,7 +90,7 @@ function normalizeLinksToDatabase(value) {
         const rendered = anchors
           .map(a => {
             const href = (a.getAttribute('href') || '').trim();
-            const label = (a.textContent || href).trim();
+            const label = expandDatabaseLinkLabel((a.textContent || href).trim());
             if (!isSafeHttpUrl(href)) return '';
             return `<a href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a>`;
           })
@@ -89,7 +111,7 @@ function normalizeLinksToDatabase(value) {
     const label = (mdMatch[1] || '').trim();
     const href = (mdMatch[2] || '').trim();
     if (!isSafeHttpUrl(href)) continue;
-    mdLinks.push({ label: label || href, href });
+    mdLinks.push({ label: expandDatabaseLinkLabel(label || href), href });
   }
   if (mdLinks.length > 0) {
     return mdLinks
@@ -576,6 +598,7 @@ async function ensureRawExcelLoaded() {
             headers.forEach((h, colIndex) => {
               let val = values[colIndex] !== undefined ? values[colIndex] : "";
               if (h === "Main text") val = String(val || "").trim();
+              if (h === "Leaves/Pages") val = normalizeLeavesPages(val);
               if (h === "Depository") {
                 obj["Depository_abbr"] = val;
                 if (val in depositoryMap) {
@@ -720,6 +743,25 @@ function normalizeForCompare(val) {
   return v === "." ? "" : v;
 }
 
+function aggregateFieldValues(rows, field, separator = "; ") {
+  const parts = [];
+  for (const r of (rows || [])) {
+    if (!r) continue;
+    const v = normalizeForCompare(r[field]);
+    if (!v) continue;
+    parts.push(v);
+  }
+  return parts.join(separator);
+}
+
+function allFieldValuesEmpty(rows, field) {
+  for (const r of (rows || [])) {
+    if (!r) continue;
+    if (normalizeForCompare(r[field])) return false;
+  }
+  return true;
+}
+
 function getManuscriptKey(row) {
   const dep = normalizeForCompare(row["Depository_abbr"] || row["Depository"]);
   const shelf = normalizeForCompare(row["Shelf mark"]);
@@ -787,6 +829,11 @@ function renderMergedView(manuscripts) {
     const rawBlock = RAW_BY_MANUSCRIPT_KEY.get(ms.key);
     const msRows = (rawBlock && rawBlock.rows && rawBlock.rows.length > 0) ? rawBlock.rows : ms.rows;
     const msRowCount = msRows.length;
+
+    // Manuscript-level merged fields
+    const mergedLinksToDatabase = aggregateFieldValues(msRows, "Links to Database", "; ");
+    const literatureAllEmpty = allFieldValuesEmpty(msRows, "Literature");
+
     const mergeLookup = (rawBlock && RAW_MERGES_BY_SOURCE.has(rawBlock.sourceId))
       ? buildLocalMergeLookup(msRows, rawBlock.sourceId, columnsFull, columns)
       : null;
@@ -851,6 +898,20 @@ function renderMergedView(manuscripts) {
 
       for (let c = 0; c < columns.length; c++) {
         const col = columns[c];
+
+        // Always merge Links to Database at the manuscript level (combine URLs across rows).
+        if (col === "Links to Database") {
+          if (!isFirstMsRow) continue;
+          html += `<td class="${msClass}" rowspan="${msRowCount}">${renderMergedCell(col, mergedLinksToDatabase)}</td>`;
+          continue;
+        }
+
+        // If Literature is empty for all rows in the manuscript, merge it into a single blank cell.
+        if (col === "Literature" && literatureAllEmpty) {
+          if (!isFirstMsRow) continue;
+          html += `<td class="${msClass}" rowspan="${msRowCount}">${renderMergedCell(col, "")}</td>`;
+          continue;
+        }
 
         if (mergeLookup) {
           // The raw Excel files don't have a Language column; we inject it.
@@ -1468,6 +1529,7 @@ async function loadDataTSV(fileName) {
       headers.forEach((h, i) => {
         let val = values[i] !== undefined ? values[i] : "";
         if (h === "Main text") val = val.trim();
+        if (h === "Leaves/Pages") val = normalizeLeavesPages(val);
         // Expand Depository abbreviation
         if (h === "Depository") {
           obj["Depository_abbr"] = val; // Store original abbreviation for filename generation
