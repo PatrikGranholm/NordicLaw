@@ -89,6 +89,12 @@
     .tabulator-group-level-1 {
       background: #fafafa;
     }
+
+    /* Force view visibility (robust to Tabulator initialization and Live Server reload quirks) */
+    body.view-merged #table-view { display: none !important; }
+    body.view-merged #merged-view { display: block !important; }
+    body.view-table #table-view { display: block !important; }
+    body.view-table #merged-view { display: none !important; }
   </style>
 </head>
 <body>

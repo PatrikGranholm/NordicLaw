@@ -886,12 +886,17 @@ function renderMergedView(manuscripts) {
   mergedRoot.innerHTML = html;
 }
 
-function setView(view) {
-  currentView = (view === "merged") ? "merged" : "table";
-  const viewSelect = document.getElementById("view-select");
-  if (viewSelect) viewSelect.value = currentView;
+// Apply view-dependent UI visibility without changing filters.
+// (Important: Tabulator initialization can run after initial setView(),
+// so we sometimes need to re-apply visibility once the table is created.)
+function applyViewUI() {
+  try {
+    document.body.classList.toggle('view-merged', currentView === 'merged');
+    document.body.classList.toggle('view-table', currentView === 'table');
+  } catch (e) {
+    // ignore
+  }
 
-  try { localStorage.setItem(VIEW_STORAGE_KEY, currentView); } catch (e) {}
   const tableView = document.getElementById("table-view");
   const mergedView = document.getElementById("merged-view");
   if (tableView) tableView.style.display = (currentView === "table") ? "block" : "none";
@@ -923,6 +928,15 @@ function setView(view) {
   if (currentView === "merged") {
     renderMergedColumnsMenu();
   }
+}
+
+function setView(view) {
+  currentView = (view === "merged") ? "merged" : "table";
+  const viewSelect = document.getElementById("view-select");
+  if (viewSelect) viewSelect.value = currentView;
+
+  try { localStorage.setItem(VIEW_STORAGE_KEY, currentView); } catch (e) {}
+  applyViewUI();
 
   if (currentView === "merged") {
     // Kick off raw Excel + merge JSON loading (if available) and re-render when ready.
@@ -1518,6 +1532,7 @@ async function loadDataTSV(fileName) {
       table.setColumns(columns);
       await table.replaceData(rows);
       document.getElementById('total-records').textContent = rows.length;
+      applyViewUI();
     } else {
       table = new Tabulator("#table-view", {
         data: rows,
@@ -1674,6 +1689,9 @@ async function loadDataTSV(fileName) {
           }
         });
       }
+
+      // Tabulator init can affect container layout/visibility; re-apply view UI.
+      applyViewUI();
     }
     // Reset facet selections (all checked)
     FACET_FIELDS.forEach(field => updateFacetAllCheckbox(field));
