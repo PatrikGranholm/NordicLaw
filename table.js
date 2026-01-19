@@ -944,11 +944,43 @@ function parseCentury(dating) {
   return '';
 }
 
+// Facet value normalization (UI-only)
+// Keeps the underlying table values intact, but ensures empty values
+// can be filtered as a concrete facet option.
+//
+// Important: We distinguish between a truly empty cell (render as "Empty")
+// and a cell containing the literal text "Unknown" (render as "Unknown").
+const FACET_EMPTY_LABEL_FIELDS = new Set([
+  "Depository",
+  "Object",
+  "Material",
+  "Size",
+  "Script",
+  "Pricking",
+  "Ruling",
+  "Columns",
+  "Lines",
+  "Rubric",
+  "Style",
+]);
+
+function getFacetValue(row, field) {
+  if (!row) return '';
+  if (FACET_EMPTY_LABEL_FIELDS.has(field)) {
+    const raw = row[field];
+    const s = (raw === null || raw === undefined) ? "" : String(raw).trim();
+    return s === "" ? "Empty" : s;
+  }
+  return row[field];
+}
+
 function getUniqueValues(rows, field) {
   const set = new Set();
   rows.forEach(row => {
-    let val = row[field];
-    if (!val || val.trim() === "") return;
+    let val = getFacetValue(row, field);
+    if (val === null || val === undefined) return;
+    // Most facets should not show empty values; Object/Material are normalized to "Unknown" above.
+    if (typeof val === 'string' && val.trim() === "") return;
     if (field === "Dating") {
       // Only keep year or year range
       let m = val.match(/(\d{3,4})\s*[-–]\s*(\d{3,4})/);
@@ -1208,7 +1240,7 @@ function applyFacetFilters() {
           }
           const groups = facetSelections[field];
           if (groups && groups.length > 0) {
-            const anyGroup = ms.rows.some(r => groups.includes(r[field]));
+            const anyGroup = ms.rows.some(r => groups.includes(getFacetValue(r, field)));
             if (!anyGroup) return false;
           }
           continue;
@@ -1216,7 +1248,7 @@ function applyFacetFilters() {
 
         const selected = facetSelections[field];
         if (selected && selected.length > 0) {
-          const anyMatch = ms.rows.some(r => selected.includes(r[field]));
+          const anyMatch = ms.rows.some(r => selected.includes(getFacetValue(r, field)));
           if (!anyMatch) return false;
         }
       }
@@ -1284,7 +1316,7 @@ function applyFacetFilters() {
         }
       } else {
         if (facetSelections[field] && facetSelections[field].length > 0) {
-          if (!facetSelections[field].includes(row[field])) return false;
+          if (!facetSelections[field].includes(getFacetValue(row, field))) return false;
         }
       }
     }
