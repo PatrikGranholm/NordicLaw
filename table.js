@@ -206,6 +206,8 @@ const FACET_FIELDS = [
 ];
 let facetSelections = {};
 let allRows = [];
+// Raw rows used as the source for Text View ordering (Tabulator sorting is disabled)
+let TABLE_SOURCE_ROWS = [];
 
 // Header order from the filled combined TSV (used to match the Excel/TSV column layout in merged view)
 let DATA_HEADERS = null;
@@ -221,6 +223,48 @@ let MERGED_VISIBLE_COLUMNS = null; // Set<string> | null (null => all visible)
 // Manuscript (merged) view: sort mode (persisted in localStorage)
 const MERGED_SORT_STORAGE_KEY = "nordiclaw.mergedSort";
 let MERGED_SORT_MODE = null; // string | null
+
+function sortRowsForTextView(rows, mode) {
+  const m = (mode === "dating") ? "dating" : "shelfmark";
+  const out = Array.isArray(rows) ? rows.slice() : [];
+  out.sort((a, b) => {
+    const aDep = String((a && a["Depository"]) || "");
+    const bDep = String((b && b["Depository"]) || "");
+    const aShelf = String((a && a["Shelf mark"]) || "");
+    const bShelf = String((b && b["Shelf mark"]) || "");
+
+    if (m === "dating") {
+      const ay = (a && typeof a["DatingYear"] === "number" && !Number.isNaN(a["DatingYear"]))
+        ? a["DatingYear"]
+        : Number.POSITIVE_INFINITY;
+      const by = (b && typeof b["DatingYear"] === "number" && !Number.isNaN(b["DatingYear"]))
+        ? b["DatingYear"]
+        : Number.POSITIVE_INFINITY;
+      if (ay !== by) return ay - by;
+    }
+
+    const shelfCmp = aShelf.localeCompare(bShelf, undefined, { numeric: true, sensitivity: "base" });
+    if (shelfCmp !== 0) return shelfCmp;
+
+    const depCmp = aDep.localeCompare(bDep, undefined, { sensitivity: "base" });
+    if (depCmp !== 0) return depCmp;
+
+    return 0;
+  });
+  return out;
+}
+
+// Tabulator sorting is disabled; reorder by replacing data in the desired order.
+function applyTableSort(mode) {
+  if (!table) return;
+  const sorted = sortRowsForTextView(TABLE_SOURCE_ROWS, mode);
+  try {
+    // Keep it fire-and-forget; filters will be re-applied by applyFacetFilters.
+    table.replaceData(sorted);
+  } catch (e) {
+    // ignore
+  }
+}
 
 function getMergedSortMode() {
   const sel = document.getElementById("merged-sort");
@@ -789,10 +833,100 @@ function getConstantFields(rows, columns, excluded = []) {
   return constant;
 }
 
-function renderMergedCell(field, value) {
+function splitSemicolonList(value) {
+  return String(value || "")
+    .split(/\s*;\s*/)
+    .map(s => s.trim())
+    .filter(Boolean);
+}
+
+const EN_DASH = " \u2013 ";
+function parseTrailingParenSuffix(raw) {
+  const s = String(raw || "").trim();
+  const m = s.match(/^(.+?)\s*\(([^)]+)\)\s*$/);
+  if (!m) return { base: s, suffix: "" };
+  return { base: m[1].trim(), suffix: ` (${m[2].trim()})` };
+}
+
+function formatAbbrExpansion(map, raw) {
+  const { base, suffix } = parseTrailingParenSuffix(raw);
+  if (!base) return "";
+  const full = map && typeof map === 'object' ? map[base] : null;
+  return full ? `${base}${EN_DASH}${full}${suffix}` : String(raw || "").trim();
+}
+
+function getEffectiveValue(msRows, rowIndex, field) {
+  if (!msRows || !Array.isArray(msRows)) return "";
+  for (let i = rowIndex; i >= 0; i--) {
+    const v = normalizeForCompare(msRows[i] && msRows[i][field]);
+    if (v) return v;
+  }
+  return "";
+}
+
+const MINOR_TEXT_KEY_SEP = "\u0000";
+function minorTextKey(mainAbbr, sectionAbbr) {
+  return `${String(mainAbbr || "").trim()}${MINOR_TEXT_KEY_SEP}${String(sectionAbbr || "").trim()}`;
+}
+
+function renderMergedCell(field, value, ctx = null) {
   const v = normalizeForCompare(value);
   if (!v) return "&nbsp;";
   if (field === "Links to Database") return normalizeLinksToDatabase(v);
+  if (field === "Main text") {
+    const map = (typeof window !== 'undefined' && window.MAIN_TEXT_MAP)
+      ? window.MAIN_TEXT_MAP
+      : (typeof MAIN_TEXT_MAP !== 'undefined' ? MAIN_TEXT_MAP : null);
+
+    if (map && typeof map === 'object') {
+      const parts = splitSemicolonList(v);
+      const expanded = parts.map(key => formatAbbrExpansion(map, key)).join('; ');
+      return escapeHtml(expanded);
+    }
+  }
+
+  if (field === "Minor text") {
+    const minorMap = (typeof window !== 'undefined' && window.MINOR_TEXT_MAP)
+      ? window.MINOR_TEXT_MAP
+      : (typeof MINOR_TEXT_MAP !== 'undefined' ? MINOR_TEXT_MAP : null);
+
+    if (minorMap && typeof minorMap === 'object') {
+      const parts = splitSemicolonList(v);
+
+      // Determine main-text context for resolving minor sections.
+      let mainCandidates = [];
+      if (ctx && ctx.msRows && typeof ctx.rowIndex === 'number') {
+        mainCandidates = splitSemicolonList(getEffectiveValue(ctx.msRows, ctx.rowIndex, "Main text"))
+          .map(m => parseTrailingParenSuffix(m).base)
+          .filter(Boolean);
+      } else if (ctx && ctx.row && ctx.row["Main text"]) {
+        mainCandidates = splitSemicolonList(ctx.row["Main text"])
+          .map(m => parseTrailingParenSuffix(m).base)
+          .filter(Boolean);
+      }
+
+      const expanded = parts.map(sectionAbbr => {
+        const { base: sectionBase, suffix: sectionSuffix } = parseTrailingParenSuffix(sectionAbbr);
+        let full = null;
+
+        if (mainCandidates.length === 1) {
+          full = minorMap[minorTextKey(mainCandidates[0], sectionBase)] || null;
+        } else if (mainCandidates.length > 1) {
+          const matches = [];
+          for (const m of mainCandidates) {
+            const hit = minorMap[minorTextKey(m, sectionBase)];
+            if (hit) matches.push(hit);
+          }
+          if (matches.length === 1) full = matches[0];
+        }
+
+        return full ? `${sectionBase}${EN_DASH}${full}${sectionSuffix}` : sectionAbbr;
+      }).join('; ');
+
+      return escapeHtml(expanded);
+    }
+  }
+
   return escapeHtml(v);
 }
 
@@ -918,7 +1052,7 @@ function renderMergedView(manuscripts) {
           // Merge it per manuscript so duplicates don't repeat visually.
           if (col === "Language") {
             if (!isFirstMsRow) continue;
-            html += `<td class="${msClass}" rowspan="${msRowCount}">${renderMergedCell(col, row[col])}</td>`;
+            html += `<td class="${msClass}" rowspan="${msRowCount}">${renderMergedCell(col, row[col], { row, msRows, rowIndex: rIndex })}</td>`;
             continue;
           }
 
@@ -926,28 +1060,28 @@ function renderMergedView(manuscripts) {
           if (mergeLookup.covered.has(key)) continue;
           const span = mergeLookup.topLeft.get(key);
           const attrs = span ? ` rowspan="${span.rowSpan}" colspan="${span.colSpan}"` : "";
-          html += `<td class="${(col === "Production Unit") ? puClass : msClass}"${attrs}>${renderMergedCell(col, row[col])}</td>`;
+          html += `<td class="${(col === "Production Unit") ? puClass : msClass}"${attrs}>${renderMergedCell(col, row[col], { row, msRows, rowIndex: rIndex })}</td>`;
           continue;
         }
 
         if (msConst && msConst.has(col)) {
           if (!isFirstMsRow) continue;
-          html += `<td class="${msClass}" rowspan="${msRowCount}">${renderMergedCell(col, row[col])}</td>`;
+          html += `<td class="${msClass}" rowspan="${msRowCount}">${renderMergedCell(col, row[col], { row, msRows, rowIndex: rIndex })}</td>`;
           continue;
         }
 
         if (col === "Production Unit") {
           if (!isRunStart) continue;
-          html += `<td class="${puClass}" rowspan="${runRowSpan}">${renderMergedCell(col, row[col])}</td>`;
+          html += `<td class="${puClass}" rowspan="${runRowSpan}">${renderMergedCell(col, row[col], { row, msRows, rowIndex: rIndex })}</td>`;
           continue;
         }
 
         if (runConst && runConst.has(col)) {
-          html += `<td class="${puClass}" rowspan="${runRowSpan}">${renderMergedCell(col, row[col])}</td>`;
+          html += `<td class="${puClass}" rowspan="${runRowSpan}">${renderMergedCell(col, row[col], { row, msRows, rowIndex: rIndex })}</td>`;
           continue;
         }
 
-        html += `<td>${renderMergedCell(col, row[col])}</td>`;
+        html += `<td>${renderMergedCell(col, row[col], { row, msRows, rowIndex: rIndex })}</td>`;
       }
 
       html += '</tr>';
@@ -980,7 +1114,8 @@ function applyViewUI() {
 
   // Sort selector lives in the top control bar; only show it for Manuscript View.
   const mergedSortControl = document.getElementById("merged-sort-control");
-  if (mergedSortControl) mergedSortControl.style.display = (currentView === "merged") ? "" : "none";
+  // Also useful for Text View sorting (shelfmark/dating)
+  if (mergedSortControl) mergedSortControl.style.display = "";
 
   if (currentView === "table" && table && typeof table.redraw === 'function') {
     try { table.redraw(true); } catch (e) {}
@@ -1042,28 +1177,59 @@ function normalizeRowLanguage(row) {
 
 // Main text abbreviation mapping, loaded from texts.tsv at runtime
 let MAIN_TEXT_MAP = null;
+let MINOR_TEXT_MAP = null;
 async function loadMainTextMap() {
-  if (MAIN_TEXT_MAP) {
+  if (MAIN_TEXT_MAP && MINOR_TEXT_MAP) {
     // Always assign to window for modal rendering
     window.MAIN_TEXT_MAP = MAIN_TEXT_MAP;
+    window.MINOR_TEXT_MAP = MINOR_TEXT_MAP;
     return MAIN_TEXT_MAP;
   }
   try {
     const resp = await fetch('data/texts.tsv');
     const text = await resp.text();
     const lines = text.split(/\r?\n/).filter(line => line.trim() !== '');
-    const map = {};
+    const mainMap = {};
+    const minorMap = {};
+
     lines.forEach(line => {
-      const [abbr, full] = line.split(/\t/);
-      if (abbr && full) map[abbr.trim()] = full.trim();
+      const cleaned = String(line || '').replace(/^\uFEFF/, '');
+      const cols = cleaned.split('\t');
+
+      // Preferred (new) format: main_abbr \t section_abbr \t expansion
+      if (cols.length >= 3) {
+        const mainAbbr = (cols[0] || '').trim();
+        const sectionAbbr = (cols[1] || '').trim();
+        const full = (cols[2] || '').trim();
+        if (!mainAbbr || !full) return;
+
+        if (!sectionAbbr) {
+          mainMap[mainAbbr] = full;
+        } else {
+          minorMap[minorTextKey(mainAbbr, sectionAbbr)] = full;
+        }
+        return;
+      }
+
+      // Legacy fallback: main_abbr \t expansion
+      if (cols.length === 2) {
+        const mainAbbr = (cols[0] || '').trim();
+        const full = (cols[1] || '').trim();
+        if (mainAbbr && full) mainMap[mainAbbr] = full;
+      }
     });
-    MAIN_TEXT_MAP = map;
-    window.MAIN_TEXT_MAP = map;
-    return map;
+
+    MAIN_TEXT_MAP = mainMap;
+    MINOR_TEXT_MAP = minorMap;
+    window.MAIN_TEXT_MAP = mainMap;
+    window.MINOR_TEXT_MAP = minorMap;
+    return mainMap;
   } catch (e) {
     console.error('Failed to load texts.tsv:', e);
     MAIN_TEXT_MAP = {};
+    MINOR_TEXT_MAP = {};
     window.MAIN_TEXT_MAP = {};
+    window.MINOR_TEXT_MAP = {};
     return {};
   }
 }
@@ -1203,7 +1369,9 @@ async function renderFacetSidebar(rows) {
         // Skip empty or dot-only group values
         if (group === '' || group.trim() === '.') return;
         const groupId = `facet-mtg-group-${gi}`;
-        const groupLabel = mainTextMap[group] ? `${escapeHtml(group)} — ${escapeHtml(mainTextMap[group])}` : escapeHtml(group);
+        const groupLabel = mainTextMap[group]
+          ? escapeHtml(formatAbbrExpansion(mainTextMap, group))
+          : escapeHtml(group);
         html += `<div style='margin-left:0.5em;'><div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="${escapeHtml(group)}" data-facet="Main text group" id="${groupId}"><label class="form-check-label" for="${groupId}">${groupLabel}</label></div>`;
         const variants = Array.from(groupMap[group]);
         if (variants.length > 0) {
@@ -1212,7 +1380,9 @@ async function renderFacetSidebar(rows) {
             // Skip empty or dot-only variant values
             if (variant === '' || variant.trim() === '.') return;
             const variantId = `facet-mtg-variant-${gi}-${vi}`;
-            const variantLabel = mainTextMap[variant] ? `${escapeHtml(variant)} — ${escapeHtml(mainTextMap[variant])}` : escapeHtml(variant);
+            const variantLabel = mainTextMap[variant]
+              ? escapeHtml(formatAbbrExpansion(mainTextMap, variant))
+              : escapeHtml(variant);
             html += `<div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="${escapeHtml(group + '|' + variant)}" data-facet="Main text group-variant" id="${variantId}"><label class="form-check-label" for="${variantId}">${variantLabel}</label></div>`;
           });
           html += `</div>`;
@@ -1231,7 +1401,7 @@ async function renderFacetSidebar(rows) {
       if (field === "Main text" && (val === '' || val.trim() === '.' )) return;
       let label = val;
       if (field === "Main text" && mainTextMap[val]) {
-        label = `${val} — ${mainTextMap[val]}`;
+        label = formatAbbrExpansion(mainTextMap, val);
       }
       const id = `facet-${field}-${i}`;
       html += `<div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="${escapeHtml(val)}" data-facet="${escapeHtml(field)}" id="${id}"><label class="form-check-label" for="${id}">${escapeHtml(label)}</label></div>`;
@@ -1477,6 +1647,9 @@ function applyFacetFilters() {
 
     return true;
   });
+
+  // Some Tabulator operations can make it appear like sorting didn't change;
+  // sorting is disabled; order is only changed when sort mode changes.
 }
 
 
@@ -1555,6 +1728,7 @@ async function loadDataTSV(fileName) {
       return obj;
     });
     allRows = rows;
+    TABLE_SOURCE_ROWS = rows;
 
   // Build columns from headers, ordered by DISPLAY_COLUMNS/COLUMN_ORDER
     let colDefs = {};
@@ -1565,6 +1739,7 @@ async function loadDataTSV(fileName) {
         visible: true,
         hozAlign: 'left',
         width: ["Depository", "Shelf mark", "Production Unit"].includes(h) ? 200 : 100,
+        headerSort: false,
         headerFilter: "input",
         headerFilterPlaceholder: "Filter...",
         headerFilterLiveFilter: true
@@ -1575,6 +1750,59 @@ async function loadDataTSV(fileName) {
           return normalizeLinksToDatabase(v);
         };
         colDef.formatterParams = { allowHtml: true };
+      }
+
+      if (h === "Main text") {
+        colDef.formatter = function(cell) {
+          const v = normalizeForCompare(cell.getValue());
+          if (!v) return "";
+          const map = (typeof window !== 'undefined' && window.MAIN_TEXT_MAP)
+            ? window.MAIN_TEXT_MAP
+            : (typeof MAIN_TEXT_MAP !== 'undefined' ? MAIN_TEXT_MAP : null);
+          if (!map || typeof map !== 'object') return escapeHtml(v);
+
+          const expanded = splitSemicolonList(v)
+            .map(part => formatAbbrExpansion(map, part))
+            .join('; ');
+          return escapeHtml(expanded);
+        };
+      }
+
+      if (h === "Minor text") {
+        colDef.formatter = function(cell) {
+          const v = normalizeForCompare(cell.getValue());
+          if (!v) return "";
+
+          const minorMap = (typeof window !== 'undefined' && window.MINOR_TEXT_MAP)
+            ? window.MINOR_TEXT_MAP
+            : (typeof MINOR_TEXT_MAP !== 'undefined' ? MINOR_TEXT_MAP : null);
+          if (!minorMap || typeof minorMap !== 'object') return escapeHtml(v);
+
+          const rowData = cell.getRow && cell.getRow() ? cell.getRow().getData() : null;
+          const mainCandidates = splitSemicolonList(rowData && rowData["Main text"] ? rowData["Main text"] : "")
+            .map(m => parseTrailingParenSuffix(m).base)
+            .filter(Boolean);
+
+          const expanded = splitSemicolonList(v).map(sectionAbbr => {
+            const { base: sectionBase, suffix: sectionSuffix } = parseTrailingParenSuffix(sectionAbbr);
+            let full = null;
+
+            if (mainCandidates.length === 1) {
+              full = minorMap[minorTextKey(mainCandidates[0], sectionBase)] || null;
+            } else if (mainCandidates.length > 1) {
+              const matches = [];
+              for (const m of mainCandidates) {
+                const hit = minorMap[minorTextKey(m, sectionBase)];
+                if (hit) matches.push(hit);
+              }
+              if (matches.length === 1) full = matches[0];
+            }
+
+            return full ? `${sectionBase}${EN_DASH}${full}${sectionSuffix}` : sectionAbbr;
+          }).join('; ');
+
+          return escapeHtml(expanded);
+        };
       }
       colDefs[h] = colDef;
     });
@@ -1589,9 +1817,23 @@ async function loadDataTSV(fileName) {
       visible: false, // Hide the Century column
       hozAlign: 'left',
       width: 90,
+      headerSort: false,
       headerFilter: "input",
       headerFilterPlaceholder: "Filter...",
       headerFilterLiveFilter: true
+    });
+
+    // Add DatingYear column (hidden) so Text View can sort by dating.
+    columns.push({
+      title: "DatingYear",
+      field: "DatingYear",
+      visible: false,
+      headerSort: false,
+      sorter: function(a, b) {
+        const ax = (typeof a === 'number' && !Number.isNaN(a)) ? a : Number.POSITIVE_INFINITY;
+        const bx = (typeof b === 'number' && !Number.isNaN(b)) ? b : Number.POSITIVE_INFINITY;
+        return ax - bx;
+      }
     });
 
     // Render facet sidebar and set up events
@@ -1600,15 +1842,17 @@ async function loadDataTSV(fileName) {
   await renderFacetSidebar(rows);
   setupFacetEvents();
 
+    const sortedRows = sortRowsForTextView(rows, getMergedSortMode());
+
     // If table exists, update columns and data; otherwise create it
     if (table) {
       table.setColumns(columns);
-      await table.replaceData(rows);
-      document.getElementById('total-records').textContent = rows.length;
+      await table.replaceData(sortedRows);
+      document.getElementById('total-records').textContent = sortedRows.length;
       applyViewUI();
     } else {
       table = new Tabulator("#table-view", {
-        data: rows,
+        data: sortedRows,
         layout: "fitColumns",
         pagination: true,
         paginationSize: 50,
@@ -1622,10 +1866,6 @@ async function loadDataTSV(fileName) {
         movableColumns: true,
         autoResize: false,
         height: "100%",
-        initialSort: [
-          { column: "Depository", dir: "asc" },
-          { column: "Shelf mark", dir: "asc" }
-        ],
         theme: "bootstrap5",
         selectable: 1, // Allow row selection for visual feedback
       });
@@ -1671,30 +1911,72 @@ async function loadDataTSV(fileName) {
         const right = entries.slice(mid);
 
         function renderItem(item) {
-            let displayValue = item.value;
+            const key = item.key;
+            const rawValue = item.value;
+            const v = normalizeForCompare(rawValue);
 
-            // Expand Main text using MAIN_TEXT_MAP if available
-            if (item.key === "Main text" && typeof displayValue === 'string' && window.MAIN_TEXT_MAP) {
-              const expanded = window.MAIN_TEXT_MAP[displayValue];
-              if (expanded) {
-                displayValue = `${displayValue} — <span class='text-secondary'>${expanded}</span>`;
+            let displayValue = '';
+
+            if (!v) {
+              displayValue = '&nbsp;';
+            } else if (key === "Links to Database") {
+              displayValue = normalizeLinksToDatabase(v);
+            } else if (key === "Main text") {
+              const map = (typeof window !== 'undefined' && window.MAIN_TEXT_MAP)
+                ? window.MAIN_TEXT_MAP
+                : (typeof MAIN_TEXT_MAP !== 'undefined' ? MAIN_TEXT_MAP : null);
+
+              if (map && typeof map === 'object') {
+                const expanded = splitSemicolonList(v)
+                  .map(part => formatAbbrExpansion(map, part))
+                  .join('; ');
+                displayValue = escapeHtml(expanded);
+              } else {
+                displayValue = escapeHtml(v);
               }
-            }
+            } else if (key === "Minor text") {
+              const minorMap = (typeof window !== 'undefined' && window.MINOR_TEXT_MAP)
+                ? window.MINOR_TEXT_MAP
+                : (typeof MINOR_TEXT_MAP !== 'undefined' ? MINOR_TEXT_MAP : null);
 
-            // Normalize known link field(s)
-            if (item.key === "Links to Database") {
-              displayValue = normalizeLinksToDatabase(displayValue);
-            } else if (displayValue && typeof displayValue === 'string' && /^https?:\/\//.test(displayValue)) {
+              const mainCandidates = splitSemicolonList(data && data["Main text"] ? data["Main text"] : "")
+                .map(m => parseTrailingParenSuffix(m).base)
+                .filter(Boolean);
+
+              if (minorMap && typeof minorMap === 'object') {
+                const expanded = splitSemicolonList(v).map(sectionAbbr => {
+                  const { base: sectionBase, suffix: sectionSuffix } = parseTrailingParenSuffix(sectionAbbr);
+                  let full = null;
+
+                  if (mainCandidates.length === 1) {
+                    full = minorMap[minorTextKey(mainCandidates[0], sectionBase)] || null;
+                  } else if (mainCandidates.length > 1) {
+                    const matches = [];
+                    for (const m of mainCandidates) {
+                      const hit = minorMap[minorTextKey(m, sectionBase)];
+                      if (hit) matches.push(hit);
+                    }
+                    if (matches.length === 1) full = matches[0];
+                  }
+
+                  return full ? `${sectionBase}${EN_DASH}${full}${sectionSuffix}` : sectionAbbr;
+                }).join('; ');
+
+                displayValue = escapeHtml(expanded);
+              } else {
+                displayValue = escapeHtml(v);
+              }
+            } else if (typeof v === 'string' && /^https?:\/\//.test(v)) {
               // Auto-convert plain URLs for other fields
-              displayValue = `<a href="${escapeHtml(displayValue)}" target="_blank" rel="noopener noreferrer">${escapeHtml(displayValue)}</a>`;
+              displayValue = `<a href="${escapeHtml(v)}" target="_blank" rel="noopener noreferrer">${escapeHtml(v)}</a>`;
+            } else {
+              displayValue = escapeHtml(v);
             }
-
-            if (!displayValue) displayValue = '&nbsp;';
 
             // Compact layout: Label on top (small), value below
             return `<div class="mb-2 border-bottom pb-1">
-                  <div class="fw-bold text-secondary" style="font-size: 0.75rem; text-transform: uppercase;">${item.key}</div>
-                  <div class="text-break" style="font-size: 0.9rem;">${displayValue}</div>
+                  <div class="fw-bold text-secondary" style="font-size: 0.75rem; text-transform: uppercase;">${escapeHtml(String(key))}</div>
+              <div class="text-break" style="font-size: 0.9rem;">${displayValue}</div>
                 </div>`;
         }
 
@@ -1838,6 +2120,7 @@ function setupControls() {
     mergedSortSelect.addEventListener("change", function () {
       MERGED_SORT_MODE = (this.value === "dating") ? "dating" : "shelfmark";
       try { localStorage.setItem(MERGED_SORT_STORAGE_KEY, MERGED_SORT_MODE); } catch (e) {}
+      applyTableSort(MERGED_SORT_MODE);
       if (currentView === "merged") applyFacetFilters();
     });
   }
