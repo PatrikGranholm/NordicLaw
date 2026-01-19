@@ -185,6 +185,53 @@ let DISPLAY_COLUMNS = null;
 const MERGED_COLUMNS_STORAGE_KEY = "nordiclaw.mergedVisibleColumns";
 let MERGED_VISIBLE_COLUMNS = null; // Set<string> | null (null => all visible)
 
+// Manuscript (merged) view: sort mode (persisted in localStorage)
+const MERGED_SORT_STORAGE_KEY = "nordiclaw.mergedSort";
+let MERGED_SORT_MODE = null; // string | null
+
+function getMergedSortMode() {
+  const sel = document.getElementById("merged-sort");
+  const uiVal = sel ? String(sel.value || "").trim() : "";
+  const mode = uiVal || MERGED_SORT_MODE || "shelfmark";
+  return (mode === "dating") ? "dating" : "shelfmark";
+}
+
+function manuscriptMinDatingYear(rows) {
+  let min = null;
+  for (const r of (rows || [])) {
+    const y = r ? r["DatingYear"] : null;
+    if (typeof y !== 'number' || Number.isNaN(y)) continue;
+    if (min === null || y < min) min = y;
+  }
+  return min;
+}
+
+function compareManuscripts(a, b, mode) {
+  const a0 = (a && a.rows && a.rows[0]) ? a.rows[0] : {};
+  const b0 = (b && b.rows && b.rows[0]) ? b.rows[0] : {};
+  const aDep = String(a0["Depository"] || "");
+  const bDep = String(b0["Depository"] || "");
+  const aShelf = String(a0["Shelf mark"] || "");
+  const bShelf = String(b0["Shelf mark"] || "");
+
+  if (mode === "dating") {
+    const ay = manuscriptMinDatingYear(a ? a.rows : null);
+    const by = manuscriptMinDatingYear(b ? b.rows : null);
+    const aKey = (ay === null) ? Number.POSITIVE_INFINITY : ay;
+    const bKey = (by === null) ? Number.POSITIVE_INFINITY : by;
+    if (aKey !== bKey) return aKey - bKey;
+    // Tie-breakers: Shelf mark then Depository
+    const shelfCmp = aShelf.localeCompare(bShelf, undefined, { numeric: true, sensitivity: "base" });
+    if (shelfCmp !== 0) return shelfCmp;
+    return aDep.localeCompare(bDep, undefined, { sensitivity: "base" });
+  }
+
+  // Default: Shelf mark then Depository
+  const shelfCmp = aShelf.localeCompare(bShelf, undefined, { numeric: true, sensitivity: "base" });
+  if (shelfCmp !== 0) return shelfCmp;
+  return aDep.localeCompare(bDep, undefined, { sensitivity: "base" });
+}
+
 // User-specified column order (also used by the merged view)
 // NOTE: This is the single place to change column ordering in the UI.
 const COLUMN_ORDER = [
@@ -441,7 +488,10 @@ function renderMergedColumnsMenu() {
 }
 
 // View mode: default Tabulator table, optional merged-cells (Excel-like) view
-let currentView = "table";
+let currentView = "merged";
+
+// Persist the selected view across reloads (helps with Live Server reload behavior)
+const VIEW_STORAGE_KEY = "nordiclaw.view";
 
 // Optional: raw Excel-like dataset (blank cells preserved) + merge coordinates exported by convert_excel_to_tsv.py
 // These files are expected to be generated via:
@@ -838,6 +888,10 @@ function renderMergedView(manuscripts) {
 
 function setView(view) {
   currentView = (view === "merged") ? "merged" : "table";
+  const viewSelect = document.getElementById("view-select");
+  if (viewSelect) viewSelect.value = currentView;
+
+  try { localStorage.setItem(VIEW_STORAGE_KEY, currentView); } catch (e) {}
   const tableView = document.getElementById("table-view");
   const mergedView = document.getElementById("merged-view");
   if (tableView) tableView.style.display = (currentView === "table") ? "block" : "none";
@@ -847,12 +901,23 @@ function setView(view) {
   const mergedColsControl = document.getElementById("merged-columns-control");
   if (mergedColsControl) mergedColsControl.style.display = (currentView === "merged") ? "" : "none";
 
+  // Sort selector lives in the top control bar; only show it for Manuscript View.
+  const mergedSortControl = document.getElementById("merged-sort-control");
+  if (mergedSortControl) mergedSortControl.style.display = (currentView === "merged") ? "" : "none";
+
   if (currentView === "table" && table && typeof table.redraw === 'function') {
     try { table.redraw(true); } catch (e) {}
   }
 
   const paginationSizeSelect = document.getElementById("pagination-size");
   if (paginationSizeSelect) paginationSizeSelect.disabled = (currentView === "merged");
+
+  // Hide pagination controls entirely in Manuscript View.
+  const paginationLabelControl = document.getElementById("pagination-label-control");
+  const paginationSelectControl = document.getElementById("pagination-select-control");
+  const showPagination = (currentView === "table");
+  if (paginationLabelControl) paginationLabelControl.style.display = showPagination ? "" : "none";
+  if (paginationSelectControl) paginationSelectControl.style.display = showPagination ? "" : "none";
 
   // Keep merged column menu in sync
   if (currentView === "merged") {
@@ -1188,15 +1253,10 @@ function applyFacetFilters() {
   const query = searchInput ? searchInput.value.toLowerCase() : "";
 
   if (currentView === "merged") {
+    const sortMode = getMergedSortMode();
     const manuscripts = groupByPreserveOrder(allRows || [], getManuscriptKey)
       .map(g => ({ key: g.key, rows: g.rows }))
-      .sort((a, b) => {
-        const a0 = a.rows[0] || {};
-        const b0 = b.rows[0] || {};
-        const depCmp = String(a0["Depository"] || "").localeCompare(String(b0["Depository"] || ""), undefined, { sensitivity: "base" });
-        if (depCmp !== 0) return depCmp;
-        return String(a0["Shelf mark"] || "").localeCompare(String(b0["Shelf mark"] || ""), undefined, { numeric: true, sensitivity: "base" });
-      });
+      .sort((a, b) => compareManuscripts(a, b, sortMode));
 
     const range = facetSelections["DatingRange"];
     let min = range ? range.min : null;
@@ -1672,11 +1732,44 @@ function setupControls() {
   const searchInput = document.getElementById("search");
   const paginationSizeSelect = document.getElementById("pagination-size");
   const viewSelect = document.getElementById("view-select");
+  const mergedSortSelect = document.getElementById("merged-sort");
+
+  // Restore merged sort mode (if control exists)
+  try {
+    const raw = localStorage.getItem(MERGED_SORT_STORAGE_KEY);
+    if (raw) MERGED_SORT_MODE = raw;
+  } catch (e) {
+    // ignore
+  }
+  if (mergedSortSelect) {
+    const m = (MERGED_SORT_MODE === "dating") ? "dating" : "shelfmark";
+    mergedSortSelect.value = m;
+    mergedSortSelect.addEventListener("change", function () {
+      MERGED_SORT_MODE = (this.value === "dating") ? "dating" : "shelfmark";
+      try { localStorage.setItem(MERGED_SORT_STORAGE_KEY, MERGED_SORT_MODE); } catch (e) {}
+      if (currentView === "merged") applyFacetFilters();
+    });
+  }
 
   if (viewSelect) {
     viewSelect.addEventListener("change", function () {
       setView(this.value);
     });
+  }
+
+  // Restore view (if available), then initialize.
+  if (viewSelect) {
+    try {
+      const saved = localStorage.getItem(VIEW_STORAGE_KEY);
+      if (saved === "merged" || saved === "table") {
+        viewSelect.value = saved;
+      }
+    } catch (e) {
+      // ignore
+    }
+    setView(viewSelect.value);
+  } else {
+    setView(currentView);
   }
 
   // Load selected TSV by default

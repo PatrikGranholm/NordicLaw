@@ -114,8 +114,15 @@
     </div>
     <div class="col-auto">
       <select id="view-select" class="form-select">
-        <option value="table" selected>Text View</option>
-        <option value="merged">Manuscript View</option>
+        <option value="merged" selected>Manuscript View</option>
+        <option value="table">Text View</option>
+      </select>
+    </div>
+    <div class="col-auto" id="merged-sort-control" style="display:none;">
+      <label for="merged-sort" class="col-form-label fw-bold">Sort:</label>
+      <select id="merged-sort" class="form-select">
+        <option value="shelfmark" selected>Shelf mark</option>
+        <option value="dating">Dating</option>
       </select>
     </div>
     <div class="col-auto" id="merged-columns-control" style="display:none;">
@@ -124,10 +131,10 @@
         <div class="dropdown-menu p-2" id="merged-columns-menu" style="max-height:60vh; overflow:auto; min-width:260px;"></div>
       </div>
     </div>
-    <div class="col-auto">
+    <div class="col-auto" id="pagination-label-control">
       <label for="pagination-size" class="col-form-label fw-bold">Records per page:</label>
     </div>
-    <div class="col-auto">
+    <div class="col-auto" id="pagination-select-control">
       <select id="pagination-size" class="form-select">
         <option value="50" selected>50</option>
         <option value="100">100</option>
@@ -269,8 +276,8 @@
       </div>
     </div>
     <div class="col p-0" style="min-width:0;">
-      <div id="table-view"></div>
-      <div id="merged-view" style="display:none;">
+      <div id="table-view" style="display:none;"></div>
+      <div id="merged-view">
         <div class="d-flex justify-content-between align-items-center mb-2">
           <div class="d-flex align-items-center gap-2">
             <div class="fw-bold">Manuscript view</div>
