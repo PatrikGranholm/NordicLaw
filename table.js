@@ -26,6 +26,17 @@ function escapeHtml(text) {
     .replace(/'/g, '&#39;');
 }
 
+// Column title overrides (display-only)
+const COLUMN_TITLE_OVERRIDES = {
+  "Shelf mark": "Shelfmark",
+};
+
+function getColumnTitle(field) {
+  return (field && Object.prototype.hasOwnProperty.call(COLUMN_TITLE_OVERRIDES, field))
+    ? COLUMN_TITLE_OVERRIDES[field]
+    : field;
+}
+
 function isSafeHttpUrl(url) {
   return typeof url === 'string' && /^https?:\/\//i.test(url.trim());
 }
@@ -429,7 +440,7 @@ function renderMergedColumnsMenu() {
     html += `
       <div class="form-check">
         <input class="form-check-input" type="checkbox" data-cols-col="${escapeHtml(col)}" id="colvis-${escapeHtml(col)}" ${isChecked(col) ? 'checked' : ''}>
-        <label class="form-check-label" for="colvis-${escapeHtml(col)}">${escapeHtml(col)}</label>
+        <label class="form-check-label" for="colvis-${escapeHtml(col)}">${escapeHtml(getColumnTitle(col))}</label>
       </div>`;
   }
   html += '</div>';
@@ -766,7 +777,7 @@ function renderMergedView(manuscripts) {
 
   let html = '<table class="table table-bordered merged-table"><thead><tr>';
   for (const col of columns) {
-    html += `<th>${escapeHtml(col)}</th>`;
+    html += `<th>${escapeHtml(getColumnTitle(col))}</th>`;
   }
   html += '</tr></thead><tbody>';
 
@@ -1487,7 +1498,7 @@ async function loadDataTSV(fileName) {
     let colDefs = {};
     headers.forEach(h => {
       let colDef = {
-        title: h,
+        title: getColumnTitle(h),
         field: h,
         visible: true,
         hozAlign: 'left',
