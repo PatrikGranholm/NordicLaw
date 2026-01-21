@@ -840,6 +840,9 @@ function splitSemicolonList(value) {
     .filter(Boolean);
 }
 
+// General abbreviation mapping (loaded from data/abbreviations.tsv)
+let ABBREVIATIONS_MAP = null;
+
 const EN_DASH = " \u2013 ";
 function parseTrailingParenSuffix(raw) {
   const s = String(raw || "").trim();
@@ -848,11 +851,67 @@ function parseTrailingParenSuffix(raw) {
   return { base: m[1].trim(), suffix: ` (${m[2].trim()})` };
 }
 
+function getAbbreviationsMapSync() {
+  return (typeof window !== 'undefined' && window.ABBREVIATIONS_MAP)
+    ? window.ABBREVIATIONS_MAP
+    : (typeof ABBREVIATIONS_MAP !== 'undefined' ? ABBREVIATIONS_MAP : null);
+}
+
+function expandParenSuffixWithAbbreviations(suffix) {
+  const s = String(suffix || '');
+  if (!s) return '';
+
+  const map = getAbbreviationsMapSync();
+  if (!map || typeof map !== 'object') return s;
+
+  const trimmed = s.trim();
+  if (!(trimmed.startsWith('(') && trimmed.endsWith(')'))) return s;
+
+  const inner = trimmed.slice(1, -1);
+  if (!inner) return s;
+
+  // Replace any known tokens with "TOKEN – Expansion".
+  // Uses Unicode property escapes to support non-ASCII letters.
+  const tokenRe = /[\p{L}0-9]+(?:-[\p{L}0-9]+)*/gu;
+  const expandedInner = inner.replace(tokenRe, (tok) => {
+    const full = map[tok];
+    return full ? `${tok}${EN_DASH}${full}` : tok;
+  });
+
+  return ` (${expandedInner})`;
+}
+
 function formatAbbrExpansion(map, raw) {
-  const { base, suffix } = parseTrailingParenSuffix(raw);
+  const rawTrim = String(raw || "").trim();
+  if (!rawTrim) return "";
+
+  // Expand via abbreviations.tsv first (exact match).
+  const abbrMap = getAbbreviationsMapSync();
+  const exactFromAbbr = (abbrMap && typeof abbrMap === 'object') ? (abbrMap[rawTrim] || null) : null;
+  if (exactFromAbbr) return `${rawTrim}${EN_DASH}${exactFromAbbr}`;
+
+  // Then expand via texts.tsv map (exact match) to support keys like "K (E)".
+  const exactFromTexts = (map && typeof map === 'object') ? (map[rawTrim] || null) : null;
+  if (exactFromTexts) return `${rawTrim}${EN_DASH}${exactFromTexts}`;
+
+  const { base, suffix } = parseTrailingParenSuffix(rawTrim);
   if (!base) return "";
-  const full = map && typeof map === 'object' ? map[base] : null;
-  return full ? `${base}${EN_DASH}${full}${suffix}` : String(raw || "").trim();
+
+  // Expand suffix codes (e.g. "(BGO)") via abbreviations.tsv.
+  const expandedSuffix = suffix ? expandParenSuffixWithAbbreviations(suffix) : "";
+
+  // Expand via abbreviations.tsv first (base match).
+  const fullFromAbbr = (abbrMap && typeof abbrMap === 'object') ? (abbrMap[base] || null) : null;
+  if (fullFromAbbr) return `${base}${EN_DASH}${fullFromAbbr}${expandedSuffix}`;
+
+  // Then expand via texts.tsv map (base match).
+  const full = map && typeof map === 'object' ? (map[base] || null) : null;
+  if (full) return `${base}${EN_DASH}${full}${expandedSuffix}`;
+
+  // If only the suffix could be expanded, still return the expanded suffix.
+  if (expandedSuffix && expandedSuffix !== suffix) return `${base}${expandedSuffix}`;
+
+  return rawTrim;
 }
 
 function getEffectiveValue(msRows, rowIndex, field) {
@@ -920,7 +979,12 @@ function renderMergedCell(field, value, ctx = null) {
           if (matches.length === 1) full = matches[0];
         }
 
-        return full ? `${sectionBase}${EN_DASH}${full}${sectionSuffix}` : sectionAbbr;
+        if (full) {
+          const expandedSuffix = sectionSuffix ? expandParenSuffixWithAbbreviations(sectionSuffix) : "";
+          return `${sectionBase}${EN_DASH}${full}${expandedSuffix}`;
+        }
+        // Fall back to abbreviations.tsv (and suffix expansion) if applicable.
+        return formatAbbrExpansion(null, sectionAbbr);
       }).join('; ');
 
       return escapeHtml(expanded);
@@ -1175,6 +1239,41 @@ function normalizeRowLanguage(row) {
   return row;
 }
 
+async function loadAbbreviationsMap() {
+  if (ABBREVIATIONS_MAP) {
+    window.ABBREVIATIONS_MAP = ABBREVIATIONS_MAP;
+    return ABBREVIATIONS_MAP;
+  }
+  try {
+    const resp = await fetch('data/abbreviations.tsv');
+    const text = await resp.text();
+    const lines = text.split(/\r?\n/).filter(line => line.trim() !== '');
+    const map = {};
+    lines.forEach(line => {
+      const cleaned = String(line || '').replace(/^\uFEFF/, '');
+      const cols = cleaned.split('\t');
+      const abbr = (cols[0] || '').trim();
+      if (!abbr) return;
+
+      // Files often use: abbr \t \t expansion
+      let full = '';
+      for (let i = cols.length - 1; i >= 1; i--) {
+        const v = (cols[i] || '').trim();
+        if (v) { full = v; break; }
+      }
+      if (full) map[abbr] = full;
+    });
+    ABBREVIATIONS_MAP = map;
+    window.ABBREVIATIONS_MAP = map;
+    return map;
+  } catch (e) {
+    console.error('Failed to load abbreviations.tsv:', e);
+    ABBREVIATIONS_MAP = {};
+    window.ABBREVIATIONS_MAP = {};
+    return {};
+  }
+}
+
 // Main text abbreviation mapping, loaded from texts.tsv at runtime
 let MAIN_TEXT_MAP = null;
 let MINOR_TEXT_MAP = null;
@@ -1322,6 +1421,7 @@ function getUniqueValues(rows, field) {
 }
 
 async function renderFacetSidebar(rows) {
+  await loadAbbreviationsMap();
   const mainTextMap = await loadMainTextMap();
   FACET_FIELDS.forEach(field => {
     const facetDiv = document.getElementById(`facet-${field}`);
@@ -1680,6 +1780,7 @@ async function loadDepositoryMap() {
 
 async function loadDataTSV(fileName) {
   try {
+    await loadAbbreviationsMap();
     const depositoryMap = await loadDepositoryMap();
     const response = await fetch(fileName);
     const tsvText = await response.text();
@@ -1798,7 +1899,11 @@ async function loadDataTSV(fileName) {
               if (matches.length === 1) full = matches[0];
             }
 
-            return full ? `${sectionBase}${EN_DASH}${full}${sectionSuffix}` : sectionAbbr;
+            if (full) {
+              const expandedSuffix = sectionSuffix ? expandParenSuffixWithAbbreviations(sectionSuffix) : "";
+              return `${sectionBase}${EN_DASH}${full}${expandedSuffix}`;
+            }
+            return formatAbbrExpansion(null, sectionAbbr);
           }).join('; ');
 
           return escapeHtml(expanded);
@@ -1959,7 +2064,11 @@ async function loadDataTSV(fileName) {
                     if (matches.length === 1) full = matches[0];
                   }
 
-                  return full ? `${sectionBase}${EN_DASH}${full}${sectionSuffix}` : sectionAbbr;
+                  if (full) {
+                    const expandedSuffix = sectionSuffix ? expandParenSuffixWithAbbreviations(sectionSuffix) : "";
+                    return `${sectionBase}${EN_DASH}${full}${expandedSuffix}`;
+                  }
+                  return formatAbbrExpansion(null, sectionAbbr);
                 }).join('; ');
 
                 displayValue = escapeHtml(expanded);
