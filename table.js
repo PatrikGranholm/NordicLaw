@@ -26,6 +26,135 @@ function escapeHtml(text) {
     .replace(/'/g, '&#39;');
 }
 
+const FROZEN_COLUMNS = ["Depository", "Shelf mark"];
+
+function parseCssRgba(color) {
+  if (!color) return null;
+  const s = String(color).trim().toLowerCase();
+  if (!s || s === 'transparent') return { r: 0, g: 0, b: 0, a: 0 };
+  // Computed styles are usually rgb()/rgba().
+  let m = s.match(/^rgba?\(\s*([0-9.]+)\s*,\s*([0-9.]+)\s*,\s*([0-9.]+)\s*(?:,\s*([0-9.]+)\s*)?\)$/);
+  if (!m) return null;
+  const r = Math.max(0, Math.min(255, Math.round(parseFloat(m[1]))));
+  const g = Math.max(0, Math.min(255, Math.round(parseFloat(m[2]))));
+  const b = Math.max(0, Math.min(255, Math.round(parseFloat(m[3]))));
+  const a = (m[4] === undefined) ? 1 : Math.max(0, Math.min(1, parseFloat(m[4])));
+  return { r, g, b, a };
+}
+
+function blendRgbaOverBg(fg, bg) {
+  if (!fg) return bg;
+  if (!bg) bg = { r: 255, g: 255, b: 255, a: 1 };
+  const a = (typeof fg.a === 'number') ? fg.a : 1;
+  const inv = 1 - a;
+  const r = Math.round((fg.r * a) + (bg.r * inv));
+  const g = Math.round((fg.g * a) + (bg.g * inv));
+  const b = Math.round((fg.b * a) + (bg.b * inv));
+  return { r, g, b, a: 1 };
+}
+
+function getOpaqueCellBackground(el, baseBg) {
+  if (!el) return 'rgb(255, 255, 255)';
+  let fgRaw = getComputedStyle(el).backgroundColor;
+  let fg = parseCssRgba(fgRaw);
+  // Some Bootstrap table striping styles can leave td background transparent;
+  // fall back to the row's computed background if available.
+  if (fg && fg.a === 0) {
+    const tr = el.closest ? el.closest('tr') : null;
+    if (tr) {
+      const trBg = parseCssRgba(getComputedStyle(tr).backgroundColor);
+      if (trBg && trBg.a > 0) fg = trBg;
+    }
+  }
+  if (!fg) return 'rgb(255, 255, 255)';
+  if (fg.a >= 1) return `rgb(${fg.r}, ${fg.g}, ${fg.b})`;
+  const out = blendRgbaOverBg(fg, baseBg);
+  return `rgb(${out.r}, ${out.g}, ${out.b})`;
+}
+
+function applyFrozenColumnsToTable(tableEl, fields = FROZEN_COLUMNS) {
+  if (!tableEl || !(tableEl instanceof Element)) return;
+  const headRow = tableEl.querySelector('thead tr');
+  if (!headRow) return;
+
+  const cssEscape = (typeof CSS !== 'undefined' && CSS && typeof CSS.escape === 'function')
+    ? CSS.escape
+    : (s) => String(s).replace(/[^A-Za-z0-9_-]/g, (ch) => `\\${ch}`);
+
+  const headCells = Array.from(headRow.querySelectorAll('th'));
+  const indexByField = new Map();
+  for (let i = 0; i < headCells.length; i++) {
+    const f = headCells[i].getAttribute('data-field');
+    if (f) indexByField.set(f, i);
+  }
+
+  const present = (Array.isArray(fields) ? fields : []).filter(f => indexByField.has(f));
+  if (present.length === 0) return;
+
+  // Base background to blend translucent stripe colors over.
+  let baseBg = parseCssRgba(getComputedStyle(tableEl).backgroundColor);
+  if (!baseBg || baseBg.a === 0) baseBg = parseCssRgba(getComputedStyle(document.body).backgroundColor);
+  if (!baseBg || baseBg.a === 0) baseBg = { r: 255, g: 255, b: 255, a: 1 };
+
+  // Clear previous frozen styling (important when columns toggle visibility).
+  for (const th of headCells) {
+    th.classList.remove('frozen-col', 'frozen-col-edge', 'frozen-col-first');
+    th.style.left = '';
+    th.style.backgroundColor = '';
+  }
+  for (const el of Array.from(tableEl.querySelectorAll('tbody td.frozen-col'))) {
+    el.classList.remove('frozen-col', 'frozen-col-edge', 'frozen-col-first');
+    el.style.left = '';
+    el.style.backgroundColor = '';
+  }
+
+  let left = 0;
+  for (let i = 0; i < present.length; i++) {
+    const field = present[i];
+    const idx = indexByField.get(field);
+    const th = headCells[idx];
+    if (!th) continue;
+
+    const isFirst = (i === 0);
+    const isEdge = (i === present.length - 1);
+    th.classList.add('frozen-col');
+    if (isFirst) th.classList.add('frozen-col-first');
+    if (isEdge) th.classList.add('frozen-col-edge');
+    th.style.left = `${Math.round(left)}px`;
+    th.style.backgroundColor = getOpaqueCellBackground(th, baseBg);
+
+    const bodyCells = Array.from(tableEl.querySelectorAll(`tbody td[data-field="${cssEscape(field)}"]`));
+    for (const td of bodyCells) {
+      td.classList.add('frozen-col');
+      if (isFirst) td.classList.add('frozen-col-first');
+      if (isEdge) td.classList.add('frozen-col-edge');
+      td.style.left = `${Math.round(left)}px`;
+      // Use the cell's computed background (striping etc), but make it opaque.
+      td.style.backgroundColor = getOpaqueCellBackground(td, baseBg);
+    }
+
+    const w = th.getBoundingClientRect().width;
+    const wPx = Number.isFinite(w) ? Math.round(w) : (th.offsetWidth || 0);
+    left += wPx;
+  }
+}
+
+function applyFrozenColumns() {
+  // Text View
+  try {
+    if (typeof table !== 'undefined' && table && table._tableEl) {
+      applyFrozenColumnsToTable(table._tableEl);
+    }
+  } catch (e) { /* ignore */ }
+
+  // Manuscript View
+  try {
+    const mergedRoot = document.getElementById('merged-table');
+    const mergedTable = mergedRoot ? mergedRoot.querySelector('table') : null;
+    if (mergedTable) applyFrozenColumnsToTable(mergedTable);
+  } catch (e) { /* ignore */ }
+}
+
 function toDomIdToken(text) {
   if (text === null || text === undefined) return '';
   return String(text)
@@ -36,9 +165,12 @@ function toDomIdToken(text) {
 function normalizeLeavesPages(value) {
   if (value === null || value === undefined) return '';
   const s = String(value);
-  // Ensure exactly one space after f./p. when immediately followed by a non-space character.
-  // Examples: "f.1r" -> "f. 1r", "p.12" -> "p. 12", "f. 1r" stays unchanged.
-  return s.replace(/\b([fFpP])\.\s*/g, '$1. ');
+  // Normalize common folio/page prefixes (f./ff./p./pp.) to lowercase and ensure
+  // exactly one space after the dot.
+  // Examples: "Ff.1r" -> "ff. 1r", "f.1r" -> "f. 1r", "P.12" -> "p. 12", "pp. 3" -> "pp. 3".
+  return s
+    .replace(/\b(f{1,2}|p{1,2})\.\s*/gi, (_m, grp) => `${String(grp).toLowerCase()}. `)
+    .trim();
 }
 
 function normalizeGatherings(value) {
@@ -725,6 +857,8 @@ class SimpleTable {
     const trh = document.createElement('tr');
     for (const c of renderCols) {
       const th = document.createElement('th');
+      const field = c && c.field ? String(c.field) : '';
+      if (field) th.setAttribute('data-field', field);
       th.textContent = c && c.title ? String(c.title) : '';
       trh.appendChild(th);
     }
@@ -748,6 +882,7 @@ class SimpleTable {
         const field = colDef && colDef.field ? colDef.field : '';
         const raw = rowData ? rowData[field] : '';
         const td = document.createElement('td');
+        if (field) td.setAttribute('data-field', String(field));
 
         if (colDef && typeof colDef.formatter === 'function') {
           const rowObj = { getData: () => rowData };
@@ -765,6 +900,9 @@ class SimpleTable {
       }
       this._tbody.appendChild(tr);
     }
+
+    // Re-apply frozen columns after every render (page change, data change, column visibility change).
+    try { applyFrozenColumns(); } catch (e) {}
 
     // Pager
     const totalPages = this._getTotalPages();
@@ -1166,8 +1304,23 @@ const LINKS_TO_DATABASE_LABEL_MAP = {
 function formatLinksToDatabaseLabel(label) {
   const raw = (label === null || label === undefined) ? "" : String(label).trim();
   if (!raw) return raw;
-  const key = raw.toUpperCase();
-  return LINKS_TO_DATABASE_LABEL_MAP[key] || raw;
+
+  // Exact match (e.g. "MS")
+  const exactKey = raw.toUpperCase();
+  if (LINKS_TO_DATABASE_LABEL_MAP[exactKey]) return LINKS_TO_DATABASE_LABEL_MAP[exactKey];
+
+  // Prefix match (e.g. "MS (Not digitalised)" -> "manuscripta.se (Not digitalised)")
+  // Only replace when the next character isn't alphanumeric to avoid changing longer tokens.
+  for (const k of Object.keys(LINKS_TO_DATABASE_LABEL_MAP)) {
+    if (exactKey.startsWith(k)) {
+      const next = raw.slice(k.length, k.length + 1);
+      if (next === "" || /[^0-9A-Za-z]/.test(next)) {
+        return LINKS_TO_DATABASE_LABEL_MAP[k] + raw.slice(k.length);
+      }
+    }
+  }
+
+  return raw;
 }
 
 function renderLinksToDatabaseHtml(value) {
@@ -1669,7 +1822,7 @@ function renderMergedView(manuscripts, metaInfo = null) {
 
   let html = '<table class="table table-bordered merged-table"><thead><tr>';
   for (const col of columns) {
-    html += `<th>${escapeHtml(getColumnTitle(col))}</th>`;
+    html += `<th data-field="${escapeHtml(col)}">${escapeHtml(getColumnTitle(col))}</th>`;
   }
   html += '</tr></thead><tbody>';
 
@@ -1752,14 +1905,14 @@ function renderMergedView(manuscripts, metaInfo = null) {
         // Always merge Links to Database at the manuscript level (combine URLs across rows).
         if (col === "Links to Database") {
           if (!isFirstMsRow) continue;
-          html += `<td class="${msClass}" rowspan="${msRowCount}">${renderMergedCell(col, mergedLinksToDatabase)}</td>`;
+          html += `<td class="${msClass}" data-field="${escapeHtml(col)}" rowspan="${msRowCount}">${renderMergedCell(col, mergedLinksToDatabase)}</td>`;
           continue;
         }
 
         // If Literature is empty for all rows in the manuscript, merge it into a single blank cell.
         if (col === "Literature" && literatureAllEmpty) {
           if (!isFirstMsRow) continue;
-          html += `<td class="${msClass}" rowspan="${msRowCount}">${renderMergedCell(col, "")}</td>`;
+          html += `<td class="${msClass}" data-field="${escapeHtml(col)}" rowspan="${msRowCount}">${renderMergedCell(col, "")}</td>`;
           continue;
         }
 
@@ -1768,7 +1921,7 @@ function renderMergedView(manuscripts, metaInfo = null) {
           // Merge it per manuscript so duplicates don't repeat visually.
           if (col === "Language") {
             if (!isFirstMsRow) continue;
-            html += `<td class="${msClass}" rowspan="${msRowCount}">${renderMergedCell(col, row[col], { row, msRows, rowIndex: rIndex })}</td>`;
+            html += `<td class="${msClass}" data-field="${escapeHtml(col)}" rowspan="${msRowCount}">${renderMergedCell(col, row[col], { row, msRows, rowIndex: rIndex })}</td>`;
             continue;
           }
 
@@ -1776,28 +1929,28 @@ function renderMergedView(manuscripts, metaInfo = null) {
           if (mergeLookup.covered.has(key)) continue;
           const span = mergeLookup.topLeft.get(key);
           const attrs = span ? ` rowspan="${span.rowSpan}" colspan="${span.colSpan}"` : "";
-          html += `<td class="${(col === "Production Unit") ? puClass : msClass}"${attrs}>${renderMergedCell(col, row[col], { row, msRows, rowIndex: rIndex })}</td>`;
+          html += `<td class="${(col === "Production Unit") ? puClass : msClass}" data-field="${escapeHtml(col)}"${attrs}>${renderMergedCell(col, row[col], { row, msRows, rowIndex: rIndex })}</td>`;
           continue;
         }
 
         if (msConst && msConst.has(col)) {
           if (!isFirstMsRow) continue;
-          html += `<td class="${msClass}" rowspan="${msRowCount}">${renderMergedCell(col, row[col], { row, msRows, rowIndex: rIndex })}</td>`;
+          html += `<td class="${msClass}" data-field="${escapeHtml(col)}" rowspan="${msRowCount}">${renderMergedCell(col, row[col], { row, msRows, rowIndex: rIndex })}</td>`;
           continue;
         }
 
         if (col === "Production Unit") {
           if (!isRunStart) continue;
-          html += `<td class="${puClass}" rowspan="${runRowSpan}">${renderMergedCell(col, row[col], { row, msRows, rowIndex: rIndex })}</td>`;
+          html += `<td class="${puClass}" data-field="${escapeHtml(col)}" rowspan="${runRowSpan}">${renderMergedCell(col, row[col], { row, msRows, rowIndex: rIndex })}</td>`;
           continue;
         }
 
         if (runConst && runConst.has(col)) {
-          html += `<td class="${puClass}" rowspan="${runRowSpan}">${renderMergedCell(col, row[col], { row, msRows, rowIndex: rIndex })}</td>`;
+          html += `<td class="${puClass}" data-field="${escapeHtml(col)}" rowspan="${runRowSpan}">${renderMergedCell(col, row[col], { row, msRows, rowIndex: rIndex })}</td>`;
           continue;
         }
 
-        html += `<td>${renderMergedCell(col, row[col], { row, msRows, rowIndex: rIndex })}</td>`;
+        html += `<td data-field="${escapeHtml(col)}">${renderMergedCell(col, row[col], { row, msRows, rowIndex: rIndex })}</td>`;
       }
 
       html += '</tr>';
@@ -1806,6 +1959,9 @@ function renderMergedView(manuscripts, metaInfo = null) {
 
   html += '</tbody></table>';
   mergedRoot.innerHTML = html;
+
+  // Re-apply frozen columns after every merged-view render.
+  try { applyFrozenColumns(); } catch (e) {}
 }
 
 // Apply view-dependent UI visibility without changing filters.
@@ -1896,6 +2052,9 @@ function applyViewUI() {
 
   // Move the shared record-count element into the active view header.
   mountRecordCount();
+
+  // View/layout changes can alter column widths.
+  try { applyFrozenColumns(); } catch (e) {}
 }
 
 function setView(view) {
@@ -3172,8 +3331,18 @@ function setupControls() {
       setFacetsHidden(nextHidden);
       try { applyViewUI(); } catch (e) {}
       try { if (table && typeof table.redraw === 'function') table.redraw(true); } catch (e) {}
+      try { applyFrozenColumns(); } catch (e) {}
     });
   }
+
+  // Recompute frozen column offsets when layout changes.
+  let frozenResizeTimer = null;
+  window.addEventListener('resize', function () {
+    try { if (frozenResizeTimer) clearTimeout(frozenResizeTimer); } catch (e) {}
+    frozenResizeTimer = setTimeout(() => {
+      try { applyFrozenColumns(); } catch (e) {}
+    }, 80);
+  });
 
   const mergedPrevBtn = document.getElementById('merged-prev-page');
   const mergedNextBtn = document.getElementById('merged-next-page');

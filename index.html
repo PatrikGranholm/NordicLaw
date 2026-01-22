@@ -16,6 +16,7 @@
       padding: 20px;
       box-sizing: border-box;
       overflow: hidden;
+      background: #fff;
     }
 
     /* Keep the main controls visible while scrolling */
@@ -73,7 +74,8 @@
       flex-grow: 1;
       height: 100%;
       overflow: hidden;
-      padding: 0;
+      /* Put the gutter outside the scroll container to avoid bleed-through while scrolling */
+      padding: 0 8px 8px;
       background: #fff;
       min-width: 0;
       display: flex;
@@ -86,12 +88,22 @@
       flex: 1 1 auto;
       min-height: 0;
       overflow: auto;
-      padding: 0 8px 8px;
+      padding: 0;
+      background: #fff;
     }
     .merged-table {
       width: 100%;
       border-collapse: collapse;
       font-size: 0.9rem;
+    }
+
+    /*
+      Manuscript View: keep Bootstrap-style borders for merged (rowspan/colspan) cells.
+      We handle sticky-column seams via the ::before seam cover + pixel rounding.
+    */
+    #merged-table .merged-table {
+      border-collapse: collapse;
+      background: #fff;
     }
     .merged-table th {
       position: sticky;
@@ -101,6 +113,71 @@
       background-clip: padding-box;
       /* Prevent occasional sub-pixel bleed-through while scrolling */
       box-shadow: 0 1px 0 rgba(0,0,0,0.15);
+    }
+
+    /* Frozen (sticky-left) columns: Depository + Shelfmark */
+    .merged-table th.frozen-col,
+    .merged-table td.frozen-col {
+      position: sticky;
+      /* Paint background under borders too (prevents 1px gutter bleed) */
+      background-clip: border-box;
+    }
+
+    /* Keep frozen cells above scrolled cells */
+    .merged-table td.frozen-col { z-index: 6; }
+    .merged-table th.frozen-col { z-index: 12; }
+
+    /* Background colors for frozen cells are set inline by JS (opaque + matches row striping). */
+
+    /*
+      Chrome/Firefox can show a 1px transparent seam on sticky table cells
+      (especially with collapsed borders). Cover it by painting a tiny strip
+      of the cell's own background color on the left edge.
+    */
+    .merged-table th.frozen-col::before,
+    .merged-table td.frozen-col::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: -1px;
+      width: 1px;
+      background-color: inherit;
+      pointer-events: none;
+    }
+    .merged-table th.frozen-col-first::before,
+    .merged-table td.frozen-col-first::before {
+      left: -3px;
+      width: 3px;
+    }
+
+    /*
+      Text View: the 1px seam cover on non-first frozen columns can visually
+      replace the vertical cell border (making it look white). Force it to
+      use the Bootstrap border color so the Depository↔Shelfmark divider stays gray.
+    */
+    .simple-table-scroll .merged-table th.frozen-col:not(.frozen-col-first)::before,
+    .simple-table-scroll .merged-table td.frozen-col:not(.frozen-col-first)::before {
+      background-color: var(--bs-border-color, #dee2e6);
+    }
+
+    /* Manuscript View: same issue for the internal frozen-column divider. */
+    .merged-view-scroll .merged-table th.frozen-col:not(.frozen-col-first)::before,
+    .merged-view-scroll .merged-table td.frozen-col:not(.frozen-col-first)::before {
+      background-color: var(--bs-border-color, #dee2e6);
+    }
+
+    /* Right-edge divider without overriding Bootstrap striping (box-shadow) */
+    .merged-table th.frozen-col-edge::after,
+    .merged-table td.frozen-col-edge::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: -1px;
+      width: 2px;
+      background: rgba(0,0,0,0.12);
+      pointer-events: none;
     }
     .ms-sep {
       border-top: 3px solid rgba(0,0,0,0.15);
@@ -133,7 +210,7 @@
 
     /* Match heading alignment with Text View */
     #merged-view-header {
-      padding: 0 8px;
+      padding: 0;
     }
 
     /* SimpleTable (Text View) layout + sticky header */
