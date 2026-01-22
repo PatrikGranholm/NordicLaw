@@ -911,8 +911,8 @@ class SimpleTable {
     this._btnNext.disabled = (this._page >= totalPages);
     const shown = pageRows.length;
     this._pageLabel.textContent = (!Number.isFinite(this._pageSize))
-      ? `Showing ${shown} of ${this._filtered.length}`
-      : `Page ${this._page} / ${totalPages} — showing ${shown} of ${this._filtered.length}`;
+      ? `Showing ${shown} of ${this._filtered.length} texts`
+      : `Page ${this._page} / ${totalPages} — showing ${shown} of ${this._filtered.length} texts`;
   }
 }
 
@@ -955,17 +955,29 @@ function getMergedPageSize() {
   return (Number.isFinite(n) && n > 0) ? n : 20;
 }
 
-function updateMergedPagerUI(page, totalPages) {
+function updateMergedPagerUI(page, totalPages, shownCount, totalCount) {
   const pager = document.getElementById('merged-pager');
   const btnPrev = document.getElementById('merged-prev-page');
   const btnNext = document.getElementById('merged-next-page');
   const indicator = document.getElementById('merged-page-indicator');
 
-  const show = (currentView === 'merged') && (typeof totalPages === 'number') && totalPages > 1;
+  const show = (currentView === 'merged') && (typeof totalPages === 'number') && totalPages >= 1;
   if (pager) pager.style.display = show ? '' : 'none';
-  if (btnPrev) btnPrev.disabled = (!show) || page <= 1;
-  if (btnNext) btnNext.disabled = (!show) || page >= totalPages;
-  if (indicator) indicator.textContent = show ? `Page ${page} / ${totalPages}` : '';
+
+  const tp = (typeof totalPages === 'number' && Number.isFinite(totalPages) && totalPages >= 1) ? totalPages : 1;
+  const p = (typeof page === 'number' && Number.isFinite(page) && page >= 1) ? page : 1;
+  const shown = (typeof shownCount === 'number' && Number.isFinite(shownCount) && shownCount >= 0) ? shownCount : 0;
+  const total = (typeof totalCount === 'number' && Number.isFinite(totalCount) && totalCount >= 0) ? totalCount : 0;
+
+  if (btnPrev) btnPrev.disabled = (!show) || p <= 1;
+  if (btnNext) btnNext.disabled = (!show) || p >= tp;
+  if (indicator) {
+    indicator.textContent = (!show)
+      ? ''
+      : (tp <= 1)
+        ? `Showing ${shown} of ${total} manuscripts`
+        : `Page ${p} / ${tp} — showing ${shown} of ${total} manuscripts`;
+  }
 }
 
 function getMergedSortMode() {
@@ -1815,10 +1827,7 @@ function renderMergedView(manuscripts, metaInfo = null) {
     if (RAW_EXCEL_FAILED) note = " (raw Excel files not found; showing fallback view)";
     meta.textContent = note;
   }
-  const totalEl = document.getElementById('total-records');
-  if (totalEl) totalEl.textContent = `${totalManuscripts} manuscripts (${totalRows} texts)`;
-
-  updateMergedPagerUI(page, totalPages);
+  updateMergedPagerUI(page, totalPages, manuscripts.length, totalManuscripts);
 
   let html = '<table class="table table-bordered merged-table"><thead><tr>';
   for (const col of columns) {
@@ -1964,22 +1973,6 @@ function renderMergedView(manuscripts, metaInfo = null) {
   try { applyFrozenColumns(); } catch (e) {}
 }
 
-// Apply view-dependent UI visibility without changing filters.
-// (Important: the table may be created after initial setView(),
-// so we sometimes need to re-apply visibility once it's created.)
-function mountRecordCount() {
-  const recordCountEl = document.getElementById('record-count');
-  if (!recordCountEl) return;
-
-  const hostId = (currentView === 'table') ? 'table-view-count-host' : 'merged-view-count-host';
-  const hostEl = document.getElementById(hostId);
-  if (!hostEl) return;
-
-  if (recordCountEl.parentElement !== hostEl) {
-    hostEl.appendChild(recordCountEl);
-  }
-}
-
 function applyViewUI() {
   try {
     document.body.classList.toggle('view-merged', currentView === 'merged');
@@ -2049,9 +2042,6 @@ function applyViewUI() {
   // Text View pager control lives in the top control bar.
   const tablePageControl = document.getElementById('table-page-control');
   if (tablePageControl) tablePageControl.style.display = (currentView === 'table') ? '' : 'none';
-
-  // Move the shared record-count element into the active view header.
-  mountRecordCount();
 
   // View/layout changes can alter column widths.
   try { applyFrozenColumns(); } catch (e) {}
@@ -3103,13 +3093,6 @@ async function loadDataFromParsedRows(headers, rows) {
 
       window.table = table;
 
-      table.on("dataFiltered", function(filters, filteredRows){
-        if (currentView === "table") {
-          const totalEl = document.getElementById('total-records');
-          if (totalEl) totalEl.textContent = filteredRows.length;
-        }
-      });
-
       // Attach rowClick event handler (modal)
       table.on("rowClick", function(e, row){
         const data = row.getData();
@@ -3242,9 +3225,6 @@ async function loadDataFromParsedRows(headers, rows) {
       if (paginationRaw === 'all') table.setPageSize(true);
       else table.setPageSize(parseInt(paginationRaw, 10));
     }
-
-    const totalEl = document.getElementById('total-records');
-    if (totalEl) totalEl.textContent = safeRows.length;
 
     // Reset facet selections (All) and apply filters/render.
     FACET_FIELDS.forEach(field => updateFacetAllCheckbox(field));
