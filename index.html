@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>Manuscript Metadata (Tree View with File Selector)</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://unpkg.com/tabulator-tables@6.2.5/dist/css/tabulator_bootstrap5.min.css" rel="stylesheet">
   <style>
     html, body {
       height: 100%;
@@ -46,7 +45,9 @@
     #table-view {
       flex-grow: 1;
       height: 100%;
-      padding-bottom: 20px;
+      /* Match Manuscript View container padding */
+      padding: 0 8px 8px;
+      background: #fff;
       min-width: 0;
     }
     #merged-view {
@@ -75,26 +76,50 @@
     .ms-sep {
       border-top: 3px solid rgba(0,0,0,0.15);
     }
-    /* Manuscript striping: match the Bootstrap/Tabulator table striping tone */
+    /* Manuscript striping: match Bootstrap table striping tone */
     .merged-table tbody tr.ms-a td { background: var(--bs-table-striped-bg, rgba(0,0,0,0.05)); }
     .merged-table tbody tr.ms-b td { background: transparent; }
 
     /* Production-unit indicator: keep a subtle stripe without overriding manuscript striping */
     .merged-table td.pu-a { box-shadow: inset 4px 0 0 rgba(255,193,7,0.65); }
     .merged-table td.pu-b { box-shadow: inset 4px 0 0 rgba(220,53,69,0.55); }
-    .tabulator-group-level-0 {
-      background: #f5f5f5;
-      font-weight: bold;
-    }
-    .tabulator-group-level-1 {
-      background: #fafafa;
-    }
-
-    /* Force view visibility (robust to Tabulator initialization and Live Server reload quirks) */
+    /* Force view visibility (robust to Live Server reload quirks) */
     body.view-merged #table-view { display: none !important; }
     body.view-merged #merged-view { display: block !important; }
     body.view-table #table-view { display: block !important; }
     body.view-table #merged-view { display: none !important; }
+
+    /* Text View heading visibility */
+    body.view-merged #table-view-header { display: none !important; }
+    body.view-table #table-view-header { display: flex !important; }
+
+    /* Match heading alignment with Manuscript View (whose heading sits inside #merged-view padding) */
+    #table-view-header {
+      padding: 0 8px;
+    }
+
+    /* SimpleTable (Text View) layout + sticky header */
+    .simple-table-root {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      min-height: 0;
+    }
+    /* Ensure SimpleTable layout wins over view-toggle display rules */
+    body.view-table #table-view.simple-table-root { display: flex !important; }
+    .simple-table-scroll {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow: auto;
+    }
+    .simple-table-root thead th {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: #f8f9fa;
+      background-clip: padding-box;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.15);
+    }
   </style>
 </head>
 <body>
@@ -137,15 +162,38 @@
         <div class="dropdown-menu p-2" id="merged-columns-menu" style="max-height:60vh; overflow:auto; min-width:260px;"></div>
       </div>
     </div>
+    <div class="col-auto" id="table-columns-control" style="display:none;">
+      <div class="dropdown">
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="table-columns-btn" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Columns</button>
+        <div class="dropdown-menu p-2" id="table-columns-menu" style="max-height:60vh; overflow:auto; min-width:260px;"></div>
+      </div>
+    </div>
     <div class="col-auto" id="pagination-label-control">
-      <label for="pagination-size" class="col-form-label fw-bold">Records per page:</label>
+      <label for="pagination-size" id="pagination-size-label" class="col-form-label fw-bold">Results per page:</label>
     </div>
     <div class="col-auto" id="pagination-select-control">
       <select id="pagination-size" class="form-select">
-        <option value="50" selected>50</option>
+        <option value="10" selected>10</option>
+        <option value="50">50</option>
         <option value="100">100</option>
         <option value="all">All</option>
       </select>
+    </div>
+
+    <!-- Manuscript View pager (only shown in Manuscript View) -->
+    <div class="col-auto" id="merged-page-control" style="display:none;">
+      <div class="d-flex align-items-center gap-2">
+        <div class="btn-group btn-group-sm" id="merged-pager" role="group" aria-label="Manuscript view pagination">
+          <button type="button" class="btn btn-outline-secondary" id="merged-prev-page">Prev</button>
+          <button type="button" class="btn btn-outline-secondary" id="merged-next-page">Next</button>
+        </div>
+        <div class="text-secondary small" id="merged-page-indicator"></div>
+      </div>
+    </div>
+
+    <!-- Text View pager (only shown in Text View) -->
+    <div class="col-auto" id="table-page-control" style="display:none;">
+      <div id="table-pager-host"></div>
     </div>
   </div>
 
@@ -282,6 +330,14 @@
       </div>
     </div>
     <div class="col p-0" style="min-width:0;">
+      <div id="table-view-header" class="d-flex justify-content-between align-items-center mb-2" style="display:none;">
+        <div class="d-flex align-items-center gap-2">
+          <div class="fw-bold">Text view</div>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+          <div class="text-secondary small" id="table-view-meta"></div>
+        </div>
+      </div>
       <div id="table-view" style="display:none;"></div>
       <div id="merged-view">
         <div class="d-flex justify-content-between align-items-center mb-2">
@@ -315,7 +371,6 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://unpkg.com/tabulator-tables@6.2.5/dist/js/tabulator.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="table.js"></script>
@@ -342,7 +397,7 @@
         let newWidth = startWidth + (e.clientX - startX);
         newWidth = Math.max(minWidth, Math.min(maxWidth, newWidth));
         sidebar.style.width = newWidth + 'px';
-        // Trigger Tabulator to redraw if present
+        // Trigger redraw if the table adapter supports it
         if (window.table && typeof window.table.redraw === 'function') {
           window.table.redraw(true);
         }
