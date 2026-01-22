@@ -12474,7 +12474,7 @@
       "maxColIndex": 18,
       "minCol": "Columns",
       "maxCol": "Columns",
-      "value": "I"
+      "value": "1"
     },
     {
       "minRow": 740,
@@ -22095,7 +22095,7 @@
       "maxColIndex": 31,
       "minCol": "Links to Database",
       "maxCol": "Links to Database",
-      "value": "HS"
+      "value": "HR"
     },
     {
       "minRow": 219,
@@ -23322,6 +23322,15 @@
       "value": "I"
     },
     {
+      "minRow": 98,
+      "maxRow": 113,
+      "minColIndex": 29,
+      "maxColIndex": 29,
+      "minCol": "Place",
+      "maxCol": "Place",
+      "value": "Nowhere"
+    },
+    {
       "minRow": 785,
       "maxRow": 789,
       "minColIndex": 19,
@@ -23338,15 +23347,6 @@
       "minCol": "Related Shelfmarks",
       "maxCol": "Related Shelfmarks",
       "value": ""
-    },
-    {
-      "minRow": 98,
-      "maxRow": 113,
-      "minColIndex": 29,
-      "maxColIndex": 29,
-      "minCol": "Place",
-      "maxCol": "Place",
-      "value": "Nowhere"
     },
     {
       "minRow": 385,
@@ -29550,21 +29550,21 @@
       "value": ""
     },
     {
-      "minRow": 317,
-      "maxRow": 318,
-      "minColIndex": 30,
-      "maxColIndex": 30,
-      "minCol": "Literature",
-      "maxCol": "Literature",
-      "value": ""
-    },
-    {
       "minRow": 332,
       "maxRow": 339,
       "minColIndex": 2,
       "maxColIndex": 2,
       "minCol": "Related Shelfmarks",
       "maxCol": "Related Shelfmarks",
+      "value": ""
+    },
+    {
+      "minRow": 317,
+      "maxRow": 318,
+      "minColIndex": 30,
+      "maxColIndex": 30,
+      "minCol": "Literature",
+      "maxCol": "Literature",
       "value": ""
     },
     {
