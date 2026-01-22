@@ -1156,6 +1156,20 @@ function normalizeLinksToDatabase(value) {
   return splitLinksToDatabase(value).join("; ");
 }
 
+const LINKS_TO_DATABASE_LABEL_MAP = {
+  // Common abbreviations used in the TSV/Excel exports.
+  HR: "Handrit.is",
+  MS: "manuscripta.se",
+  AV: "Alvin",
+};
+
+function formatLinksToDatabaseLabel(label) {
+  const raw = (label === null || label === undefined) ? "" : String(label).trim();
+  if (!raw) return raw;
+  const key = raw.toUpperCase();
+  return LINKS_TO_DATABASE_LABEL_MAP[key] || raw;
+}
+
 function renderLinksToDatabaseHtml(value) {
   const parts = splitLinksToDatabase(value);
   if (parts.length === 0) return "";
@@ -1163,7 +1177,7 @@ function renderLinksToDatabaseHtml(value) {
   const isHttpUrl = (u) => /^https?:\/\//i.test(String(u || "").trim());
   const toLink = (url, label) => {
     const href = String(url || "").trim();
-    const text = (label === undefined || label === null) ? href : String(label);
+    const text = (label === undefined || label === null) ? href : formatLinksToDatabaseLabel(label);
     if (!isHttpUrl(href)) return escapeHtml(text);
     return `<a href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(text)}</a>`;
   };
@@ -1172,7 +1186,7 @@ function renderLinksToDatabaseHtml(value) {
     const m = String(p).match(_MD_LINK_RE);
     if (m) return toLink(m[2], m[1]);
     if (isHttpUrl(p)) return toLink(p, p);
-    return escapeHtml(p);
+    return escapeHtml(formatLinksToDatabaseLabel(p));
   }).join("; ");
 }
 
@@ -2080,12 +2094,75 @@ const FACET_EMPTY_LABEL_FIELDS = new Set([
   "Style",
 ]);
 
+function normalizeColumnsFacetValue(value) {
+  const s = (value === null || value === undefined) ? "" : String(value);
+  // Strip parenthetical comments (e.g. "1 (f. 8r)" -> "1").
+  // Keep the base value for grouping/filtering; underlying table cell remains unchanged.
+  const withoutParens = s.replace(/\s*\([^)]*\)/g, "");
+  const normalized = withoutParens.replace(/\s+/g, " ").trim();
+  return normalized;
+}
+
+function stripParenComments(value) {
+  const s = (value === null || value === undefined) ? "" : String(value);
+  return s.replace(/\s*\([^)]*\)/g, " ").replace(/\s+/g, " ").trim();
+}
+
+function stripCaPrefix(value) {
+  // Removes leading approximation markers like "ca.", "c.", "ca".
+  const s = (value === null || value === undefined) ? "" : String(value);
+  return s.replace(/^\s*(?:ca\.?|c\.)\s*/i, "").trim();
+}
+
+function parseLinesRange(value) {
+  // Returns {min:number, max:number} if a numeric value or range can be parsed.
+  // Otherwise returns null (text-only values are intentionally kept as-is).
+  if (value === null || value === undefined) return null;
+  let s = String(value);
+  s = stripParenComments(s);
+  s = stripCaPrefix(s);
+  if (!s) return null;
+
+  // Range: e.g. "20-25", "20 – 25"
+  let m = s.match(/(\d{1,3})\s*[-–]\s*(\d{1,3})/);
+  if (m) {
+    const a = parseInt(m[1], 10);
+    const b = parseInt(m[2], 10);
+    if (Number.isFinite(a) && Number.isFinite(b)) {
+      return { min: Math.min(a, b), max: Math.max(a, b) };
+    }
+  }
+
+  // Single value: take the first integer found.
+  m = s.match(/(\d{1,3})/);
+  if (m) {
+    const n = parseInt(m[1], 10);
+    if (Number.isFinite(n)) return { min: n, max: n };
+  }
+
+  return null;
+}
+
+function normalizeLinesFacetValue(value) {
+  const parsed = parseLinesRange(value);
+  if (parsed) {
+    if (parsed.min === parsed.max) return String(parsed.min);
+    return `${parsed.min}-${parsed.max}`;
+  }
+  return (value === null || value === undefined) ? "" : String(value).trim();
+}
+
 function getFacetValue(row, field) {
   if (!row) return '';
   if (FACET_EMPTY_LABEL_FIELDS.has(field)) {
     const raw = row[field];
     const s = (raw === null || raw === undefined) ? "" : String(raw).trim();
-    return s === "" ? "Empty" : s;
+    if (s === "") return "Empty";
+    if (field === "Columns") {
+      const normalized = normalizeColumnsFacetValue(s);
+      return normalized === "" ? s : normalized;
+    }
+    return s;
   }
   return row[field];
 }
@@ -2134,8 +2211,7 @@ async function renderFacetSidebar(rows) {
       const minYear = years.length ? Math.min(...years) : '';
       const maxYear = years.length ? Math.max(...years) : '';
 
-      let html = `<div class="fw-bold mb-2">Dating</div>`;
-      html += `<div class="small text-secondary mb-2">Filter by year range (uses parsed year from Dating)</div>`;
+      let html = `<div class="small text-secondary mb-2">Filter by year range (uses parsed year from Dating)</div>`;
       html += `<div class="d-flex gap-2 align-items-end mb-2">
         <div class="flex-fill">
           <label class="form-label mb-1" style="font-size:0.75rem; text-transform:uppercase;">From</label>
@@ -2147,6 +2223,59 @@ async function renderFacetSidebar(rows) {
         </div>
         <button class="btn btn-sm btn-outline-secondary" type="button" data-dating-range-clear>Clear</button>
       </div>`;
+      facetDiv.innerHTML = html;
+      return;
+    }
+
+    if (field === "Lines") {
+      // Render a numeric range selector (like Dating) + keep text-only values as checkboxes.
+      const parsedRanges = rows.map(r => parseLinesRange(r["Lines"])).filter(Boolean);
+      const minLines = parsedRanges.length ? Math.min(...parsedRanges.map(p => p.min)) : '';
+      const maxLines = parsedRanges.length ? Math.max(...parsedRanges.map(p => p.max)) : '';
+
+      // Collect text-only values (including Empty) after stripping parenthetical comments + ca.
+      const textSet = new Set();
+      rows.forEach(r => {
+        const raw = getFacetValue(r, "Lines");
+        if (raw === null || raw === undefined) return;
+        const s = String(raw).trim();
+        if (s === "") return;
+        if (s === "Empty") {
+          textSet.add("Empty");
+          return;
+        }
+        const normalized = normalizeLinesFacetValue(s);
+        const parsed = parseLinesRange(s);
+        if (!parsed) {
+          // Keep original text value (but strip obvious noise so duplicates collapse).
+          const cleaned = stripCaPrefix(stripParenComments(s));
+          if (cleaned) textSet.add(cleaned);
+        }
+      });
+
+      let html = `<div class="small text-secondary mb-2">Filter by line count range (parses numbers/ranges; ignores parentheses and ca.)</div>`;
+      html += `<div class="d-flex gap-2 align-items-end mb-2">
+        <div class="flex-fill">
+          <label class="form-label mb-1" style="font-size:0.75rem; text-transform:uppercase;">From</label>
+          <input class="form-control form-control-sm" type="number" inputmode="numeric" data-lines-range="min" id="facet-Lines-min" placeholder="${escapeHtml(minLines)}">
+        </div>
+        <div class="flex-fill">
+          <label class="form-label mb-1" style="font-size:0.75rem; text-transform:uppercase;">To</label>
+          <input class="form-control form-control-sm" type="number" inputmode="numeric" data-lines-range="max" id="facet-Lines-max" placeholder="${escapeHtml(maxLines)}">
+        </div>
+        <button class="btn btn-sm btn-outline-secondary" type="button" data-lines-range-clear>Clear</button>
+      </div>`;
+
+      const textValues = Array.from(textSet).sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" }));
+      if (textValues.length > 0) {
+        html += `<div class="small text-secondary mb-1">Text values</div>`;
+        html += `<div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="__ALL__" checked data-facet="Lines" id="facet-Lines-all"><label class="form-check-label" for="facet-Lines-all">All</label></div>`;
+        textValues.forEach((val, i) => {
+          const id = `facet-Lines-${i}`;
+          html += `<div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="${escapeHtml(val)}" data-facet="Lines" id="${id}"><label class="form-check-label" for="${id}">${escapeHtml(val)}</label></div>`;
+        });
+      }
+
       facetDiv.innerHTML = html;
       return;
     }
@@ -2163,8 +2292,7 @@ async function renderFacetSidebar(rows) {
         if (!groupMap[group]) groupMap[group] = new Set();
         if (variant) groupMap[group].add(variant);
       });
-      let html = `<div class="fw-bold mb-2">Main text group</div>`;
-      html += `<div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="__ALL__" checked data-facet="Main text group" id="facet-mtg-all"><label class="form-check-label" for="facet-mtg-all">All</label></div>`;
+      let html = `<div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="__ALL__" checked data-facet="Main text group" id="facet-mtg-all"><label class="form-check-label" for="facet-mtg-all">All</label></div>`;
       Object.keys(groupMap).sort().forEach((group, gi) => {
         // Skip empty or dot-only group values
         if (group === '' || group.trim() === '.') return;
@@ -2194,7 +2322,7 @@ async function renderFacetSidebar(rows) {
     }
     // Default facet rendering
     const values = getUniqueValues(rows, field);
-    let html = `<div class="fw-bold mb-2">${field}</div>`;
+    let html = ``;
     html += `<div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="__ALL__" checked data-facet="${field}" id="facet-${field}-all"><label class="form-check-label" for="facet-${field}-all">All</label></div>`;
     values.forEach((val, i) => {
       // Skip empty or dot-only values for Main text facet
@@ -2226,6 +2354,24 @@ function getFacetSelections() {
             max: maxVal === '' ? null : Number(maxVal),
           };
         }
+        return;
+      }
+
+      if (field === "Lines") {
+        const minEl = facetDiv.querySelector('input[data-lines-range="min"]');
+        const maxEl = facetDiv.querySelector('input[data-lines-range="max"]');
+        const minVal = minEl ? minEl.value.trim() : '';
+        const maxVal = maxEl ? maxEl.value.trim() : '';
+        if (minVal !== '' || maxVal !== '') {
+          selections["LinesRange"] = {
+            min: minVal === '' ? null : Number(minVal),
+            max: maxVal === '' ? null : Number(maxVal),
+          };
+        }
+        // Also collect any checked text-value boxes under Lines (if present).
+        const checkboxes = facetDiv.querySelectorAll('input[type=checkbox][data-facet="Lines"]');
+        const checked = Array.from(checkboxes).filter(cb => cb.checked && cb.value !== "__ALL__").map(cb => cb.value);
+        if (checked.length > 0) selections["Lines"] = checked;
         return;
       }
       if (field === "Main text group") {
@@ -2275,6 +2421,37 @@ function setupFacetEvents() {
         const maxEl = facetDiv.querySelector('input[data-dating-range="max"]');
         if (minEl) minEl.value = '';
         if (maxEl) maxEl.value = '';
+        applyFacetFilters();
+      });
+      return;
+    }
+
+    if (field === "Lines") {
+      facetDiv.addEventListener('input', (e) => {
+        if (e.target && e.target.matches('input[data-lines-range]')) {
+          applyFacetFilters();
+        }
+      });
+      facetDiv.addEventListener('click', (e) => {
+        const btn = e.target && e.target.closest && e.target.closest('button[data-lines-range-clear]');
+        if (!btn) return;
+        const minEl = facetDiv.querySelector('input[data-lines-range="min"]');
+        const maxEl = facetDiv.querySelector('input[data-lines-range="max"]');
+        if (minEl) minEl.value = '';
+        if (maxEl) maxEl.value = '';
+        applyFacetFilters();
+      });
+      // Still allow checkbox filtering for text-only values (if any are rendered).
+      facetDiv.addEventListener('change', (e) => {
+        if (!e.target.matches('input[type=checkbox][data-facet="Lines"]')) return;
+        if (e.target.value === "__ALL__") {
+          const allChecked = e.target.checked;
+          facetDiv.querySelectorAll('input[type=checkbox][data-facet="Lines"]:not([value="__ALL__"])').forEach(cb => {
+            cb.checked = allChecked;
+          });
+        } else {
+          updateFacetAllCheckbox("Lines");
+        }
         applyFacetFilters();
       });
       return;
@@ -2335,6 +2512,43 @@ function applyFacetFilters() {
             return true;
           });
           if (!anyInRange) return false;
+          continue;
+        }
+
+        if (field === "Lines") {
+          const range = facetSelections["LinesRange"];
+          const selectedText = facetSelections["Lines"] || [];
+
+          let min = range ? range.min : null;
+          let max = range ? range.max : null;
+          if (typeof min === 'number' && Number.isNaN(min)) min = null;
+          if (typeof max === 'number' && Number.isNaN(max)) max = null;
+          if (min !== null && max !== null && min > max) { const tmp = min; min = max; max = tmp; }
+
+          const rangeActive = (min !== null || max !== null);
+          const textActive = Array.isArray(selectedText) && selectedText.length > 0;
+          if (!rangeActive && !textActive) continue;
+
+          const anyMatch = ms.rows.some(r => {
+            // Text-only match (OR with range)
+            if (textActive) {
+              const v = normalizeLinesFacetValue(getFacetValue(r, "Lines"));
+              if (selectedText.includes(v)) return true;
+              // Also try cleaned raw text for safety
+              const raw = getFacetValue(r, "Lines");
+              const cleaned = stripCaPrefix(stripParenComments(raw));
+              if (cleaned && selectedText.includes(cleaned)) return true;
+            }
+
+            if (!rangeActive) return false;
+            const parsed = parseLinesRange(r["Lines"]);
+            if (!parsed) return false;
+            if (min !== null && parsed.min < min) return false;
+            if (max !== null && parsed.max > max) return false;
+            return true;
+          });
+
+          if (!anyMatch) return false;
           continue;
         }
 
@@ -2435,6 +2649,43 @@ function applyFacetFilters() {
           if (min !== null && y < min) return false;
           if (max !== null && y > max) return false;
         }
+        continue;
+      }
+
+      if (field === "Lines") {
+        const range = facetSelections["LinesRange"];
+        const selectedText = facetSelections["Lines"] || [];
+
+        let min = range ? range.min : null;
+        let max = range ? range.max : null;
+        if (typeof min === 'number' && Number.isNaN(min)) min = null;
+        if (typeof max === 'number' && Number.isNaN(max)) max = null;
+        if (min !== null && max !== null && min > max) { const tmp = min; min = max; max = tmp; }
+
+        const rangeActive = (min !== null || max !== null);
+        const textActive = Array.isArray(selectedText) && selectedText.length > 0;
+        if (rangeActive || textActive) {
+          let ok = false;
+
+          if (textActive) {
+            const v = normalizeLinesFacetValue(getFacetValue(row, "Lines"));
+            if (selectedText.includes(v)) ok = true;
+            if (!ok) {
+              const cleaned = stripCaPrefix(stripParenComments(getFacetValue(row, "Lines")));
+              if (cleaned && selectedText.includes(cleaned)) ok = true;
+            }
+          }
+
+          if (!ok && rangeActive) {
+            const parsed = parseLinesRange(row["Lines"]);
+            if (parsed) {
+              if (!(min !== null && parsed.min < min) && !(max !== null && parsed.max > max)) ok = true;
+            }
+          }
+
+          if (!ok) return false;
+        }
+
         continue;
       }
       if (field === "Main text group") {
@@ -2864,6 +3115,20 @@ function setupControls() {
           const maxEl = facetDiv.querySelector('input[data-dating-range="max"]');
           if (minEl) minEl.value = "";
           if (maxEl) maxEl.value = "";
+          return;
+        }
+
+        if (field === "Lines") {
+          const minEl = facetDiv.querySelector('input[data-lines-range="min"]');
+          const maxEl = facetDiv.querySelector('input[data-lines-range="max"]');
+          if (minEl) minEl.value = "";
+          if (maxEl) maxEl.value = "";
+          // Reset any Lines text checkboxes (if present)
+          const allBox = facetDiv.querySelector('input[type=checkbox][data-facet="Lines"][value="__ALL__"]');
+          if (allBox) allBox.checked = true;
+          facetDiv.querySelectorAll('input[type=checkbox][data-facet="Lines"]:not([value="__ALL__"])').forEach(cb => {
+            cb.checked = false;
+          });
           return;
         }
 
