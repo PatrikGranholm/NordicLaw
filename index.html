@@ -11,12 +11,26 @@
       display: flex;
       flex-direction: column;
     }
-    body { margin: 20px; }
+    body {
+      margin: 0;
+      padding: 20px;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    /* Keep the main controls visible while scrolling */
+    #controls {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: #fff;
+    }
+
     #main-layout {
       display: flex;
       flex-direction: row;
-      height: 100%;
-      min-height: 700px;
+      flex: 1 1 auto;
+      min-height: 0;
     }
     #facet-sidebar {
       width: 340px;
@@ -27,6 +41,7 @@
       padding: 16px 12px 12px 8px;
       box-sizing: border-box;
       overflow-y: auto;
+      height: 100%;
       position: relative;
       flex-shrink: 0;
       transition: width 0.1s;
@@ -42,6 +57,10 @@
       z-index: 10;
       opacity: 0.7;
     }
+
+    /* Facet sidebar toggle */
+    body.facets-hidden #facet-sidebar { display: none !important; }
+    body.facets-hidden #facet-resizer { display: none !important; }
     #table-view {
       flex-grow: 1;
       height: 100%;
@@ -53,11 +72,21 @@
     #merged-view {
       flex-grow: 1;
       height: 100%;
-      overflow: auto;
-      /* No top padding: sticky headers pin to scrollport top without a bleed-through band */
-      padding: 0 8px 8px;
+      overflow: hidden;
+      padding: 0;
       background: #fff;
       min-width: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    /* Manuscript View scroll container (mirrors SimpleTable's .simple-table-scroll) */
+    .merged-view-scroll {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow: auto;
+      padding: 0 8px 8px;
     }
     .merged-table {
       width: 100%;
@@ -85,7 +114,7 @@
     .merged-table td.pu-b { box-shadow: inset 4px 0 0 rgba(220,53,69,0.55); }
     /* Force view visibility (robust to Live Server reload quirks) */
     body.view-merged #table-view { display: none !important; }
-    body.view-merged #merged-view { display: block !important; }
+    body.view-merged #merged-view { display: flex !important; }
     body.view-table #table-view { display: block !important; }
     body.view-table #merged-view { display: none !important; }
 
@@ -93,8 +122,17 @@
     body.view-merged #table-view-header { display: none !important; }
     body.view-table #table-view-header { display: flex !important; }
 
+    /* Manuscript View heading visibility (match Text View behavior) */
+    body.view-table #merged-view-header { display: none !important; }
+    body.view-merged #merged-view-header { display: flex !important; }
+
     /* Match heading alignment with Manuscript View (whose heading sits inside #merged-view padding) */
     #table-view-header {
+      padding: 0 8px;
+    }
+
+    /* Match heading alignment with Text View */
+    #merged-view-header {
       padding: 0 8px;
     }
 
@@ -137,8 +175,8 @@
     <div class="col-auto">
       <button id="clear-filters" class="btn btn-outline-secondary" type="button">Clear search/facets</button>
     </div>
-    <div class="col-auto" id="record-count">
-      <span class="fw-bold">Total records:</span> <span id="total-records">0</span>
+    <div class="col-auto">
+      <button id="toggle-facets" class="btn btn-outline-secondary" type="button">Hide facets</button>
     </div>
     <div class="col-auto">
       <label for="view-select" class="col-form-label fw-bold">View:</label>
@@ -173,7 +211,7 @@
     </div>
     <div class="col-auto" id="pagination-select-control">
       <select id="pagination-size" class="form-select">
-        <option value="10" selected>10</option>
+        <option value="20" selected>20</option>
         <option value="50">50</option>
         <option value="100">100</option>
         <option value="all">All</option>
@@ -197,7 +235,7 @@
     </div>
   </div>
 
-  <div id="main-layout" class="row flex-nowrap" style="height:100%;">
+  <div id="main-layout" class="row flex-nowrap">
     <div id="facet-sidebar" class="col-auto bg-light border-end">
       <div id="facet-resizer" title="Drag to resize sidebar"></div>
       <h3 class="mt-2 mb-3">Facet Search</h3>
@@ -335,18 +373,28 @@
           <div class="fw-bold">Text view</div>
         </div>
         <div class="d-flex align-items-center gap-2">
+          <div id="table-view-count-host"></div>
           <div class="text-secondary small" id="table-view-meta"></div>
         </div>
       </div>
       <div id="table-view" style="display:none;"></div>
       <div id="merged-view">
-        <div class="d-flex justify-content-between align-items-center mb-2">
+        <div id="merged-view-header" class="d-flex justify-content-between align-items-center mb-2" style="display:none;">
           <div class="d-flex align-items-center gap-2">
             <div class="fw-bold">Manuscript view</div>
           </div>
-          <div class="text-secondary small" id="merged-view-meta"></div>
+          <div class="d-flex align-items-center gap-2">
+            <div id="merged-view-count-host">
+              <div id="record-count" class="text-nowrap">
+                <span class="fw-bold">Total records:</span> <span id="total-records">0</span>
+              </div>
+            </div>
+            <div class="text-secondary small" id="merged-view-meta"></div>
+          </div>
         </div>
-        <div id="merged-table"></div>
+        <div class="merged-view-scroll">
+          <div id="merged-table"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -356,7 +404,7 @@
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="rowDetailsModalLabel">Manuscript Details</h5>
+          <h5 class="modal-title" id="rowDetailsModalLabel">Text Details</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">

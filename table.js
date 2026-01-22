@@ -157,6 +157,81 @@ const COLUMN_TITLE_OVERRIDES = {
   "Shelf mark": "Shelfmark",
 };
 
+// Shared column presets for both views
+const COLUMN_PRESETS = {
+  minimal: [
+    "Depository",
+    "Shelf mark",
+    "Name",
+    "Language",
+    "Production Unit",
+    "Dating",
+    "Material",
+    "Links to Database",
+  ],
+  textual: [
+    "Depository",
+    "Shelf mark",
+    "Language",
+    "Production Unit",
+    "Leaves/Pages",
+    "Main text",
+    "Minor text",
+    "Dating",
+  ],
+  codicology: [
+    "Depository",
+    "Shelf mark",
+    "Language",
+    "Object",
+    "Material",
+    "Size",
+    "Leaves/Pages",
+    "Gatherings",
+    "Full size",
+    "Leaf size",
+    "Catch Words and Gatherings",
+    "Pricking",
+    "Ruling",
+    "Production Unit",
+    "Production",
+  ],
+  layout: [
+    "Depository",
+    "Shelf mark",
+    "Language",
+    "Columns",
+    "Lines",
+    "Ruling",
+    "Rubric",
+    "Style",
+    "Colours",
+    "Form of Initials",
+    "Size of Initials",
+    "Iconography",
+    "Place",
+  ],
+};
+
+function getPresetColumns(presetName) {
+  const key = String(presetName || '').toLowerCase();
+  if (key === 'textual' || key === 'textualcontent' || key === 'textual_content') return COLUMN_PRESETS.textual.slice();
+  if (key === 'minimal') return COLUMN_PRESETS.minimal.slice();
+  if (key === 'codicology') return COLUMN_PRESETS.codicology.slice();
+  if (key === 'layout' || key === 'layout&decoration') return COLUMN_PRESETS.layout.slice();
+  return [];
+}
+
+function applyDefaultMergedColumnVisibility() {
+  MERGED_VISIBLE_COLUMNS = new Set(getPresetColumns('textual').filter(c => DISPLAY_COLUMNS && DISPLAY_COLUMNS.includes(c)));
+  sanitizeMergedColumnVisibility();
+}
+
+function applyDefaultTableColumnVisibility() {
+  TABLE_VISIBLE_COLUMNS = new Set(getPresetColumns('textual').filter(c => DISPLAY_COLUMNS && DISPLAY_COLUMNS.includes(c)));
+  sanitizeTableColumnVisibility();
+}
+
 function getColumnTitle(col) {
   return COLUMN_TITLE_OVERRIDES[col] || col;
 }
@@ -209,17 +284,17 @@ function loadTableColumnVisibility() {
   try {
     const raw = localStorage.getItem(TABLE_COLUMNS_STORAGE_KEY);
     if (!raw) {
-      TABLE_VISIBLE_COLUMNS = null;
+      applyDefaultTableColumnVisibility();
       return;
     }
     const arr = JSON.parse(raw);
     if (Array.isArray(arr) && arr.length > 0) {
       TABLE_VISIBLE_COLUMNS = new Set(arr.map(String));
     } else {
-      TABLE_VISIBLE_COLUMNS = null;
+      applyDefaultTableColumnVisibility();
     }
   } catch (e) {
-    TABLE_VISIBLE_COLUMNS = null;
+    applyDefaultTableColumnVisibility();
   }
 }
 
@@ -286,61 +361,10 @@ function renderTableColumnsMenu() {
     return;
   }
 
-  const minimal = [
-    "Depository",
-    "Shelf mark",
-    "Name",
-    "Language",
-    "Production Unit",
-    "Dating",
-    "Material",
-    "Links to Database",
-  ];
-
-  const textualContent = [
-    "Depository",
-    "Shelf mark",
-    "Language",
-    "Production Unit",
-    "Leaves/Pages",
-    "Main text",
-    "Minor text",
-    "Dating"
-  ];
-
-  const codicology = [
-    "Depository",
-    "Shelf mark",
-    "Language",
-    "Object",
-    "Material",
-    "Size",
-    "Leaves/Pages",
-    "Gatherings",
-    "Full size",
-    "Leaf size",
-    "Catch Words and Gatherings",
-    "Pricking",
-    "Ruling",
-    "Production Unit",
-    "Production",
-  ];
-
-  const layoutAndDecoration = [
-    "Depository",
-    "Shelf mark",
-    "Language",
-    "Columns",
-    "Lines",
-    "Ruling",
-    "Rubric",
-    "Style",
-    "Colours",
-    "Form of Initials",
-    "Size of Initials",
-    "Iconography",
-    "Place",
-  ];
+  const minimal = getPresetColumns('minimal');
+  const textualContent = getPresetColumns('textual');
+  const codicology = getPresetColumns('codicology');
+  const layoutAndDecoration = getPresetColumns('layout');
 
   const selected = getTableVisibleColumnsSet();
   const isChecked = (c) => !selected || selected.has(c);
@@ -383,8 +407,10 @@ function renderTableColumnsMenu() {
   menu.querySelectorAll('button[data-cols-action]').forEach(btn => {
     btn.addEventListener('click', () => {
       const action = btn.getAttribute('data-cols-action');
-      if (action === 'all' || action === 'reset') {
+      if (action === 'all') {
         TABLE_VISIBLE_COLUMNS = null;
+      } else if (action === 'reset') {
+        applyDefaultTableColumnVisibility();
       } else if (action === 'minimal') {
         TABLE_VISIBLE_COLUMNS = new Set(minimal.filter(c => DISPLAY_COLUMNS.includes(c)));
       } else if (action === 'textual') {
@@ -424,61 +450,10 @@ function renderMergedColumnsMenu() {
     return;
   }
 
-  const minimal = [
-    "Depository",
-    "Shelf mark",
-    "Name",
-    "Language",
-    "Production Unit",
-    "Dating",
-    "Material",
-    "Links to Database",
-  ];
-
-  const textualContent = [
-    "Depository",
-    "Shelf mark",
-    "Language",
-    "Production Unit",
-    "Leaves/Pages",
-    "Main text",
-    "Minor text",
-    "Dating"
-  ];
-
-  const codicology = [
-    "Depository",
-    "Shelf mark",
-    "Language",
-    "Object",
-    "Material",
-    "Size",
-    "Leaves/Pages",
-    "Gatherings",
-    "Full size",
-    "Leaf size",
-    "Catch Words and Gatherings",
-    "Pricking",
-    "Ruling",
-    "Production Unit",
-    "Production",
-  ];
-
-  const layoutAndDecoration = [
-    "Depository",
-    "Shelf mark",
-    "Language",
-    "Columns",
-    "Lines",
-    "Ruling",
-    "Rubric",
-    "Style",
-    "Colours",
-    "Form of Initials",
-    "Size of Initials",
-    "Iconography",
-    "Place",
-  ];
+  const minimal = getPresetColumns('minimal');
+  const textualContent = getPresetColumns('textual');
+  const codicology = getPresetColumns('codicology');
+  const layoutAndDecoration = getPresetColumns('layout');
 
   const selected = getMergedVisibleColumnsSet();
   const isChecked = (c) => !selected || selected.has(c);
@@ -524,7 +499,7 @@ function renderMergedColumnsMenu() {
       if (action === 'all') {
         MERGED_VISIBLE_COLUMNS = null;
       } else if (action === 'reset') {
-        MERGED_VISIBLE_COLUMNS = null;
+        applyDefaultMergedColumnVisibility();
       } else if (action === 'minimal') {
         MERGED_VISIBLE_COLUMNS = new Set(minimal.filter(c => DISPLAY_COLUMNS.includes(c)));
       } else if (action === 'textual') {
@@ -574,7 +549,14 @@ class SimpleTable {
     this._baseData = Array.isArray(options.data) ? options.data.slice() : [];
     this._filterFn = null;
     this._filtered = this._baseData.slice();
-    this._pageSize = 50;
+    if (options && options.pageSize === true) {
+      this._pageSize = Number.POSITIVE_INFINITY;
+    } else if (options && options.pageSize !== undefined && options.pageSize !== null) {
+      const n = Number(options.pageSize);
+      this._pageSize = (Number.isFinite(n) && n > 0) ? n : 20;
+    } else {
+      this._pageSize = 20;
+    }
     this._page = 1;
     this._handlers = new Map();
 
@@ -799,6 +781,27 @@ class SimpleTable {
 // Persist the selected view across reloads (helps with Live Server reload behavior)
 const VIEW_STORAGE_KEY = "nordiclaw.view";
 
+// Persist Facet sidebar visibility across reloads.
+const FACETS_HIDDEN_STORAGE_KEY = "nordiclaw.facetsHidden";
+
+function setFacetsHidden(hidden) {
+  const isHidden = !!hidden;
+  try {
+    document.body.classList.toggle('facets-hidden', isHidden);
+  } catch (e) {
+    // ignore
+  }
+
+  const btn = document.getElementById('toggle-facets');
+  if (btn) btn.textContent = isHidden ? 'Show facets' : 'Hide facets';
+
+  try {
+    localStorage.setItem(FACETS_HIDDEN_STORAGE_KEY, isHidden ? '1' : '0');
+  } catch (e) {
+    // ignore
+  }
+}
+
 // Persist Manuscript/Text sort mode across reloads.
 const MERGED_SORT_STORAGE_KEY = "nordiclaw.mergedSort";
 let MERGED_SORT_MODE = "shelfmark";
@@ -808,10 +811,10 @@ let MERGED_PAGE = 1;
 
 function getMergedPageSize() {
   const sel = document.getElementById('pagination-size');
-  const raw = sel ? String(sel.value || '').toLowerCase() : '50';
+  const raw = sel ? String(sel.value || '').toLowerCase() : '20';
   if (raw === 'all') return Number.POSITIVE_INFINITY;
   const n = parseInt(raw, 10);
-  return (Number.isFinite(n) && n > 0) ? n : 50;
+  return (Number.isFinite(n) && n > 0) ? n : 20;
 }
 
 function updateMergedPagerUI(page, totalPages) {
@@ -917,17 +920,17 @@ function loadMergedColumnVisibility() {
   try {
     const raw = localStorage.getItem(MERGED_COLUMNS_STORAGE_KEY);
     if (!raw) {
-      MERGED_VISIBLE_COLUMNS = null;
+      applyDefaultMergedColumnVisibility();
       return;
     }
     const arr = JSON.parse(raw);
     if (Array.isArray(arr) && arr.length > 0) {
       MERGED_VISIBLE_COLUMNS = new Set(arr.map(String));
     } else {
-      MERGED_VISIBLE_COLUMNS = null;
+      applyDefaultMergedColumnVisibility();
     }
   } catch (e) {
-    MERGED_VISIBLE_COLUMNS = null;
+    applyDefaultMergedColumnVisibility();
   }
 }
 
@@ -1794,6 +1797,19 @@ function renderMergedView(manuscripts, metaInfo = null) {
 // Apply view-dependent UI visibility without changing filters.
 // (Important: the table may be created after initial setView(),
 // so we sometimes need to re-apply visibility once it's created.)
+function mountRecordCount() {
+  const recordCountEl = document.getElementById('record-count');
+  if (!recordCountEl) return;
+
+  const hostId = (currentView === 'table') ? 'table-view-count-host' : 'merged-view-count-host';
+  const hostEl = document.getElementById(hostId);
+  if (!hostEl) return;
+
+  if (recordCountEl.parentElement !== hostEl) {
+    hostEl.appendChild(recordCountEl);
+  }
+}
+
 function applyViewUI() {
   try {
     document.body.classList.toggle('view-merged', currentView === 'merged');
@@ -1863,6 +1879,9 @@ function applyViewUI() {
   // Text View pager control lives in the top control bar.
   const tablePageControl = document.getElementById('table-page-control');
   if (tablePageControl) tablePageControl.style.display = (currentView === 'table') ? '' : 'none';
+
+  // Move the shared record-count element into the active view header.
+  mountRecordCount();
 }
 
 function setView(view) {
@@ -2663,13 +2682,14 @@ async function loadDataFromParsedRows(headers, rows) {
 
     // Use the shared page-size selector as the default for Text View.
     const paginationSizeSelect = document.getElementById('pagination-size');
-    const paginationRaw = paginationSizeSelect ? String(paginationSizeSelect.value || '').toLowerCase() : '50';
+    const paginationRaw = paginationSizeSelect ? String(paginationSizeSelect.value || '').toLowerCase() : '20';
+    const initialPageSize = (paginationRaw === 'all') ? true : parseInt(paginationRaw, 10);
 
     if (table) {
       table.setColumns(columns);
       await table.replaceData(sortedRows);
     } else {
-      table = new SimpleTable("#table-view", { data: sortedRows, columns: columns });
+      table = new SimpleTable("#table-view", { data: sortedRows, columns: columns, pageSize: initialPageSize });
 
       window.table = table;
 
@@ -2873,6 +2893,22 @@ function setupControls() {
   const paginationSizeSelect = document.getElementById("pagination-size");
   const viewSelect = document.getElementById("view-select");
   const mergedSortSelect = document.getElementById("merged-sort");
+  const toggleFacetsBtn = document.getElementById("toggle-facets");
+
+  // Restore facet sidebar visibility and wire toggle.
+  try {
+    setFacetsHidden(localStorage.getItem(FACETS_HIDDEN_STORAGE_KEY) === '1');
+  } catch (e) {
+    setFacetsHidden(false);
+  }
+  if (toggleFacetsBtn) {
+    toggleFacetsBtn.addEventListener('click', function () {
+      const nextHidden = !document.body.classList.contains('facets-hidden');
+      setFacetsHidden(nextHidden);
+      try { applyViewUI(); } catch (e) {}
+      try { if (table && typeof table.redraw === 'function') table.redraw(true); } catch (e) {}
+    });
+  }
 
   const mergedPrevBtn = document.getElementById('merged-prev-page');
   const mergedNextBtn = document.getElementById('merged-next-page');
