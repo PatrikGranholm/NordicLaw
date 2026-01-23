@@ -1098,11 +1098,464 @@ let RAW_ROWS_BY_SOURCE = new Map();    // sourceId -> RawRow[] (in source-row or
 let RAW_EXCEL_HEADERS = null;          // string[] including inserted Language
 
 const RAW_EXCEL_SOURCES = [
-  { id: "dan", lang: "da", tsv: "data/1.0_Metadata_Dan_raw.tsv", merges: "data/1.0_Metadata_Dan_raw_merges.json" },
-  { id: "isl", lang: "is", tsv: "data/1.1_Metadata_Isl_raw.tsv", merges: "data/1.1_Metadata_Isl_raw_merges.json" },
-  { id: "norw", lang: "no", tsv: "data/1.2_Metadata_Norw_raw.tsv", merges: "data/1.2_Metadata_Norw_raw_merges.json" },
-  { id: "swe", lang: "sv", tsv: "data/1.1_Metadata_Swe_raw.tsv", merges: "data/1.1_Metadata_Swe_raw_merges.json" },
+  { id: "dan", lang: "da", tsv: "data/1.0_Metadata_Dan_raw.tsv", merges: "data/1.0_Metadata_Dan_raw_merges.json", segments: "data/1.0_Metadata_Dan_segments.json" },
+  { id: "isl", lang: "is", tsv: "data/1.1_Metadata_Isl_raw.tsv", merges: "data/1.1_Metadata_Isl_raw_merges.json", segments: "data/1.1_Metadata_Isl_segments.json" },
+  { id: "norw", lang: "no", tsv: "data/1.2_Metadata_Norw_raw.tsv", merges: "data/1.2_Metadata_Norw_raw_merges.json", segments: "data/1.2_Metadata_Norw_segments.json" },
+  { id: "swe", lang: "sv", tsv: "data/1.1_Metadata_Swe_raw.tsv", merges: "data/1.1_Metadata_Swe_raw_merges.json", segments: "data/1.1_Metadata_Swe_segments.json" },
 ];
+
+// Segments JSON (manuscript-level description extracted from raw TSV + merges).
+let SEGMENTS_LOADING = null;
+let SEGMENTS_LOADED = false;
+let SEGMENTS_FAILED = false;
+let SEGMENTS_BY_SOURCE = new Map(); // sourceId -> segments.json root
+let SEGMENTS_INDEX_BY_SOURCE = new Map(); // sourceId -> Map(msKey -> manuscript)
+
+function getSourceIdForLanguage(lang) {
+  const l = normalizeForCompare(lang);
+  if (!l) return null;
+
+  // Accept either the ISO code (da/is/no/sv) or the expanded display name.
+  let code = l;
+  for (const k of Object.keys(LANGUAGE_MAP || {})) {
+    if (normalizeForCompare(LANGUAGE_MAP[k]) === l) {
+      code = normalizeForCompare(k);
+      break;
+    }
+  }
+
+  const hit = RAW_EXCEL_SOURCES.find(s => normalizeForCompare(s.lang) === code);
+  return hit ? hit.id : null;
+}
+
+function buildMsKeyFromDepositoryShelfmark(depositoryAbbr, shelfmark) {
+  const d = normalizeForCompare(depositoryAbbr);
+  const s = normalizeForCompare(shelfmark);
+  return (d || '') + '||' + (s || '');
+}
+
+async function ensureSegmentsLoaded() {
+  if (SEGMENTS_LOADED || SEGMENTS_FAILED) return Promise.resolve();
+  if (SEGMENTS_LOADING) return SEGMENTS_LOADING;
+
+  SEGMENTS_LOADING = (async () => {
+    try {
+      const results = await Promise.all(RAW_EXCEL_SOURCES.map(async (src) => {
+        if (!src || !src.segments) return false;
+        try {
+          const resp = await fetch(src.segments);
+          if (!resp.ok) throw new Error(`Failed to fetch ${src.segments}: ${resp.status}`);
+          const root = await resp.json();
+          SEGMENTS_BY_SOURCE.set(src.id, root);
+
+          // Build msKey index: Depository||Shelfmark (normalized).
+          const idx = new Map();
+          const manuscripts = (root && Array.isArray(root.manuscripts)) ? root.manuscripts : [];
+          for (const ms of manuscripts) {
+            if (!ms || typeof ms !== 'object') continue;
+            const key = buildMsKeyFromDepositoryShelfmark(ms.Depository, ms.Shelfmark);
+            if (!key || key === '||') continue;
+            idx.set(key, ms);
+          }
+          SEGMENTS_INDEX_BY_SOURCE.set(src.id, idx);
+          return true;
+        } catch (e) {
+          console.warn(`Segments JSON not available for ${src.id}: ${src.segments}`, e);
+          return false;
+        }
+      }));
+
+      const loadedCount = results.filter(Boolean).length;
+      if (loadedCount > 0) SEGMENTS_LOADED = true;
+      else SEGMENTS_FAILED = true;
+    } catch (e) {
+      console.warn('Failed to load segments JSON files.', e);
+      SEGMENTS_FAILED = true;
+    } finally {
+      SEGMENTS_LOADING = null;
+    }
+  })();
+
+  return SEGMENTS_LOADING;
+}
+
+function pickFirstNonEmptySegmentLabel(ms, col) {
+  const byCol = ms && ms.segmentsByColumn ? ms.segmentsByColumn : null;
+  const segs = byCol && Array.isArray(byCol[col]) ? byCol[col] : [];
+  for (const s of segs) {
+    const v = normalizeForCompare(s && s.label !== undefined ? s.label : '');
+    if (v) return String(s.label);
+  }
+  return '';
+}
+
+function computeManuscriptExtent(ms) {
+  const byCol = ms && ms.segmentsByColumn ? ms.segmentsByColumn : null;
+  if (!byCol || typeof byCol !== 'object') return null;
+
+  function parsePoint(s) {
+    const raw = String(s || '').trim();
+    if (!raw) return null;
+    const m = raw.match(/^(\d+)([rv])?$/i);
+    if (!m) return null;
+    return { n: parseInt(m[1], 10), side: m[2] ? m[2].toLowerCase() : null };
+  }
+
+  function cmpPoint(a, b) {
+    if (!a && !b) return 0;
+    if (!a) return 1;
+    if (!b) return -1;
+    if (a.n !== b.n) return a.n - b.n;
+    const ord = (x) => (x === 'r') ? 0 : (x === 'v') ? 2 : 1;
+    return ord(a.side) - ord(b.side);
+  }
+
+  let kind = null;
+  let minFrom = null; // parsed point
+  let maxTo = null;   // parsed point
+  let prefix = null;
+
+  const cols = Object.keys(byCol);
+  for (const c of cols) {
+    const segs = Array.isArray(byCol[c]) ? byCol[c] : [];
+    for (const s of segs) {
+      const locus = s && s.locus ? s.locus : null;
+      if (!locus || !locus.kind || locus.kind === 'mixed') continue;
+      if (locus.kind !== 'f' && locus.kind !== 'p') continue;
+      if (kind && locus.kind !== kind) return { kind: 'mixed' };
+      kind = locus.kind;
+      if (!prefix && locus.prefix) prefix = locus.prefix;
+      if (locus.from) {
+        const from = parsePoint(locus.from);
+        if (from && (!minFrom || cmpPoint(from, minFrom) < 0)) minFrom = from;
+      }
+      if (locus.to) {
+        const to = parsePoint(locus.to);
+        if (to && (!maxTo || cmpPoint(to, maxTo) > 0)) maxTo = to;
+      }
+    }
+  }
+
+  if (!kind) return null;
+  if (kind === 'mixed') return { kind: 'mixed' };
+  if (!minFrom || !maxTo) return null;
+
+  const fmt = (p) => `${p.n}${p.side || ''}`;
+  const fromText = fmt(minFrom);
+  const toText = fmt(maxTo);
+  return {
+    kind,
+    rendered: (fromText === toText)
+      ? `${prefix || (kind === 'f' ? 'ff.' : 'pp.')} ${fromText}`
+      : `${prefix || (kind === 'f' ? 'ff.' : 'pp.')} ${fromText}-${toText}`,
+  };
+}
+
+function normalizeRenderedLocus(locusText) {
+  const raw = String(locusText || '').replace(/\s+/g, ' ').trim();
+  if (!raw) return '';
+
+  // Collapse ranges where from == to, e.g. "f. 1r-1r" => "f. 1r".
+  // Supports hyphen and en-dash.
+  const m = raw.match(/^(\s*(?:ff?|pp?)\.\s*)(.+?)\s*[-–]\s*(.+?)\s*$/i);
+  if (m) {
+    const prefix = String(m[1] || '');
+    const from = String(m[2] || '').trim();
+    const to = String(m[3] || '').trim();
+    if (from && to && normalizeForCompare(from) === normalizeForCompare(to)) {
+      return `${prefix}${from}`.replace(/\s+/g, ' ').trim();
+    }
+    return raw;
+  }
+
+  // Also handle prefix-less ranges like "1r-1r".
+  const m2 = raw.match(/^(.+?)\s*[-–]\s*(.+?)\s*$/);
+  if (m2) {
+    const from = String(m2[1] || '').trim();
+    const to = String(m2[2] || '').trim();
+    if (from && to && normalizeForCompare(from) === normalizeForCompare(to)) return from;
+  }
+
+  return raw;
+}
+
+function renderManuscriptSection(title, bodyHtml) {
+  return `
+    <div class="mb-4">
+      <h5 class="mb-2">${escapeHtml(title)}</h5>
+      ${bodyHtml}
+    </div>
+  `;
+}
+
+function renderSegmentsColumnBlock(ms, col, ctx = null) {
+  const byCol = ms && ms.segmentsByColumn ? ms.segmentsByColumn : null;
+  const segsRaw = byCol && Array.isArray(byCol[col]) ? byCol[col] : [];
+  const segs = segsRaw.filter(s => normalizeForCompare(s && s.label !== undefined ? s.label : ''));
+
+  // For Links to Database, prefer using the manuscript-level merged raw value if available.
+  // Some extracted segments may contain labels without URLs (e.g. "Av") due to merged-cell artifacts.
+  if (col === 'Links to Database') {
+    const msKey = ctx && ctx.msKey ? String(ctx.msKey) : '';
+    const rawBlock = msKey ? RAW_BY_MANUSCRIPT_KEY.get(msKey) : null;
+    const rawRows = rawBlock && Array.isArray(rawBlock.rows) ? rawBlock.rows : null;
+    if (rawRows && rawRows.length) {
+      const mergedVal = aggregateFieldValues(rawRows, 'Links to Database', '; ');
+      const html = renderLinksToDatabaseHtml(mergedVal);
+      if (normalizeForCompare(html)) {
+        return `
+          <div class="mb-3">
+            <div class="fw-bold">${escapeHtml(getColumnTitle(col))}</div>
+            <div class="mb-1">
+              <div class="text-break">${html}</div>
+            </div>
+          </div>
+        `;
+      }
+    }
+  }
+
+  if (!segs.length) return '';
+
+  function expandSegmentLabelForColumn(rawLabel) {
+    const v = normalizeForCompare(rawLabel);
+    if (!v) return '';
+
+    if (col === 'Main text') {
+      const map = (typeof window !== 'undefined' && window.MAIN_TEXT_MAP)
+        ? window.MAIN_TEXT_MAP
+        : (typeof MAIN_TEXT_MAP !== 'undefined' ? MAIN_TEXT_MAP : null);
+      if (map && typeof map === 'object') {
+        return splitSemicolonList(v).map(part => formatAbbrExpansion(map, part)).join('; ');
+      }
+      return String(rawLabel);
+    }
+
+    if (col === 'Minor text') {
+      const minorMap = (typeof window !== 'undefined' && window.MINOR_TEXT_MAP)
+        ? window.MINOR_TEXT_MAP
+        : (typeof MINOR_TEXT_MAP !== 'undefined' ? MINOR_TEXT_MAP : null);
+
+      if (minorMap && typeof minorMap === 'object') {
+        // Determine main-text context from manuscript-level segments.
+        let mainCandidates = [];
+        const mainSegs = byCol && Array.isArray(byCol['Main text']) ? byCol['Main text'] : [];
+        for (const s of mainSegs) {
+          const mv = normalizeForCompare(s && s.label !== undefined ? s.label : '');
+          if (!mv) continue;
+          mainCandidates = mainCandidates.concat(
+            splitSemicolonList(mv)
+              .map(m => parseTrailingParenSuffix(m).base)
+              .filter(Boolean)
+          );
+        }
+        // De-duplicate while preserving order.
+        const seen = new Set();
+        mainCandidates = mainCandidates.filter(m => {
+          const k = String(m || '').trim();
+          if (!k || seen.has(k)) return false;
+          seen.add(k);
+          return true;
+        });
+
+        return splitSemicolonList(v).map(sectionAbbr => {
+          const { base: sectionBase, suffix: sectionSuffix } = parseTrailingParenSuffix(sectionAbbr);
+          let full = null;
+
+          if (mainCandidates.length === 1) {
+            full = minorMap[minorTextKey(mainCandidates[0], sectionBase)] || null;
+          } else if (mainCandidates.length > 1) {
+            const matches = [];
+            for (const m of mainCandidates) {
+              const hit = minorMap[minorTextKey(m, sectionBase)];
+              if (hit) matches.push(hit);
+            }
+            if (matches.length === 1) full = matches[0];
+          }
+
+          if (full) {
+            const expandedSuffix = sectionSuffix ? expandParenSuffixWithAbbreviations(sectionSuffix) : "";
+            return `${sectionBase}${EN_DASH}${full}${expandedSuffix}`;
+          }
+
+          // Fall back to abbreviations.tsv (and suffix expansion) if applicable.
+          return formatAbbrExpansion(null, sectionAbbr);
+        }).join('; ');
+      }
+
+      return String(rawLabel);
+    }
+
+    return String(rawLabel);
+  }
+
+  // Some columns should keep their data but not show the locus (folio/page range).
+  const OMIT_LOCUS_COLS = new Set(['Full size', 'Literature', 'Links to Database']);
+  // Also omit locus when there's only one item: a single segment usually describes the whole manuscript.
+  // Exception: always keep locus for Main/Minor text.
+  const ALWAYS_LOCUS_COLS = new Set(['Main text', 'Minor text']);
+  const showLocus = !OMIT_LOCUS_COLS.has(col) && (ALWAYS_LOCUS_COLS.has(col) || segs.length > 1);
+
+  const items = segs.map(s => {
+    const locus = s && s.locus ? s.locus : null;
+    const locusText = normalizeRenderedLocus((locus && locus.rendered) ? String(locus.rendered) : '');
+
+    const expandedLabel = expandSegmentLabelForColumn(s && s.label !== undefined ? s.label : '');
+
+    let valueHtml = '';
+    if (col === 'Links to Database') {
+      valueHtml = renderLinksToDatabaseHtml(s.label);
+    } else {
+      valueHtml = escapeHtml(String(expandedLabel || ''));
+    }
+
+    if (!showLocus) {
+      return `
+        <div class="mb-1">
+          <div class="text-break">${valueHtml}</div>
+        </div>
+      `;
+    }
+
+    return `
+      <div class="d-flex gap-2 mb-1">
+        <div class="text-secondary small" style="min-width: 110px;">${escapeHtml(locusText)}</div>
+        <div class="text-break flex-grow-1">${valueHtml}</div>
+      </div>
+    `;
+  }).join('');
+
+  return `
+    <div class="mb-3">
+      <div class="fw-bold">${escapeHtml(getColumnTitle(col))}</div>
+      ${items}
+    </div>
+  `;
+}
+
+function renderManuscriptSegmentsColumns(ms, cols, ctx = null) {
+  const out = [];
+  for (const c of cols) {
+    const block = renderSegmentsColumnBlock(ms, c, ctx);
+    if (block) out.push(block);
+  }
+  if (!out.length) return '<div class="text-secondary">No data.</div>';
+  return out.join('');
+}
+
+function expandDepositoryLabel(rawDepository) {
+  const d = String(rawDepository || '').trim();
+  if (!d) return '';
+  if (DEPOSITORY_MAP && typeof DEPOSITORY_MAP === 'object' && Object.prototype.hasOwnProperty.call(DEPOSITORY_MAP, d)) {
+    return String(DEPOSITORY_MAP[d] || '').trim() || d;
+  }
+  return d;
+}
+
+function buildManuscriptModalHtml(ms, sourceId, msKey = null) {
+  const shelfmark = ms && ms.Shelfmark ? String(ms.Shelfmark) : '';
+  const depository = expandDepositoryLabel(ms && ms.Depository ? String(ms.Depository) : '');
+  const language = pickFirstNonEmptySegmentLabel(ms, 'Language');
+  const name = pickFirstNonEmptySegmentLabel(ms, 'Name');
+  const object = pickFirstNonEmptySegmentLabel(ms, 'Object');
+  const size = pickFirstNonEmptySegmentLabel(ms, 'Size');
+
+  const headerRows = [];
+  headerRows.push(['Depository', escapeHtml(depository || '—')]);
+  headerRows.push(['Shelfmark', escapeHtml(shelfmark || '—')]);
+  if (language) headerRows.push(['Language', escapeHtml(language)]);
+  if (name) headerRows.push(['Name', escapeHtml(name)]);
+  if (object) headerRows.push(['Object', escapeHtml(object)]);
+  if (size) headerRows.push(['Size', escapeHtml(size)]);
+
+  const headerTable = `
+    <table class="table table-sm mb-0">
+      <tbody>
+        ${headerRows.map(([k, v]) => `<tr><th style="width: 140px;" class="text-secondary">${escapeHtml(k)}</th><td class="text-break">${v}</td></tr>`).join('')}
+      </tbody>
+    </table>
+  `;
+
+  const contentCols = ['Main text', 'Minor text'];
+  const physicalCols = [
+    'Gatherings',
+    'Full size',
+    'Leaf size',
+    'Catch Words and Gatherings',
+    'Pricking',
+    'Material',
+    'Ruling',
+    'Columns',
+    'Lines',
+    'Script',
+    'Rubric',
+    'Scribe',
+    'Production Unit',
+    'Production',
+    'Style',
+    'Colours',
+    'Form of Initials',
+    'Size of Initials',
+    'Iconography',
+  ];
+  const historyCols = ['Dating', 'Place', 'Related Shelfmarks'];
+  const bibliographyCols = ['Literature', 'Links to Database'];
+
+  const ctx = { msKey };
+
+  const sections = [];
+  sections.push(renderManuscriptSection('Header', headerTable));
+  sections.push(renderManuscriptSection('Content', renderManuscriptSegmentsColumns(ms, contentCols, ctx)));
+  sections.push(renderManuscriptSection('Physical Description', renderManuscriptSegmentsColumns(ms, physicalCols, ctx)));
+  sections.push(renderManuscriptSection('History', renderManuscriptSegmentsColumns(ms, historyCols, ctx)));
+  sections.push(renderManuscriptSection('Bibliography', renderManuscriptSegmentsColumns(ms, bibliographyCols, ctx)));
+
+  return sections.join('');
+}
+
+async function openManuscriptDetailsModalByKey({ sourceId, msKey }) {
+  const modalEl = document.getElementById('msDetailsModal');
+  const contentDiv = document.getElementById('ms-details-content');
+  const titleEl = document.getElementById('msDetailsModalLabel');
+  if (!modalEl || !contentDiv) return false;
+
+  await ensureSegmentsLoaded();
+  try { await loadDepositoryMap(); } catch (e) {}
+  if (SEGMENTS_FAILED) {
+    contentDiv.innerHTML = '<div class="text-danger">Segments data could not be loaded.</div>';
+    return false;
+  }
+
+  const idx = sourceId ? SEGMENTS_INDEX_BY_SOURCE.get(sourceId) : null;
+  const ms = (idx && msKey) ? idx.get(msKey) : null;
+  if (!ms) {
+    contentDiv.innerHTML = '<div class="text-secondary">No segments found for this manuscript.</div>';
+    return false;
+  }
+
+  const shelfmark = ms.Shelfmark ? String(ms.Shelfmark) : '';
+  const dep = expandDepositoryLabel(ms.Depository ? String(ms.Depository) : '');
+  if (titleEl) titleEl.textContent = dep && shelfmark ? `${dep} — ${shelfmark}` : 'Manuscript';
+
+  contentDiv.innerHTML = buildManuscriptModalHtml(ms, sourceId, msKey);
+
+  const pdfBtn = document.getElementById('download-ms-pdf-btn');
+  if (pdfBtn) {
+    const safe = (s) => String(s || '')
+      .replace(/[\\/:*?\"<>|]+/g, '-')
+      .replace(/\s+/g, ' ')
+      .trim();
+    pdfBtn.dataset.filename = `${safe(dep)}_${safe(shelfmark)}.pdf`;
+  }
+
+  const bs = window.bootstrap || (typeof bootstrap !== 'undefined' ? bootstrap : null);
+  if (bs && bs.Modal) {
+    const modal = bs.Modal.getOrCreateInstance(modalEl);
+    modal.show();
+    return true;
+  }
+  return false;
+}
 
 async function ensureRawExcelLoaded() {
   if (RAW_EXCEL_LOADED || RAW_EXCEL_FAILED) return Promise.resolve();
@@ -1732,6 +2185,15 @@ function minorTextKey(mainAbbr, sectionAbbr) {
 function renderMergedCell(field, value, ctx = null) {
   const v = normalizeForCompare(value);
   if (!v) return "&nbsp;";
+  if (field === "Shelf mark") {
+    const msKey = ctx && ctx.msKey ? String(ctx.msKey) : "";
+    const sourceId = ctx && ctx.sourceId ? String(ctx.sourceId) : "";
+    const label = escapeHtml(String(value));
+    if (msKey && sourceId) {
+      return `<a href="#" class="ms-open-details" data-ms-key="${escapeHtml(msKey)}" data-source-id="${escapeHtml(sourceId)}">${label}</a>`;
+    }
+    return label;
+  }
   if (field === "Links to Database") {
     const html = renderLinksToDatabaseHtml(v);
     return html ? html : "&nbsp;";
@@ -1841,6 +2303,8 @@ function renderMergedView(manuscripts, metaInfo = null) {
     const rawBlock = RAW_BY_MANUSCRIPT_KEY.get(ms.key);
     const msRows = (rawBlock && rawBlock.rows && rawBlock.rows.length > 0) ? rawBlock.rows : ms.rows;
     const msRowCount = msRows.length;
+    const msKeyAttr = escapeHtml(ms.key || '');
+    const sourceIdAttr = escapeHtml((rawBlock && rawBlock.sourceId) ? rawBlock.sourceId : (ms.sourceId || ''));
 
     // Manuscript-level merged fields
     const mergedLinksToDatabase = aggregateFieldValues(msRows, "Links to Database", "; ");
@@ -1888,7 +2352,7 @@ function renderMergedView(manuscripts, metaInfo = null) {
       const isFirstMsRow = (rIndex === 0);
       const trClasses = [msClass];
       if (isFirstMsRow) trClasses.push('ms-sep');
-      html += `<tr class="${trClasses.join(' ')}">`;
+      html += `<tr class="${trClasses.join(' ')}" data-ms-key="${msKeyAttr}" data-source-id="${sourceIdAttr}">`;
 
       const currentRunIdx = rowToRunIndex[rIndex] || 0;
       const puClass = (currentRunIdx % 2 === 0) ? 'pu-a' : 'pu-b';
@@ -1914,14 +2378,14 @@ function renderMergedView(manuscripts, metaInfo = null) {
         // Always merge Links to Database at the manuscript level (combine URLs across rows).
         if (col === "Links to Database") {
           if (!isFirstMsRow) continue;
-          html += `<td class="${msClass}" data-field="${escapeHtml(col)}" rowspan="${msRowCount}">${renderMergedCell(col, mergedLinksToDatabase)}</td>`;
+          html += `<td class="${msClass}" data-field="${escapeHtml(col)}" rowspan="${msRowCount}">${renderMergedCell(col, mergedLinksToDatabase, { msKey: ms.key, sourceId: (rawBlock && rawBlock.sourceId) ? rawBlock.sourceId : (ms.sourceId || null), row, msRows, rowIndex: rIndex })}</td>`;
           continue;
         }
 
         // If Literature is empty for all rows in the manuscript, merge it into a single blank cell.
         if (col === "Literature" && literatureAllEmpty) {
           if (!isFirstMsRow) continue;
-          html += `<td class="${msClass}" data-field="${escapeHtml(col)}" rowspan="${msRowCount}">${renderMergedCell(col, "")}</td>`;
+          html += `<td class="${msClass}" data-field="${escapeHtml(col)}" rowspan="${msRowCount}">${renderMergedCell(col, "", { msKey: ms.key, sourceId: (rawBlock && rawBlock.sourceId) ? rawBlock.sourceId : (ms.sourceId || null), row, msRows, rowIndex: rIndex })}</td>`;
           continue;
         }
 
@@ -1930,7 +2394,7 @@ function renderMergedView(manuscripts, metaInfo = null) {
           // Merge it per manuscript so duplicates don't repeat visually.
           if (col === "Language") {
             if (!isFirstMsRow) continue;
-            html += `<td class="${msClass}" data-field="${escapeHtml(col)}" rowspan="${msRowCount}">${renderMergedCell(col, row[col], { row, msRows, rowIndex: rIndex })}</td>`;
+            html += `<td class="${msClass}" data-field="${escapeHtml(col)}" rowspan="${msRowCount}">${renderMergedCell(col, row[col], { msKey: ms.key, sourceId: (rawBlock && rawBlock.sourceId) ? rawBlock.sourceId : (ms.sourceId || null), row, msRows, rowIndex: rIndex })}</td>`;
             continue;
           }
 
@@ -1938,28 +2402,28 @@ function renderMergedView(manuscripts, metaInfo = null) {
           if (mergeLookup.covered.has(key)) continue;
           const span = mergeLookup.topLeft.get(key);
           const attrs = span ? ` rowspan="${span.rowSpan}" colspan="${span.colSpan}"` : "";
-          html += `<td class="${(col === "Production Unit") ? puClass : msClass}" data-field="${escapeHtml(col)}"${attrs}>${renderMergedCell(col, row[col], { row, msRows, rowIndex: rIndex })}</td>`;
+          html += `<td class="${(col === "Production Unit") ? puClass : msClass}" data-field="${escapeHtml(col)}"${attrs}>${renderMergedCell(col, row[col], { msKey: ms.key, sourceId: (rawBlock && rawBlock.sourceId) ? rawBlock.sourceId : (ms.sourceId || null), row, msRows, rowIndex: rIndex })}</td>`;
           continue;
         }
 
         if (msConst && msConst.has(col)) {
           if (!isFirstMsRow) continue;
-          html += `<td class="${msClass}" data-field="${escapeHtml(col)}" rowspan="${msRowCount}">${renderMergedCell(col, row[col], { row, msRows, rowIndex: rIndex })}</td>`;
+          html += `<td class="${msClass}" data-field="${escapeHtml(col)}" rowspan="${msRowCount}">${renderMergedCell(col, row[col], { msKey: ms.key, sourceId: (rawBlock && rawBlock.sourceId) ? rawBlock.sourceId : (ms.sourceId || null), row, msRows, rowIndex: rIndex })}</td>`;
           continue;
         }
 
         if (col === "Production Unit") {
           if (!isRunStart) continue;
-          html += `<td class="${puClass}" data-field="${escapeHtml(col)}" rowspan="${runRowSpan}">${renderMergedCell(col, row[col], { row, msRows, rowIndex: rIndex })}</td>`;
+          html += `<td class="${puClass}" data-field="${escapeHtml(col)}" rowspan="${runRowSpan}">${renderMergedCell(col, row[col], { msKey: ms.key, sourceId: (rawBlock && rawBlock.sourceId) ? rawBlock.sourceId : (ms.sourceId || null), row, msRows, rowIndex: rIndex })}</td>`;
           continue;
         }
 
         if (runConst && runConst.has(col)) {
-          html += `<td class="${puClass}" data-field="${escapeHtml(col)}" rowspan="${runRowSpan}">${renderMergedCell(col, row[col], { row, msRows, rowIndex: rIndex })}</td>`;
+          html += `<td class="${puClass}" data-field="${escapeHtml(col)}" rowspan="${runRowSpan}">${renderMergedCell(col, row[col], { msKey: ms.key, sourceId: (rawBlock && rawBlock.sourceId) ? rawBlock.sourceId : (ms.sourceId || null), row, msRows, rowIndex: rIndex })}</td>`;
           continue;
         }
 
-        html += `<td data-field="${escapeHtml(col)}">${renderMergedCell(col, row[col], { row, msRows, rowIndex: rIndex })}</td>`;
+        html += `<td data-field="${escapeHtml(col)}">${renderMergedCell(col, row[col], { msKey: ms.key, sourceId: (rawBlock && rawBlock.sourceId) ? rawBlock.sourceId : (ms.sourceId || null), row, msRows, rowIndex: rIndex })}</td>`;
       }
 
       html += '</tr>';
@@ -1971,6 +2435,38 @@ function renderMergedView(manuscripts, metaInfo = null) {
 
   // Re-apply frozen columns after every merged-view render.
   try { applyFrozenColumns(); } catch (e) {}
+
+  // Click-to-open manuscript modal (event delegation).
+  try {
+    if (!renderMergedView._msClickBound) {
+      renderMergedView._msClickBound = true;
+      mergedRoot.addEventListener('click', function (ev) {
+        const target = ev && ev.target ? ev.target : null;
+        if (!target || !target.closest) return;
+
+        // Prefer explicit link clicks.
+        const link = target.closest('a.ms-open-details');
+        if (link) {
+          ev.preventDefault();
+          const msKey = link.getAttribute('data-ms-key') || '';
+          const sourceId = link.getAttribute('data-source-id') || '';
+          if (msKey && msKey !== '||' && sourceId) {
+            openManuscriptDetailsModalByKey({ sourceId, msKey });
+          }
+          return;
+        }
+
+        const tr = target.closest('tr[data-ms-key]');
+        if (!tr) return;
+        const msKey = tr.getAttribute('data-ms-key') || '';
+        const sourceId = tr.getAttribute('data-source-id') || '';
+        if (!msKey || msKey === '||' || !sourceId) return;
+        openManuscriptDetailsModalByKey({ sourceId, msKey });
+      });
+    }
+  } catch (e) {
+    // ignore
+  }
 }
 
 function applyViewUI() {
@@ -3439,82 +3935,142 @@ function setupControls() {
       // PDF layout
       const marginX = 40, marginY = 60, colGap = 30;
       const colWidth = (515 - colGap) / 2; // 515 = A4 width - 2*marginX
-      let y = marginY + 20;
       const lineHeight = 18;
       const maxY = doc.internal.pageSize.getHeight() - 60;
 
-      // Set font to Times for all text
-      doc.setFont("helvetica");
-      // Header
-      doc.setFontSize(16);
-      doc.setTextColor(40);
-      doc.setFont("helvetica", "bold");
-      doc.text("NordicLaw Manuscripts", marginX, marginY);
+      function drawHeader() {
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(16);
+        doc.setTextColor(40);
+        doc.text("NordicLaw Manuscripts", marginX, marginY);
+      }
 
-      // Render two columns with dynamic height calculation
-      function renderColumn(items, xStart) {
-        let yPos = y;
-        for (const item of items) {
-          const { label, value } = extractItem(item);
+      // Render as a single flow across two columns (newspaper-style):
+      // fill left column top-to-bottom; overflow continues in right column;
+      // overflow from right column goes to next page.
+      function renderTwoColumnFlow(divsInOrder) {
+        const startY = marginY + 20;
+        let colIndex = 0; // 0 = left, 1 = right
+        let yPos = startY;
+
+        const xForCol = (i) => (i === 0) ? marginX : (marginX + colWidth + colGap);
+
+        const nextColumnOrPage = () => {
+          if (colIndex === 0) {
+            colIndex = 1;
+            yPos = startY;
+            return;
+          }
+          doc.addPage();
+          drawHeader();
+          colIndex = 0;
+          yPos = startY;
+        };
+
+        const ensureSpace = (h) => {
+          if (yPos + h <= maxY) return;
+          nextColumnOrPage();
+        };
+
+        const drawWrappedText = (font, style, fontSize, rgb, text) => {
+          const s = String(text || '').replace(/\u00a0/g, ' ').trim();
+          if (!s) return;
+          doc.setFont(font, style);
+          doc.setFontSize(fontSize);
+          doc.setTextColor(rgb[0], rgb[1], rgb[2]);
+          const lines = doc.splitTextToSize(s, colWidth);
+          for (const ln of lines) {
+            ensureSpace(lineHeight);
+            doc.text(ln, xForCol(colIndex), yPos);
+            yPos += lineHeight;
+          }
+        };
+
+        const drawLink = (text, href) => {
+          const s = String(text || '').replace(/\u00a0/g, ' ').trim();
+          if (!s) return;
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(11);
+          doc.setTextColor(13, 110, 253);
+          const lines = doc.splitTextToSize(s, colWidth);
+          if (lines.length) {
+            ensureSpace(lineHeight);
+            doc.textWithLink(lines[0], xForCol(colIndex), yPos, { url: href || '' });
+            yPos += lineHeight;
+          }
+          if (lines.length > 1) {
+            drawWrappedText("times", "normal", 10, [33, 37, 41], lines.slice(1).join(' '));
+          } else {
+            doc.setTextColor(33, 37, 41);
+          }
+        };
+
+        const drawValueHtml = (valueHtml) => {
+          const tempDiv = document.createElement('div');
+          tempDiv.innerHTML = valueHtml || '';
+          const anchors = tempDiv.querySelectorAll('a');
+
+          const walk = (node) => {
+            if (!node) return;
+            if (node.nodeType === 3) {
+              const raw = node.textContent || '';
+              const trimmed = String(raw).replace(/\u00a0/g, ' ').trim();
+              // Links-to-database HTML joins multiple links with '; ' — skip the separator in PDF.
+              if (trimmed === ';') return;
+              if (trimmed) drawWrappedText("times", "normal", 10, [33, 37, 41], raw);
+              return;
+            }
+            if (node.nodeType !== 1) return;
+            const tag = String(node.tagName || '').toUpperCase();
+            if (tag === 'BR') {
+              ensureSpace(lineHeight);
+              yPos += lineHeight;
+              return;
+            }
+            if (tag === 'A') {
+              drawLink(node.textContent || '', node.getAttribute('href'));
+              return;
+            }
+            for (const child of Array.from(node.childNodes || [])) walk(child);
+          };
+
+          if (anchors.length > 0) {
+            for (const node of Array.from(tempDiv.childNodes || [])) walk(node);
+          } else {
+            // No links; treat as plain text.
+            drawWrappedText("times", "normal", 10, [33, 37, 41], tempDiv.textContent || '');
+          }
+        };
+
+        drawHeader();
+
+        for (const div of divsInOrder) {
+          const { label, value } = extractItem(div);
           if (!label && !value) continue;
-          // Label: Times Bold, size 8, gray (#6c757d), ALL CAPS
+
+          // If we're near the bottom, move label to next column/page.
+          const minItemHeight = 14 + lineHeight + 8;
+          ensureSpace(minItemHeight);
+
+          // Label
           doc.setFont("times", "bold");
           doc.setFontSize(8);
-          doc.setTextColor(108, 117, 125); // Bootstrap 5 text-secondary
+          doc.setTextColor(108, 117, 125);
           const labelCaps = label ? label.toUpperCase() : "";
           const labelDims = doc.getTextDimensions(labelCaps, { maxWidth: colWidth });
-          doc.text(labelCaps, xStart, yPos, { maxWidth: colWidth });
+          ensureSpace((labelDims.h || 12) + 4);
+          doc.text(labelCaps, xForCol(colIndex), yPos, { maxWidth: colWidth });
           yPos += (labelDims.h || 12) + 4;
-          // Value: Times Regular, size 10, black
-          doc.setFont("times", "normal");
-          doc.setFontSize(10);
-          doc.setTextColor(33, 37, 41); // Bootstrap 5 text-dark
-          const tempDiv = document.createElement('div');
-          tempDiv.innerHTML = value;
-          const anchors = tempDiv.querySelectorAll('a');
-          if (anchors.length > 0) {
-            tempDiv.childNodes.forEach(node => {
-              if (node.nodeType === 3) { // text
-                const txt = node.textContent;
-                if (txt && txt.trim()) {
-                  const dims = doc.getTextDimensions(txt, { maxWidth: colWidth });
-                  doc.text(txt, xStart, yPos, { maxWidth: colWidth });
-                  yPos += dims.h || lineHeight;
-                }
-              } else if (node.nodeType === 1 && node.tagName === 'A') {
-                const linkText = node.textContent;
-                const href = node.getAttribute('href');
-                doc.setFont("helvetica", "normal");
-                doc.setFontSize(11);
-                doc.setTextColor(13, 110, 253); // Bootstrap 5 link color
-                const dims = doc.getTextDimensions(linkText, { maxWidth: colWidth });
-                doc.textWithLink(linkText, xStart, yPos, { url: href });
-                doc.setTextColor(33, 37, 41); // Reset to text-dark
-                yPos += dims.h || lineHeight;
-              }
-            });
-          } else {
-            // Plain text (strip HTML)
-            const plain = tempDiv.textContent || '';
-            const dims = doc.getTextDimensions(plain, { maxWidth: colWidth });
-            doc.text(plain, xStart, yPos, { maxWidth: colWidth });
-            yPos += dims.h || lineHeight;
-          }
+
+          // Value
+          drawValueHtml(value);
+
           yPos += 8;
-          if (yPos > maxY) {
-            doc.addPage();
-            yPos = marginY + 20;
-            // Header for new page
-            doc.setFont("helvetica", "bold");
-            doc.setFontSize(16);
-            doc.setTextColor(40);
-            doc.text("NordicLaw Manuscripts", marginX, marginY);
-          }
         }
       }
 
-      renderColumn(leftItems, marginX);
-      renderColumn(rightItems, marginX + colWidth + colGap);
+      const orderedDivs = [].concat(leftItems, rightItems);
+      renderTwoColumnFlow(orderedDivs);
 
       // Footer (on all pages)
       const pageCount = doc.getNumberOfPages();
@@ -3528,8 +4084,237 @@ function setupControls() {
         doc.text(`Accessed: ${dateStr}`, marginX, pageHeight - 20);
       }
 
-      // Save
       const filename = this.dataset.filename || "manuscript-details.pdf";
+      doc.save(filename);
+    });
+  }
+
+  // Manuscript modal PDF export (render the sectioned HTML)
+  const msPdfBtn = document.getElementById('download-ms-pdf-btn');
+  if (msPdfBtn) {
+    msPdfBtn.addEventListener('click', function () {
+      if (!window.jspdf) {
+        alert('jsPDF library not loaded.');
+        return;
+      }
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF('p', 'pt', 'a4');
+      const content = document.getElementById('ms-details-content');
+      if (!content) return;
+      const filename = (msPdfBtn.dataset && msPdfBtn.dataset.filename) ? msPdfBtn.dataset.filename : 'manuscript.pdf';
+
+      // Match the Text Details PDF styling/formatting.
+      const marginX = 40, marginY = 60;
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const colGap = 30;
+      const colWidth = Math.max(140, (pageWidth - (marginX * 2) - colGap) / 2);
+      const startY = marginY + 20;
+      const startYNoHeader = 40;
+      const lineHeight = 14;
+      // Spacing for explicit <br/> separators inside a value (e.g. Main text segment lists).
+      // In our modal HTML, each line already advances by lineHeight when drawn, so keeping
+      // <br/> tight prevents double-spacing between items.
+      const brGap = 0;
+      const itemGap = 4;
+      const maxY = doc.internal.pageSize.getHeight() - 60;
+      const dateStr = new Date().toLocaleString();
+
+      // Header
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(16);
+      doc.setTextColor(40);
+      doc.text("NordicLaw Manuscripts", marginX, marginY);
+
+      function extractItemsFromMsModal(root) {
+        const out = [];
+        const sections = Array.from(root.querySelectorAll(':scope > .mb-4'));
+        for (const sec of sections) {
+          // Header table
+          const table = sec.querySelector('table');
+          if (table) {
+            const rows = Array.from(table.querySelectorAll('tbody tr'));
+            for (const tr of rows) {
+              const th = tr.querySelector('th');
+              const td = tr.querySelector('td');
+              const label = th ? String(th.textContent || '').trim() : '';
+              const valueHtml = td ? String(td.innerHTML || '').trim() : '';
+              if (label || valueHtml) out.push({ label, valueHtml });
+            }
+            continue;
+          }
+
+          // Segment blocks
+          const blocks = Array.from(sec.querySelectorAll('.mb-3'));
+          for (const b of blocks) {
+            const bt = b.querySelector('.fw-bold');
+            const blockTitle = bt ? String(bt.textContent || '').trim() : '';
+
+            const lines = Array.from(b.querySelectorAll(':scope > .d-flex'));
+            if (lines.length) {
+              const combinedLines = [];
+              for (const line of lines) {
+                const divs = line.querySelectorAll(':scope > div');
+                const locusText = divs[0] ? String(divs[0].textContent || '').trim() : '';
+                const valueDiv = divs[1] || null;
+                const valueHtml = valueDiv ? String(valueDiv.innerHTML || '').trim() : '';
+                const combined = locusText ? `${escapeHtml(locusText)} ${valueHtml}` : valueHtml;
+                if (normalizeForCompare(combined)) combinedLines.push(combined);
+              }
+              if (combinedLines.length) out.push({ label: blockTitle, valueHtml: combinedLines.join('<br/>') });
+              continue;
+            }
+
+            const plainLines = Array.from(b.querySelectorAll(':scope > .mb-1 > .text-break'));
+            if (plainLines.length) {
+              const combinedLines = plainLines
+                .map(pl => String(pl.innerHTML || '').trim())
+                .filter(v => normalizeForCompare(v));
+              if (combinedLines.length) out.push({ label: blockTitle, valueHtml: combinedLines.join('<br/>') });
+              continue;
+            }
+
+            const rest = String(b.textContent || '').trim();
+            if (blockTitle && rest) out.push({ label: blockTitle, valueHtml: escapeHtml(rest) });
+          }
+        }
+        return out;
+      }
+
+      const items = extractItemsFromMsModal(content);
+
+      // Two-column flow (newspaper-style):
+      // fill left column; overflow continues in right column; then next page.
+      function renderTwoColumnFlow(itemsInOrder) {
+        const startYForPage = (page) => (page === 1 ? startY : startYNoHeader);
+        const xForCol = (col) => (col === 0 ? marginX : (marginX + colWidth + colGap));
+
+        const state = { page: 1, col: 0, yPos: startYForPage(1) };
+
+        const advanceColumnOrPage = () => {
+          if (state.col === 0) {
+            state.col = 1;
+            state.yPos = startYForPage(state.page);
+            return;
+          }
+          doc.addPage();
+          state.page += 1;
+          state.col = 0;
+          state.yPos = startYForPage(state.page);
+        };
+
+        const ensureSpace = (h) => {
+          if (state.yPos + h <= maxY) return;
+          advanceColumnOrPage();
+        };
+
+        const emitText = (txt) => {
+          const s = String(txt || '').replace(/\u00a0/g, ' ');
+          const parts = s.split(/\n/);
+          for (const part of parts) {
+            const t = part.replace(/\s+/g, ' ').trimEnd();
+            if (!t.trim()) {
+              ensureSpace(lineHeight);
+              state.yPos += lineHeight;
+              continue;
+            }
+            doc.setFont("times", "normal");
+            doc.setFontSize(10);
+            doc.setTextColor(33, 37, 41);
+            const lines = doc.splitTextToSize(t, colWidth);
+            for (const ln of lines) {
+              ensureSpace(lineHeight);
+              doc.text(ln, xForCol(state.col), state.yPos);
+              state.yPos += lineHeight;
+            }
+          }
+        };
+
+        const emitLink = (linkText, href) => {
+          const t = String(linkText || '').trim();
+          if (!t) return;
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(11);
+          doc.setTextColor(13, 110, 253);
+          const lines = doc.splitTextToSize(t, colWidth);
+          const first = lines.length ? lines[0] : t;
+          ensureSpace(lineHeight);
+          doc.textWithLink(first, xForCol(state.col), state.yPos, { url: href || '' });
+          state.yPos += lineHeight;
+
+          if (lines.length > 1) {
+            doc.setFont("times", "normal");
+            doc.setFontSize(10);
+            doc.setTextColor(33, 37, 41);
+            for (let i = 1; i < lines.length; i++) {
+              ensureSpace(lineHeight);
+              doc.text(lines[i], xForCol(state.col), state.yPos);
+              state.yPos += lineHeight;
+            }
+          }
+        };
+
+        const walk = (node) => {
+          if (!node) return;
+          if (node.nodeType === 3) {
+            const raw = node.textContent || '';
+            const trimmed = String(raw).replace(/\u00a0/g, ' ').trim();
+            // Links-to-database HTML joins multiple links with '; ' — skip the separator in PDF.
+            if (trimmed === ';') return;
+            if (trimmed) emitText(raw);
+            return;
+          }
+          if (node.nodeType !== 1) return;
+          const tag = String(node.tagName || '').toUpperCase();
+          if (tag === 'BR') {
+            if (brGap > 0) ensureSpace(brGap);
+            state.yPos += brGap;
+            return;
+          }
+          if (tag === 'A') {
+            emitLink(node.textContent || '', node.getAttribute('href'));
+            return;
+          }
+          for (const child of Array.from(node.childNodes || [])) walk(child);
+        };
+
+        for (const item of itemsInOrder) {
+          const label = item && item.label ? String(item.label) : '';
+          const valueHtml = item && item.valueHtml ? String(item.valueHtml) : '';
+          if (!label && !valueHtml) continue;
+
+          // Label
+          doc.setFont("times", "bold");
+          doc.setFontSize(8);
+          doc.setTextColor(108, 117, 125);
+          const labelCaps = label ? label.toUpperCase() : "";
+          const labelDims = doc.getTextDimensions(labelCaps, { maxWidth: colWidth });
+          ensureSpace((labelDims.h || 12) + 2 + lineHeight);
+          doc.text(labelCaps, xForCol(state.col), state.yPos, { maxWidth: colWidth });
+          state.yPos += (labelDims.h || 12) + 2;
+
+          // Value
+          const tempDiv = document.createElement('div');
+          tempDiv.innerHTML = valueHtml || '';
+          for (const child of Array.from(tempDiv.childNodes || [])) walk(child);
+
+          state.yPos += itemGap;
+        }
+      }
+
+      renderTwoColumnFlow(items);
+
+      // Footer (on all pages)
+      const pageCount = doc.getNumberOfPages();
+      const pageHeight = doc.internal.pageSize.getHeight();
+      for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+        doc.setFont("helvetica");
+        doc.setFontSize(10);
+        doc.setTextColor(100);
+        doc.text(`Accessed: ${dateStr}`, marginX, pageHeight - 20);
+      }
+
       doc.save(filename);
     });
   }
