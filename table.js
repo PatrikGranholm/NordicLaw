@@ -3125,6 +3125,382 @@ function setupFacetEvents() {
   });
 }
 
+function setFacetLabelCount(labelEl, count) {
+  if (!labelEl) return;
+  // Preserve the original label content.
+  if (!labelEl.dataset.baseLabel) {
+    const existing = labelEl.querySelector('.facet-count');
+    if (existing) existing.remove();
+    labelEl.dataset.baseLabel = labelEl.innerHTML;
+  }
+  const old = labelEl.querySelector('.facet-count');
+  if (old) old.remove();
+  const span = document.createElement('span');
+  span.className = 'facet-count text-secondary ms-1';
+  span.style.fontSize = '0.85em';
+  span.textContent = `(${count})`;
+  labelEl.insertAdjacentElement('beforeend', span);
+}
+
+function getLinesTextFacetCandidates(row) {
+  const raw = getFacetValue(row, 'Lines');
+  const s = (raw === null || raw === undefined) ? '' : String(raw).trim();
+  if (!s) return [];
+  if (s === 'Empty') return ['Empty'];
+  // Only count text-only values (the UI checkboxes are for text values).
+  const parsed = parseLinesRange(s);
+  if (parsed) return [];
+  const cleaned = stripCaPrefix(stripParenComments(s));
+  return cleaned ? [cleaned] : [];
+}
+
+function computeFacetCountsTable(rows, selections, query) {
+  const facetKeys = [...FACET_FIELDS, 'Main text group-variant'];
+  const out = {};
+
+  function rowMatches(row, excludeKey) {
+    for (const field of FACET_FIELDS) {
+      const excludeGroup = (excludeKey === 'Main text group' || excludeKey === 'Main text group-variant');
+      const excludeLines = (excludeKey === 'Lines');
+      const excludeDating = (excludeKey === 'Dating');
+
+      if (field === 'Dating') {
+        if (excludeDating) continue;
+        const range = selections['DatingRange'];
+        if (range && (range.min !== null || range.max !== null)) {
+          let min = range.min;
+          let max = range.max;
+          if (typeof min === 'number' && Number.isNaN(min)) min = null;
+          if (typeof max === 'number' && Number.isNaN(max)) max = null;
+          if (min !== null && max !== null && min > max) { const tmp = min; min = max; max = tmp; }
+          const y = row['DatingYear'];
+          if (typeof y !== 'number' || Number.isNaN(y)) return false;
+          if (min !== null && y < min) return false;
+          if (max !== null && y > max) return false;
+        }
+        continue;
+      }
+
+      if (field === 'Lines') {
+        if (excludeLines) continue;
+        const range = selections['LinesRange'];
+        const selectedText = selections['Lines'] || [];
+
+        let min = range ? range.min : null;
+        let max = range ? range.max : null;
+        if (typeof min === 'number' && Number.isNaN(min)) min = null;
+        if (typeof max === 'number' && Number.isNaN(max)) max = null;
+        if (min !== null && max !== null && min > max) { const tmp = min; min = max; max = tmp; }
+
+        const rangeActive = (min !== null || max !== null);
+        const textActive = Array.isArray(selectedText) && selectedText.length > 0;
+        if (rangeActive || textActive) {
+          let ok = false;
+
+          if (textActive) {
+            const v = normalizeLinesFacetValue(getFacetValue(row, 'Lines'));
+            if (selectedText.includes(v)) ok = true;
+            if (!ok) {
+              const cleaned = stripCaPrefix(stripParenComments(getFacetValue(row, 'Lines')));
+              if (cleaned && selectedText.includes(cleaned)) ok = true;
+            }
+          }
+
+          if (!ok && rangeActive) {
+            const parsed = parseLinesRange(row['Lines']);
+            if (parsed) {
+              if (!(min !== null && parsed.min < min) && !(max !== null && parsed.max > max)) ok = true;
+            }
+          }
+
+          if (!ok) return false;
+        }
+
+        continue;
+      }
+
+      if (field === 'Main text group') {
+        if (excludeGroup) continue;
+
+        if (selections['Main text group-variant'] && selections['Main text group-variant'].length > 0) {
+          let matched = false;
+          const group = row['Main text group'] || '';
+          let variant = '';
+          if (row['Main text']) {
+            const m = String(row['Main text']).match(/^([^\(]+)\s*\(([^\)]+)\)/);
+            if (m) variant = m[2].trim();
+          }
+          const key = group + '|' + variant;
+          if (selections['Main text group-variant'].includes(key)) matched = true;
+          if (!matched) return false;
+        } else if (selections[field] && selections[field].length > 0) {
+          if (!selections[field].includes(row[field])) return false;
+        }
+
+        continue;
+      }
+
+      // Normal checkbox facets
+      if (excludeKey === field) continue;
+      if (selections[field] && selections[field].length > 0) {
+        if (!selections[field].includes(getFacetValue(row, field))) return false;
+      }
+    }
+
+    if (query) {
+      const matchesSearch = Object.values(row).some(val => String(val).toLowerCase().includes(query));
+      if (!matchesSearch) return false;
+    }
+    return true;
+  }
+
+  for (const key of facetKeys) {
+    const excludeKey = (key === 'Main text group-variant') ? 'Main text group' : key;
+    const base = rows.filter(r => rowMatches(r, excludeKey));
+    const baseTotal = base.length;
+
+    const counts = new Map();
+    if (key === 'Lines') {
+      for (const r of base) {
+        for (const cand of getLinesTextFacetCandidates(r)) {
+          counts.set(cand, (counts.get(cand) || 0) + 1);
+        }
+      }
+    } else if (key === 'Main text group') {
+      for (const r of base) {
+        const g = r['Main text group'] || '';
+        if (!g) continue;
+        counts.set(g, (counts.get(g) || 0) + 1);
+      }
+    } else if (key === 'Main text group-variant') {
+      for (const r of base) {
+        const g = r['Main text group'] || '';
+        if (!g) continue;
+        let variant = '';
+        if (r['Main text']) {
+          const m = String(r['Main text']).match(/^([^\(]+)\s*\(([^\)]+)\)/);
+          if (m) variant = m[2].trim();
+        }
+        const k = g + '|' + variant;
+        if (variant) counts.set(k, (counts.get(k) || 0) + 1);
+      }
+    } else if (key !== 'Dating') {
+      for (const r of base) {
+        const v = getFacetValue(r, key);
+        if (v === null || v === undefined) continue;
+        const s = String(v).trim();
+        if (!s) continue;
+        counts.set(s, (counts.get(s) || 0) + 1);
+      }
+    }
+
+    out[key] = { baseTotal, counts };
+  }
+
+  return out;
+}
+
+function computeFacetCountsMerged(manuscripts, selections, query) {
+  const facetKeys = [...FACET_FIELDS, 'Main text group-variant'];
+  const out = {};
+
+  function manuscriptMatches(ms, excludeKey) {
+    for (const field of FACET_FIELDS) {
+      const excludeGroup = (excludeKey === 'Main text group' || excludeKey === 'Main text group-variant');
+      const excludeLines = (excludeKey === 'Lines');
+      const excludeDating = (excludeKey === 'Dating');
+
+      if (field === 'Dating') {
+        if (excludeDating) continue;
+        const range = selections['DatingRange'];
+        let min = range ? range.min : null;
+        let max = range ? range.max : null;
+        if (typeof min === 'number' && Number.isNaN(min)) min = null;
+        if (typeof max === 'number' && Number.isNaN(max)) max = null;
+        if (min !== null && max !== null && min > max) { const tmp = min; min = max; max = tmp; }
+        if (min !== null || max !== null) {
+          const anyInRange = ms.rows.some(r => {
+            const y = r['DatingYear'];
+            if (typeof y !== 'number' || Number.isNaN(y)) return false;
+            if (min !== null && y < min) return false;
+            if (max !== null && y > max) return false;
+            return true;
+          });
+          if (!anyInRange) return false;
+        }
+        continue;
+      }
+
+      if (field === 'Lines') {
+        if (excludeLines) continue;
+        const range = selections['LinesRange'];
+        const selectedText = selections['Lines'] || [];
+
+        let min = range ? range.min : null;
+        let max = range ? range.max : null;
+        if (typeof min === 'number' && Number.isNaN(min)) min = null;
+        if (typeof max === 'number' && Number.isNaN(max)) max = null;
+        if (min !== null && max !== null && min > max) { const tmp = min; min = max; max = tmp; }
+
+        const rangeActive = (min !== null || max !== null);
+        const textActive = Array.isArray(selectedText) && selectedText.length > 0;
+        if (!rangeActive && !textActive) continue;
+
+        const anyMatch = ms.rows.some(r => {
+          if (textActive) {
+            const v = normalizeLinesFacetValue(getFacetValue(r, 'Lines'));
+            if (selectedText.includes(v)) return true;
+            const cleaned = stripCaPrefix(stripParenComments(getFacetValue(r, 'Lines')));
+            if (cleaned && selectedText.includes(cleaned)) return true;
+          }
+          if (!rangeActive) return false;
+          const parsed = parseLinesRange(r['Lines']);
+          if (!parsed) return false;
+          if (min !== null && parsed.min < min) return false;
+          if (max !== null && parsed.max > max) return false;
+          return true;
+        });
+
+        if (!anyMatch) return false;
+        continue;
+      }
+
+      if (field === 'Main text group') {
+        if (excludeGroup) continue;
+
+        const variantSelections = selections['Main text group-variant'];
+        if (variantSelections && variantSelections.length > 0) {
+          const anyVariant = ms.rows.some(r => {
+            const group = r['Main text group'] || '';
+            let variant = '';
+            if (r['Main text']) {
+              const m = String(r['Main text']).match(/^([^\(]+)\s*\(([^\)]+)\)/);
+              if (m) variant = m[2].trim();
+            }
+            const key = group + '|' + variant;
+            return variantSelections.includes(key);
+          });
+          if (!anyVariant) return false;
+          continue;
+        }
+
+        const groups = selections[field];
+        if (groups && groups.length > 0) {
+          const anyGroup = ms.rows.some(r => groups.includes(getFacetValue(r, field)));
+          if (!anyGroup) return false;
+        }
+        continue;
+      }
+
+      if (excludeKey === field) continue;
+      const selected = selections[field];
+      if (selected && selected.length > 0) {
+        const anyMatch = ms.rows.some(r => selected.includes(getFacetValue(r, field)));
+        if (!anyMatch) return false;
+      }
+    }
+
+    if (query) {
+      const anySearch = ms.rows.some(r => Object.values(r).some(val => String(val).toLowerCase().includes(query)));
+      if (!anySearch) return false;
+    }
+    return true;
+  }
+
+  for (const key of facetKeys) {
+    const excludeKey = (key === 'Main text group-variant') ? 'Main text group' : key;
+    const base = manuscripts.filter(ms => manuscriptMatches(ms, excludeKey));
+    const baseTotal = base.length;
+
+    const counts = new Map();
+    if (key === 'Lines') {
+      for (const ms of base) {
+        const seen = new Set();
+        for (const r of ms.rows) {
+          for (const cand of getLinesTextFacetCandidates(r)) seen.add(cand);
+        }
+        for (const v of seen) counts.set(v, (counts.get(v) || 0) + 1);
+      }
+    } else if (key === 'Main text group') {
+      for (const ms of base) {
+        const seen = new Set();
+        for (const r of ms.rows) {
+          const g = r['Main text group'] || '';
+          if (g) seen.add(g);
+        }
+        for (const v of seen) counts.set(v, (counts.get(v) || 0) + 1);
+      }
+    } else if (key === 'Main text group-variant') {
+      for (const ms of base) {
+        const seen = new Set();
+        for (const r of ms.rows) {
+          const g = r['Main text group'] || '';
+          if (!g) continue;
+          let variant = '';
+          if (r['Main text']) {
+            const m = String(r['Main text']).match(/^([^\(]+)\s*\(([^\)]+)\)/);
+            if (m) variant = m[2].trim();
+          }
+          if (variant) seen.add(g + '|' + variant);
+        }
+        for (const v of seen) counts.set(v, (counts.get(v) || 0) + 1);
+      }
+    } else if (key !== 'Dating') {
+      for (const ms of base) {
+        const seen = new Set();
+        for (const r of ms.rows) {
+          const v = getFacetValue(r, key);
+          if (v === null || v === undefined) continue;
+          const s = String(v).trim();
+          if (s) seen.add(s);
+        }
+        for (const v of seen) counts.set(v, (counts.get(v) || 0) + 1);
+      }
+    }
+
+    out[key] = { baseTotal, counts };
+  }
+
+  return out;
+}
+
+function updateFacetCountsUI(countsByKey) {
+  if (!countsByKey) return;
+
+  // Update all visible checkbox labels.
+  const allFacetDivs = document.querySelectorAll('[id^="facet-"]');
+  if (!allFacetDivs || allFacetDivs.length === 0) return;
+
+  const byCheckbox = document.querySelectorAll('input[type=checkbox][data-facet]');
+  byCheckbox.forEach(cb => {
+    const facetKey = cb.dataset.facet;
+    const value = cb.value;
+    // Prefer the label next to the checkbox (most robust).
+    let labelEl = null;
+    const formCheck = cb.closest('.form-check');
+    if (formCheck) {
+      labelEl = formCheck.querySelector('label.form-check-label') || formCheck.querySelector('label');
+    }
+
+    // Fallback to matching by [for] within the facet container.
+    if (!labelEl) {
+      const facetDiv = cb.closest('[id^="facet-"]') || null;
+      if (!facetDiv) return;
+      const forValue = String(cb.id || '').replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+      labelEl = facetDiv.querySelector(`label[for="${forValue}"]`);
+    }
+    if (!labelEl) return;
+
+    const entry = countsByKey[facetKey] || null;
+    if (!entry) return;
+
+    const n = (value === '__ALL__')
+      ? (entry.baseTotal || 0)
+      : (entry.counts && entry.counts.get(value) ? entry.counts.get(value) : 0);
+    setFacetLabelCount(labelEl, n);
+  });
+}
+
 function applyFacetFilters() {
   facetSelections = getFacetSelections();
   const searchInput = document.getElementById('search');
@@ -3135,6 +3511,13 @@ function applyFacetFilters() {
     const manuscripts = groupByPreserveOrder(allRows || [], getManuscriptKey)
       .map(g => ({ key: g.key, rows: g.rows }))
       .sort((a, b) => compareManuscripts(a, b, sortMode));
+
+    // Update facet counters (option B) before rendering.
+    try {
+      updateFacetCountsUI(computeFacetCountsMerged(manuscripts, facetSelections, query));
+    } catch (e) {
+      console.error('Facet counters failed to update (merged):', e);
+    }
 
     const range = facetSelections["DatingRange"];
     let min = range ? range.min : null;
@@ -3271,6 +3654,13 @@ function applyFacetFilters() {
     }
 
     return;
+  }
+
+  // Update facet counters (option B) for table view.
+  try {
+    updateFacetCountsUI(computeFacetCountsTable(allRows || [], facetSelections, query));
+  } catch (e) {
+    console.error('Facet counters failed to update (table):', e);
   }
 
   if (!table) return;
@@ -3573,6 +3963,16 @@ async function loadDataFromParsedRows(headers, rows) {
 
     await renderFacetSidebar(safeRows);
     setupFacetEvents();
+
+    // Render initial facet counters immediately after building the sidebar.
+    try {
+      const searchInput = document.getElementById('search');
+      const query = searchInput ? searchInput.value.toLowerCase() : "";
+      const selections = getFacetSelections();
+      updateFacetCountsUI(computeFacetCountsTable(safeRows || [], selections, query));
+    } catch (e) {
+      console.error('Facet counters failed to render:', e);
+    }
 
     const sortedRows = sortRowsForTextView(safeRows, getMergedSortMode());
 
