@@ -2859,25 +2859,38 @@ function rebuildProductionUnitsCountIndex(rows) {
   const manuscripts = groupByPreserveOrder(rows || [], getManuscriptKey);
   const map = new Map();
   for (const ms of manuscripts) {
-    map.set(ms.key, getProductionUnitsCountForManuscript(ms));
+    map.set(ms.key, getProductionUnitsFacetValueForManuscript(ms));
   }
   PRODUCTION_UNITS_COUNT_BY_MS_KEY = map;
   return map;
 }
 
 function productionUnitsFacetValueFromCount(n) {
-  return (typeof n === 'number' && n > 0) ? String(n) : 'Unknown';
+  return (typeof n === 'number' && n > 0) ? String(n) : 'Empty';
+}
+
+function isExplicitUnknownValue(value) {
+  const s = (value === null || value === undefined) ? '' : String(value).trim();
+  return s.toLowerCase() === 'unknown';
 }
 
 function getProductionUnitsFacetValueForRow(row) {
-  if (!row) return 'Unknown';
+  if (!row) return 'Empty';
   const key = getManuscriptKey(row);
   const map = PRODUCTION_UNITS_COUNT_BY_MS_KEY;
-  const n = (map && map.has(key)) ? map.get(key) : 0;
-  return productionUnitsFacetValueFromCount(n);
+  const v = (map && map.has(key)) ? map.get(key) : 'Empty';
+  return String(v || 'Empty');
 }
 
 function getProductionUnitsFacetValueForManuscript(ms) {
+  if (!ms || !Array.isArray(ms.rows)) return 'Empty';
+
+  // If any row explicitly says "Unknown", surface that as the facet value.
+  // This is distinct from a truly empty cell (which should be "Empty").
+  for (const r of ms.rows) {
+    if (isExplicitUnknownValue(r && r['Production Unit'])) return 'Unknown';
+  }
+
   return productionUnitsFacetValueFromCount(getProductionUnitsCountForManuscript(ms));
 }
 
