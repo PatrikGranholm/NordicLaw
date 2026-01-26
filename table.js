@@ -2714,6 +2714,7 @@ const FACET_FIELDS = [
   "Object",
   "Material",
   "Size",
+  "Production units",
   "Main text group",
   "Dating",
   "Script",
@@ -2797,8 +2798,94 @@ function normalizeLinesFacetValue(value) {
   return (value === null || value === undefined) ? "" : String(value).trim();
 }
 
+function parseProductionUnitsCell(value) {
+  const raw = (value === null || value === undefined) ? '' : String(value);
+  // Excel exports can contain multiple lines; normalize to semicolon list.
+  const normalized = raw.replace(/\r/g, '').replace(/\n/g, ';');
+
+  const parts = splitSemicolonList(normalized)
+    .map(s => String(s || '').trim())
+    .filter(s => s && s !== '.' && s !== '-' && s !== '\u007f');
+
+  // Production units are encoded as roman numerals (I, II, III, IV, ...).
+  // Cells can sometimes include locus/context text (e.g. "f. 3r-9v IV").
+  // For faceting we only care about the distinct numerals.
+  const seen = new Set();
+  const out = [];
+
+  for (const p of parts) {
+    // Extract roman numeral tokens.
+    // Prefer explicit tokens; fall back to whole-string if it's just a numeral.
+    const tokens = String(p).match(/\b[IVXLCDM]+\b/gi) || [];
+    const candidates = tokens.length ? tokens : [p];
+
+    for (const c of candidates) {
+      const t = String(c || '').trim();
+      if (!t) continue;
+      if (!/^[IVXLCDM]+$/i.test(t)) continue;
+      const norm = normalizeForCompare(t);
+      if (!norm) continue;
+      if (seen.has(norm)) continue;
+      seen.add(norm);
+      out.push(t.toUpperCase());
+    }
+  }
+
+  return out;
+}
+
+function getProductionUnitsCountForRow(row) {
+  if (!row) return 0;
+  const units = parseProductionUnitsCell(row['Production Unit']);
+  return units.length;
+}
+
+function getProductionUnitsCountForManuscript(ms) {
+  if (!ms || !Array.isArray(ms.rows)) return 0;
+  const seen = new Set();
+  for (const r of ms.rows) {
+    const units = parseProductionUnitsCell(r && r['Production Unit']);
+    for (const u of units) {
+      const k = normalizeForCompare(u);
+      if (k) seen.add(k);
+    }
+  }
+  return seen.size;
+}
+
+let PRODUCTION_UNITS_COUNT_BY_MS_KEY = null;
+
+function rebuildProductionUnitsCountIndex(rows) {
+  const manuscripts = groupByPreserveOrder(rows || [], getManuscriptKey);
+  const map = new Map();
+  for (const ms of manuscripts) {
+    map.set(ms.key, getProductionUnitsCountForManuscript(ms));
+  }
+  PRODUCTION_UNITS_COUNT_BY_MS_KEY = map;
+  return map;
+}
+
+function productionUnitsFacetValueFromCount(n) {
+  return (typeof n === 'number' && n > 0) ? String(n) : 'Unknown';
+}
+
+function getProductionUnitsFacetValueForRow(row) {
+  if (!row) return 'Unknown';
+  const key = getManuscriptKey(row);
+  const map = PRODUCTION_UNITS_COUNT_BY_MS_KEY;
+  const n = (map && map.has(key)) ? map.get(key) : 0;
+  return productionUnitsFacetValueFromCount(n);
+}
+
+function getProductionUnitsFacetValueForManuscript(ms) {
+  return productionUnitsFacetValueFromCount(getProductionUnitsCountForManuscript(ms));
+}
+
 function getFacetValue(row, field) {
   if (!row) return '';
+  if (field === 'Production units') {
+    return getProductionUnitsFacetValueForRow(row);
+  }
   if (FACET_EMPTY_LABEL_FIELDS.has(field)) {
     const raw = row[field];
     const s = (raw === null || raw === undefined) ? "" : String(raw).trim();
@@ -2848,6 +2935,23 @@ async function renderFacetSidebar(rows) {
   FACET_FIELDS.forEach(field => {
     const facetDiv = document.getElementById(`facet-${field}`);
     if (!facetDiv) return;
+
+    if (field === 'Production units') {
+      const manuscripts = groupByPreserveOrder(rows || [], getManuscriptKey);
+      const set = new Set();
+      for (const ms of manuscripts) set.add(getProductionUnitsFacetValueForManuscript(ms));
+      const values = Array.from(set).sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
+
+      let html = ``;
+      html += `<div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="__ALL__" checked data-facet="${field}" id="facet-${field}-all"><label class="form-check-label" for="facet-${field}-all">All</label></div>`;
+      values.forEach((val, i) => {
+        const id = `facet-${field}-${i}`;
+        html += `<div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="${escapeHtml(val)}" data-facet="${escapeHtml(field)}" id="${id}"><label class="form-check-label" for="${id}">${escapeHtml(val)}</label></div>`;
+      });
+      facetDiv.innerHTML = html;
+      return;
+    }
+
     if (field === "Dating") {
       // Render a year-range selector based on parsed DatingYear
       const years = rows
@@ -3257,7 +3361,9 @@ function computeFacetCountsTable(rows, selections, query) {
   for (const key of facetKeys) {
     const excludeKey = (key === 'Main text group-variant') ? 'Main text group' : key;
     const base = rows.filter(r => rowMatches(r, excludeKey));
-    const baseTotal = base.length;
+    const baseTotal = (key === 'Production units')
+      ? new Set(base.map(getManuscriptKey)).size
+      : base.length;
 
     const counts = new Map();
     if (key === 'Lines') {
@@ -3265,6 +3371,17 @@ function computeFacetCountsTable(rows, selections, query) {
         for (const cand of getLinesTextFacetCandidates(r)) {
           counts.set(cand, (counts.get(cand) || 0) + 1);
         }
+      }
+    } else if (key === 'Production units') {
+      const byMsKey = new Map();
+      for (const r of base) {
+        const k = getManuscriptKey(r);
+        if (!byMsKey.has(k)) byMsKey.set(k, r);
+      }
+      for (const r of byMsKey.values()) {
+        const s = String(getFacetValue(r, 'Production units') || '').trim();
+        if (!s) continue;
+        counts.set(s, (counts.get(s) || 0) + 1);
       }
     } else if (key === 'Main text group') {
       for (const r of base) {
@@ -3309,6 +3426,16 @@ function computeFacetCountsMerged(manuscripts, selections, query) {
       const excludeGroup = (excludeKey === 'Main text group' || excludeKey === 'Main text group-variant');
       const excludeLines = (excludeKey === 'Lines');
       const excludeDating = (excludeKey === 'Dating');
+
+      if (field === 'Production units') {
+        if (excludeKey === field) continue;
+        const selected = selections[field];
+        if (selected && selected.length > 0) {
+          const v = getProductionUnitsFacetValueForManuscript(ms);
+          if (!selected.includes(v)) return false;
+        }
+        continue;
+      }
 
       if (field === 'Dating') {
         if (excludeDating) continue;
@@ -3421,6 +3548,11 @@ function computeFacetCountsMerged(manuscripts, selections, query) {
         }
         for (const v of seen) counts.set(v, (counts.get(v) || 0) + 1);
       }
+    } else if (key === 'Production units') {
+      for (const ms of base) {
+        const v = getProductionUnitsFacetValueForManuscript(ms);
+        counts.set(v, (counts.get(v) || 0) + 1);
+      }
     } else if (key === 'Main text group') {
       for (const ms of base) {
         const seen = new Set();
@@ -3530,6 +3662,14 @@ function applyFacetFilters() {
 
     function manuscriptMatches(ms) {
       for (const field of FACET_FIELDS) {
+        if (field === 'Production units') {
+          const selected = facetSelections[field];
+          if (selected && selected.length > 0) {
+            const v = getProductionUnitsFacetValueForManuscript(ms);
+            if (!selected.includes(v)) return false;
+          }
+          continue;
+        }
         if (field === "Dating") {
           if (min === null && max === null) continue;
           const anyInRange = ms.rows.some(r => {
@@ -3845,6 +3985,9 @@ async function loadDataFromParsedRows(headers, rows) {
 
     allRows = safeRows;
     TABLE_SOURCE_ROWS = safeRows;
+
+    // Manuscript-level derived facet indices.
+    rebuildProductionUnitsCountIndex(safeRows);
 
     let colDefs = {};
     headers.forEach(h => {

@@ -1,0 +1,26 @@
+# Local/private data and scripts (kept locally, not in repo)
+/data/1.0_Metadata_Dan.tsv
+/data/1.0_Metadata_Dan.xlsx
+/data/1.1_Metadata_Isl.tsv
+/data/1.1_Metadata_Isl.xlsx
+/data/1.1_Metadata_Swe.tsv
+/data/1.1_Metadata_Swe.xlsx
+/data/1.2_Metadata_Norw.tsv
+/data/1.2_Metadata_Norw.xlsx
+/data/NordicLaw_data.tsv
+
+/data/scripts/README_extract_segments.md
+/data/scripts/combine_tsv_files.py
+/data/scripts/convert_excel_to_tsv.py
+/data/scripts/extract_segments.py
+/data/scripts/generate_raw_excel_outputs.py
+/data/scripts/pipeline.py
+
+/tools/brace_scan.py
+/tools/diff_isl_fill.py
+/tools/validate_merge_fill.py
+
+# Temp/build artifacts
+__pycache__/
+*.pyc
+~$*.xlsx
