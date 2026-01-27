@@ -2716,6 +2716,7 @@ const FACET_FIELDS = [
   "Size",
   "Production units",
   "Main text group",
+  "Minor text",
   "Dating",
   "Script",
   "Pricking",
@@ -2796,6 +2797,41 @@ function normalizeLinesFacetValue(value) {
     return `${parsed.min}-${parsed.max}`;
   }
   return (value === null || value === undefined) ? "" : String(value).trim();
+}
+
+function normalizeFacetSearchText(value) {
+  const s = (value === null || value === undefined) ? '' : String(value);
+  try {
+    return s
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/\p{Diacritic}+/gu, '');
+  } catch (e) {
+    return s.toLowerCase();
+  }
+}
+
+function parseMinorTextTokens(value) {
+  const raw = (value === null || value === undefined) ? '' : String(value);
+  if (!raw) return [];
+
+  // Normalize multi-line exports to semicolon lists.
+  const normalized = raw.replace(/\r/g, '').replace(/\n/g, ';');
+  const parts = splitSemicolonList(normalized)
+    .map(s => String(s || '').trim())
+    .filter(s => s && s !== '.' && s !== '-' && s !== '\u007f');
+
+  // De-duplicate using normalized compare, but keep the first-seen label.
+  const seen = new Set();
+  const out = [];
+  for (const p of parts) {
+    const k = normalizeForCompare(p);
+    if (!k) continue;
+    if (seen.has(k)) continue;
+    seen.add(k);
+    out.push(p);
+  }
+  return out;
 }
 
 function parseProductionUnitsCell(value) {
@@ -2899,6 +2935,7 @@ function getFacetValue(row, field) {
   if (field === 'Production units') {
     return getProductionUnitsFacetValueForRow(row);
   }
+  // Minor text is multi-valued; filtering/counting uses parseMinorTextTokens() rather than exact cell equality.
   if (FACET_EMPTY_LABEL_FIELDS.has(field)) {
     const raw = row[field];
     const s = (raw === null || raw === undefined) ? "" : String(raw).trim();
@@ -3082,6 +3119,48 @@ async function renderFacetSidebar(rows) {
       facetDiv.innerHTML = html;
       return;
     }
+
+    if (field === 'Minor text') {
+      const byNorm = new Map();
+      for (const r of (rows || [])) {
+        for (const t of parseMinorTextTokens(r && r['Minor text'])) {
+          const k = normalizeForCompare(t);
+          if (!k) continue;
+          if (!byNorm.has(k)) byNorm.set(k, t);
+        }
+      }
+
+      const values = Array.from(byNorm.values()).sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
+
+      let html = ``;
+      html += `<div class="small text-secondary mb-2">Filter the list to find a minor text</div>`;
+      html += `<div class="d-flex gap-2 align-items-end mb-2">
+        <div class="flex-fill">
+          <label class="form-label mb-1" style="font-size:0.75rem; text-transform:uppercase;">Search</label>
+          <input class="form-control form-control-sm" type="search" data-facet-search="Minor text" placeholder="Search minor texts...">
+        </div>
+        <button class="btn btn-sm btn-outline-secondary" type="button" data-facet-search-clear="Minor text">Clear</button>
+      </div>`;
+
+      html += `<div class="small text-secondary mb-1"><span data-facet-search-shown="Minor text">${values.length}</span> of <span data-facet-search-total="Minor text">${values.length}</span> shown</div>`;
+
+      // All toggle
+      html += `<div class="form-check mb-1"><input class="form-check-input" type="checkbox" value="__ALL__" checked data-facet="Minor text" id="facet-Minor text-all"><label class="form-check-label" for="facet-Minor text-all">All</label></div>`;
+
+      html += `<div data-facet-options="Minor text" style="max-height: 320px; overflow: auto;">`;
+      values.forEach((val, i) => {
+        const id = `facet-Minor text-${i}`;
+        const searchKey = escapeHtml(normalizeFacetSearchText(val));
+        html += `<div class="form-check mb-1" data-facet-option="Minor text" data-search="${searchKey}">`;
+        html += `<input class="form-check-input" type="checkbox" value="${escapeHtml(val)}" data-facet="Minor text" id="${id}">`;
+        html += `<label class="form-check-label" for="${id}">${escapeHtml(val)}</label>`;
+        html += `</div>`;
+      });
+      html += `</div>`;
+
+      facetDiv.innerHTML = html;
+      return;
+    }
     // Default facet rendering
     const values = getUniqueValues(rows, field);
     let html = ``;
@@ -3216,6 +3295,66 @@ function setupFacetEvents() {
         }
         applyFacetFilters();
       });
+      return;
+    }
+
+    if (field === 'Minor text') {
+      // Search field to filter the checkbox list.
+      function applyMinorTextSearch() {
+        const input = facetDiv.querySelector('input[type=search][data-facet-search="Minor text"]');
+        const q = normalizeFacetSearchText(input ? input.value : '').trim();
+        const optionDivs = facetDiv.querySelectorAll('[data-facet-option="Minor text"]');
+
+        let shown = 0;
+        const total = optionDivs.length;
+        optionDivs.forEach(div => {
+          const searchKey = (div && div.dataset) ? (div.dataset.search || '') : '';
+          const cb = div.querySelector('input[type=checkbox][data-facet="Minor text"]');
+          const isChecked = !!(cb && cb.checked);
+          const matches = (!q) ? true : String(searchKey || '').includes(q);
+
+          // Keep checked items visible even if they don't match the query.
+          const visible = matches || isChecked;
+          div.style.display = visible ? '' : 'none';
+          if (visible) shown += 1;
+        });
+
+        const shownEl = facetDiv.querySelector('[data-facet-search-shown="Minor text"]');
+        const totalEl = facetDiv.querySelector('[data-facet-search-total="Minor text"]');
+        if (shownEl) shownEl.textContent = String(shown);
+        if (totalEl) totalEl.textContent = String(total);
+      }
+
+      facetDiv.addEventListener('input', (e) => {
+        if (e.target && e.target.matches && e.target.matches('input[type=search][data-facet-search="Minor text"]')) {
+          applyMinorTextSearch();
+        }
+      });
+      facetDiv.addEventListener('click', (e) => {
+        const btn = e.target && e.target.closest && e.target.closest('button[data-facet-search-clear="Minor text"]');
+        if (!btn) return;
+        const input = facetDiv.querySelector('input[type=search][data-facet-search="Minor text"]');
+        if (input) input.value = '';
+        applyMinorTextSearch();
+      });
+
+      // Normal checkbox behavior.
+      facetDiv.addEventListener('change', (e) => {
+        if (!e.target.matches('input[type=checkbox][data-facet="Minor text"]')) return;
+        if (e.target.value === "__ALL__") {
+          const allChecked = e.target.checked;
+          facetDiv.querySelectorAll('input[type=checkbox][data-facet="Minor text"]:not([value="__ALL__"])').forEach(cb => {
+            cb.checked = allChecked;
+          });
+        } else {
+          updateFacetAllCheckbox('Minor text');
+        }
+        applyMinorTextSearch();
+        applyFacetFilters();
+      });
+
+      // Initial apply so the count reflects the rendered list.
+      try { applyMinorTextSearch(); } catch (e) {}
       return;
     }
 
@@ -3396,6 +3535,13 @@ function computeFacetCountsTable(rows, selections, query) {
         if (!s) continue;
         counts.set(s, (counts.get(s) || 0) + 1);
       }
+    } else if (key === 'Minor text') {
+      for (const r of base) {
+        const tokens = parseMinorTextTokens(r && r['Minor text']);
+        for (const t of tokens) {
+          counts.set(t, (counts.get(t) || 0) + 1);
+        }
+      }
     } else if (key === 'Main text group') {
       for (const r of base) {
         const g = r['Main text group'] || '';
@@ -3446,6 +3592,22 @@ function computeFacetCountsMerged(manuscripts, selections, query) {
         if (selected && selected.length > 0) {
           const v = getProductionUnitsFacetValueForManuscript(ms);
           if (!selected.includes(v)) return false;
+        }
+        continue;
+      }
+
+      if (field === 'Minor text') {
+        if (excludeKey === field) continue;
+        const selected = selections[field];
+        if (selected && selected.length > 0) {
+          const selectedNorm = new Set(selected.map(s => normalizeForCompare(s)));
+          const anyMatch = ms.rows.some(r => {
+            for (const t of parseMinorTextTokens(r && r['Minor text'])) {
+              if (selectedNorm.has(normalizeForCompare(t))) return true;
+            }
+            return false;
+          });
+          if (!anyMatch) return false;
         }
         continue;
       }
@@ -3566,6 +3728,19 @@ function computeFacetCountsMerged(manuscripts, selections, query) {
         const v = getProductionUnitsFacetValueForManuscript(ms);
         counts.set(v, (counts.get(v) || 0) + 1);
       }
+    } else if (key === 'Minor text') {
+      for (const ms of base) {
+        const byNorm = new Map();
+        for (const r of ms.rows) {
+          for (const t of parseMinorTextTokens(r && r['Minor text'])) {
+            const nk = normalizeForCompare(t);
+            if (nk && !byNorm.has(nk)) byNorm.set(nk, t);
+          }
+        }
+        for (const t of byNorm.values()) {
+          counts.set(t, (counts.get(t) || 0) + 1);
+        }
+      }
     } else if (key === 'Main text group') {
       for (const ms of base) {
         const seen = new Set();
@@ -3680,6 +3855,21 @@ function applyFacetFilters() {
           if (selected && selected.length > 0) {
             const v = getProductionUnitsFacetValueForManuscript(ms);
             if (!selected.includes(v)) return false;
+          }
+          continue;
+        }
+
+        if (field === 'Minor text') {
+          const selected = facetSelections[field];
+          if (selected && selected.length > 0) {
+            const selectedNorm = new Set(selected.map(s => normalizeForCompare(s)));
+            const anyMatch = ms.rows.some(r => {
+              for (const t of parseMinorTextTokens(r && r['Minor text'])) {
+                if (selectedNorm.has(normalizeForCompare(t))) return true;
+              }
+              return false;
+            });
+            if (!anyMatch) return false;
           }
           continue;
         }
@@ -3822,6 +4012,18 @@ function applyFacetFilters() {
   table.setFilter(function(row) {
     // 1. Check Facets
     for (const field of FACET_FIELDS) {
+      if (field === 'Minor text') {
+        const selected = facetSelections[field];
+        if (selected && selected.length > 0) {
+          const selectedNorm = new Set(selected.map(s => normalizeForCompare(s)));
+          let ok = false;
+          for (const t of parseMinorTextTokens(row && row['Minor text'])) {
+            if (selectedNorm.has(normalizeForCompare(t))) { ok = true; break; }
+          }
+          if (!ok) return false;
+        }
+        continue;
+      }
       if (field === "Dating") {
         const range = facetSelections["DatingRange"];
         if (range && (range.min !== null || range.max !== null)) {
