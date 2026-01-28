@@ -46,7 +46,8 @@ function parseDatingRange(dating) {
 
   const filtered = years
     .filter(y => typeof y === 'number' && Number.isFinite(y))
-    .filter(y => y >= 500 && y <= 2500);
+    // Exclude post-1800 years (often literature/reference years like 1885/1988/2023).
+    .filter(y => y >= 500 && y <= 1800);
   if (filtered.length === 0) return null;
 
   return {
@@ -2759,29 +2760,12 @@ async function loadMainTextMap() {
 
 // Helper: parse a Dating string to a century (returns string like '13th', '14th', etc. or '')
 function parseCentury(dating) {
-  if (!dating || typeof dating !== 'string') return '';
-  // Try to match '14th century', '13th cent.', 'c. 1200', 'late 1200s', 'early 1300s', 'c. 1350', etc.
-  let m = dating.match(/(\d{3,4})/);
-  if (m) {
-    let year = parseInt(m[1], 10);
-    if (year >= 1000 && year < 2000) {
-      let cent = Math.floor((year - 1) / 100) + 1;
-      return cent + 'th';
-    }
-  }
-  // Try to match '14th century', '13th cent.'
-  m = dating.match(/(\d{1,2})(?:th|st|nd|rd)\s*cent/i);
-  if (m) {
-    return m[1] + 'th';
-  }
-  // Try to match 'late 1200s', 'early 1300s'
-  m = dating.match(/(\d{3})00s/);
-  if (m) {
-    let year = parseInt(m[1] + '00', 10);
-    let cent = Math.floor((year - 1) / 100) + 1;
-    return cent + 'th';
-  }
-  return '';
+  const r = parseDatingRange(dating);
+  if (!r) return '';
+  const year = r.min;
+  if (typeof year !== 'number' || !Number.isFinite(year) || year < 1) return '';
+  const cent = Math.floor((year - 1) / 100) + 1;
+  return cent + 'th';
 }
 
 // Facet value normalization (UI-only)
