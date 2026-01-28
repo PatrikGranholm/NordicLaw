@@ -28,18 +28,45 @@ function escapeHtml(text) {
 
 const FROZEN_COLUMNS = ["Depository", "Shelf mark"];
 
+const _CSS_RGBA_RE = /^rgba?\(\s*([0-9.]+)\s*,\s*([0-9.]+)\s*,\s*([0-9.]+)\s*(?:,\s*([0-9.]+)\s*)?\)$/;
+const _CSS_RGBA_CACHE_MAX = 512;
+const _CSS_RGBA_CACHE = new Map(); // normalized string -> { r, g, b, a }
+
 function parseCssRgba(color) {
-  if (!color) return null;
-  const s = String(color).trim().toLowerCase();
-  if (!s || s === 'transparent') return { r: 0, g: 0, b: 0, a: 0 };
-  // Computed styles are usually rgb()/rgba().
-  let m = s.match(/^rgba?\(\s*([0-9.]+)\s*,\s*([0-9.]+)\s*,\s*([0-9.]+)\s*(?:,\s*([0-9.]+)\s*)?\)$/);
+  if (color === null || color === undefined) return null;
+
+  // Normalize cache key (computed styles are commonly already lowercase but not guaranteed).
+  const s = (typeof color === 'string') ? color.trim().toLowerCase() : String(color).trim().toLowerCase();
+  if (!s) return null;
+
+  const cached = _CSS_RGBA_CACHE.get(s);
+  if (cached) return cached;
+
+  if (s === 'transparent') {
+    const out = { r: 0, g: 0, b: 0, a: 0 };
+    _CSS_RGBA_CACHE.set(s, out);
+    return out;
+  }
+
+  // Fast reject for non rgb()/rgba() strings.
+  if (s[0] !== 'r' || (s[1] !== 'g') || (s[2] !== 'b') || s[3] !== 'a' && s[3] !== '(') return null;
+
+  const m = s.match(_CSS_RGBA_RE);
   if (!m) return null;
-  const r = Math.max(0, Math.min(255, Math.round(parseFloat(m[1]))));
-  const g = Math.max(0, Math.min(255, Math.round(parseFloat(m[2]))));
-  const b = Math.max(0, Math.min(255, Math.round(parseFloat(m[3]))));
-  const a = (m[4] === undefined) ? 1 : Math.max(0, Math.min(1, parseFloat(m[4])));
-  return { r, g, b, a };
+
+  const r = Math.max(0, Math.min(255, Math.round(Number(m[1]))));
+  const g = Math.max(0, Math.min(255, Math.round(Number(m[2]))));
+  const b = Math.max(0, Math.min(255, Math.round(Number(m[3]))));
+  const a = (m[4] === undefined) ? 1 : Math.max(0, Math.min(1, Number(m[4])));
+
+  const out = { r, g, b, a };
+  _CSS_RGBA_CACHE.set(s, out);
+  // Simple FIFO eviction (good enough, tiny + fast).
+  while (_CSS_RGBA_CACHE.size > _CSS_RGBA_CACHE_MAX) {
+    const firstKey = _CSS_RGBA_CACHE.keys().next().value;
+    _CSS_RGBA_CACHE.delete(firstKey);
+  }
+  return out;
 }
 
 function blendRgbaOverBg(fg, bg) {
