@@ -1,19 +1,64 @@
-// Improved: parse a Dating string to a year (start of range if present, ignore text)
+// Parse a Dating string to an overall year range.
+// Example: "1363 (ff. 18-23 1500-1525)" => { min: 1363, max: 1525 }
+function parseDatingRange(dating) {
+  if (dating === null || dating === undefined) return null;
+  const s = String(dating);
+  if (!s.trim()) return null;
+  const years = [];
+
+  // Year ranges (support 3-4 digits; include both endpoints).
+  const rangeRe = /(\d{3,4})\s*[-–]\s*(\d{3,4})/g;
+  let m;
+  while ((m = rangeRe.exec(s)) !== null) {
+    const a = Number(m[1]);
+    const b = Number(m[2]);
+    if (Number.isFinite(a)) years.push(a);
+    if (Number.isFinite(b)) years.push(b);
+  }
+
+  // Individual years (4-digit).
+  const yearRe = /(\d{4})/g;
+  while ((m = yearRe.exec(s)) !== null) {
+    const y = Number(m[1]);
+    if (Number.isFinite(y)) years.push(y);
+  }
+
+  // Century shorthand (e.g. "1200s" => 1200-1299).
+  const centuryRe = /(\d{3})00s/g;
+  while ((m = centuryRe.exec(s)) !== null) {
+    const start = Number(String(m[1]) + '00');
+    if (Number.isFinite(start)) {
+      years.push(start);
+      years.push(start + 99);
+    }
+  }
+
+  // Ordinal centuries (e.g. "14th century" => 1300-1399).
+  const ordinalCenturyRe = /(\d{1,2})(?:th|st|nd|rd)\s*cent/ig;
+  while ((m = ordinalCenturyRe.exec(s)) !== null) {
+    const c = Number(m[1]);
+    if (Number.isFinite(c) && c >= 1) {
+      const start = (c - 1) * 100;
+      years.push(start);
+      years.push(start + 99);
+    }
+  }
+
+  const filtered = years
+    .filter(y => typeof y === 'number' && Number.isFinite(y))
+    .filter(y => y >= 500 && y <= 2500);
+  if (filtered.length === 0) return null;
+
+  return {
+    min: Math.min(...filtered),
+    max: Math.max(...filtered),
+  };
+}
+
+// Improved: parse a Dating string to a year (earliest year in the Dating string).
 function parseDatingYear(dating) {
-  if (!dating || typeof dating !== 'string') return null;
-  // Match a year range (e.g. 1350-1375)
-  let m = dating.match(/(\d{3,4})\s*[-–]\s*(\d{3,4})/);
-  if (m) return parseInt(m[1], 10);
-  // Match a single 4-digit year
-  m = dating.match(/(\d{4})/);
-  if (m) return parseInt(m[1], 10);
-  // Match a 3-digit century (e.g. 1200s)
-  m = dating.match(/(\d{3})00s/);
-  if (m) return parseInt(m[1] + '50', 10); // use mid-century
-  // Match '14th century', '13th cent.'
-  m = dating.match(/(\d{1,2})(?:th|st|nd|rd)\s*cent/i);
-  if (m) return (parseInt(m[1], 10) - 1) * 100 + 50; // mid-century
-  return null;
+  const r = parseDatingRange(dating);
+  return r ? r.min : null;
 }
 
 function escapeHtml(text) {
@@ -292,7 +337,7 @@ function buildDisplayColumns(headers) {
   const headerSet = new Set(hs);
 
   // Hide internal/derived helper fields from UI column lists.
-  const hidden = new Set(["Century", "DatingYear", "Main text group", "Depository_abbr"]);
+  const hidden = new Set(["Century", "DatingYear", "DatingMinYear", "DatingMaxYear", "Main text group", "Depository_abbr"]);
 
   const out = [];
   const base = Array.isArray(COLUMN_ORDER) && COLUMN_ORDER.length ? COLUMN_ORDER : hs;
@@ -1667,7 +1712,12 @@ async function ensureRawExcelLoaded() {
             } else {
               obj["Main text group"] = "";
             }
-            obj["DatingYear"] = parseDatingYear(obj["Dating"]);
+            {
+              const dr = parseDatingRange(obj["Dating"]);
+              obj["DatingMinYear"] = dr ? dr.min : null;
+              obj["DatingMaxYear"] = dr ? dr.max : null;
+              obj["DatingYear"] = dr ? dr.min : null;
+            }
             normalizeRowLanguage(obj);
 
             // Store into manuscript map (skip rows before we have a key)
@@ -1883,7 +1933,7 @@ function mergeLinksPerManuscript(rows) {
 }
 
 function dropCompletelyEmptyRows(rows, headers) {
-  const ignore = new Set(["Century", "DatingYear", "Main text group", "Depository_abbr", "Language"]);
+  const ignore = new Set(["Century", "DatingYear", "DatingMinYear", "DatingMaxYear", "Main text group", "Depository_abbr", "Language"]);
   return rows.filter(r => {
     for (const h of headers) {
       if (ignore.has(h)) continue;
@@ -1894,7 +1944,7 @@ function dropCompletelyEmptyRows(rows, headers) {
 }
 
 function deduplicateRows(rows, headers) {
-  const ignore = new Set(["Century", "DatingYear", "Main text group", "Depository_abbr"]);
+  const ignore = new Set(["Century", "DatingYear", "DatingMinYear", "DatingMaxYear", "Main text group", "Depository_abbr"]);
   const seen = new Set();
   const out = [];
   for (const r of rows) {
@@ -1957,7 +2007,12 @@ async function loadDataFromRawExcelSources() {
           r["Main text group"] = "";
         }
         r["Century"] = parseCentury(r["Dating"]);
-        r["DatingYear"] = parseDatingYear(r["Dating"]);
+        {
+          const dr = parseDatingRange(r["Dating"]);
+          r["DatingMinYear"] = dr ? dr.min : null;
+          r["DatingMaxYear"] = dr ? dr.max : null;
+          r["DatingYear"] = dr ? dr.min : null;
+        }
         normalizeRowLanguage(r);
 
         // Ensure all expected headers exist as keys.
@@ -2984,22 +3039,10 @@ function getUniqueValues(rows, field) {
     // Most facets should not show empty values; Object/Material are normalized to "Unknown" above.
     if (typeof val === 'string' && val.trim() === "") return;
     if (field === "Dating") {
-      // Only keep year or year range
-      let m = val.match(/(\d{3,4})\s*[-–]\s*(\d{3,4})/);
-      if (m) val = m[1] + '-' + m[2];
-      else {
-        m = val.match(/(\d{4})/);
-        if (m) val = m[1];
-        else {
-          m = val.match(/(\d{3})00s/);
-          if (m) val = m[1] + '00s';
-          else {
-            m = val.match(/(\d{1,2})(?:th|st|nd|rd)\s*cent/i);
-            if (m) val = m[1] + 'th cent.';
-            else return;
-          }
-        }
-      }
+      // Prefer a normalized full range if possible.
+      const r = parseDatingRange(String(val));
+      if (r) val = (r.min === r.max) ? String(r.min) : `${r.min}-${r.max}`;
+      else return;
     }
     set.add(val);
   });
@@ -3031,11 +3074,14 @@ async function renderFacetSidebar(rows) {
 
     if (field === "Dating") {
       // Render a year-range selector based on parsed DatingYear
-      const years = rows
-        .map(r => r["DatingYear"])
+      const mins = rows
+        .map(r => r["DatingMinYear"])
         .filter(y => typeof y === 'number' && !Number.isNaN(y));
-      const minYear = years.length ? Math.min(...years) : '';
-      const maxYear = years.length ? Math.max(...years) : '';
+      const maxs = rows
+        .map(r => r["DatingMaxYear"])
+        .filter(y => typeof y === 'number' && !Number.isNaN(y));
+      const minYear = mins.length ? Math.min(...mins) : '';
+      const maxYear = maxs.length ? Math.max(...maxs) : '';
 
       let html = `<div class="small text-secondary mb-2">Filter by year range (uses parsed year from Dating)</div>`;
       html += `<div class="d-flex gap-2 align-items-end mb-2">
@@ -3456,10 +3502,12 @@ function computeFacetCountsTable(rows, selections, query) {
           if (typeof min === 'number' && Number.isNaN(min)) min = null;
           if (typeof max === 'number' && Number.isNaN(max)) max = null;
           if (min !== null && max !== null && min > max) { const tmp = min; min = max; max = tmp; }
-          const y = row['DatingYear'];
-          if (typeof y !== 'number' || Number.isNaN(y)) return false;
-          if (min !== null && y < min) return false;
-          if (max !== null && y > max) return false;
+          const yMin = row['DatingMinYear'];
+          const yMax = row['DatingMaxYear'];
+          if (typeof yMin !== 'number' || Number.isNaN(yMin)) return false;
+          if (typeof yMax !== 'number' || Number.isNaN(yMax)) return false;
+          if (min !== null && yMax < min) return false;
+          if (max !== null && yMin > max) return false;
         }
         continue;
       }
@@ -3649,10 +3697,12 @@ function computeFacetCountsMerged(manuscripts, selections, query) {
         if (min !== null && max !== null && min > max) { const tmp = min; min = max; max = tmp; }
         if (min !== null || max !== null) {
           const anyInRange = ms.rows.some(r => {
-            const y = r['DatingYear'];
-            if (typeof y !== 'number' || Number.isNaN(y)) return false;
-            if (min !== null && y < min) return false;
-            if (max !== null && y > max) return false;
+            const yMin = r['DatingMinYear'];
+            const yMax = r['DatingMaxYear'];
+            if (typeof yMin !== 'number' || Number.isNaN(yMin)) return false;
+            if (typeof yMax !== 'number' || Number.isNaN(yMax)) return false;
+            if (min !== null && yMax < min) return false;
+            if (max !== null && yMin > max) return false;
             return true;
           });
           if (!anyInRange) return false;
@@ -3903,10 +3953,12 @@ function applyFacetFilters() {
         if (field === "Dating") {
           if (min === null && max === null) continue;
           const anyInRange = ms.rows.some(r => {
-            const y = r["DatingYear"];
-            if (typeof y !== 'number' || Number.isNaN(y)) return false;
-            if (min !== null && y < min) return false;
-            if (max !== null && y > max) return false;
+            const yMin = r['DatingMinYear'];
+            const yMax = r['DatingMaxYear'];
+            if (typeof yMin !== 'number' || Number.isNaN(yMin)) return false;
+            if (typeof yMax !== 'number' || Number.isNaN(yMax)) return false;
+            if (min !== null && yMax < min) return false;
+            if (max !== null && yMin > max) return false;
             return true;
           });
           if (!anyInRange) return false;
@@ -4061,10 +4113,12 @@ function applyFacetFilters() {
           if (min !== null && max !== null && min > max) {
             const tmp = min; min = max; max = tmp;
           }
-          const y = row["DatingYear"];
-          if (typeof y !== 'number' || Number.isNaN(y)) return false;
-          if (min !== null && y < min) return false;
-          if (max !== null && y > max) return false;
+          const yMin = row['DatingMinYear'];
+          const yMax = row['DatingMaxYear'];
+          if (typeof yMin !== 'number' || Number.isNaN(yMin)) return false;
+          if (typeof yMax !== 'number' || Number.isNaN(yMax)) return false;
+          if (min !== null && yMax < min) return false;
+          if (max !== null && yMin > max) return false;
         }
         continue;
       }
@@ -4198,7 +4252,12 @@ async function loadDataTSV(fileName) {
         }
 
         obj["Century"] = parseCentury(obj["Dating"]);
-        obj["DatingYear"] = parseDatingYear(obj["Dating"]);
+        {
+          const dr = parseDatingRange(obj["Dating"]);
+          obj["DatingMinYear"] = dr ? dr.min : null;
+          obj["DatingMaxYear"] = dr ? dr.max : null;
+          obj["DatingYear"] = dr ? dr.min : null;
+        }
         normalizeRowLanguage(obj);
         return obj;
       });
@@ -4227,6 +4286,18 @@ async function loadDataFromParsedRows(headers, rows) {
 
     allRows = safeRows;
     TABLE_SOURCE_ROWS = safeRows;
+
+    // Backfill derived dating range fields for any load path.
+    for (const r of safeRows) {
+      if (!r || typeof r !== 'object') continue;
+      if (typeof r.DatingMinYear === 'number' && typeof r.DatingMaxYear === 'number') continue;
+      const dr = parseDatingRange(r["Dating"]);
+      r.DatingMinYear = dr ? dr.min : null;
+      r.DatingMaxYear = dr ? dr.max : null;
+      if (typeof r.DatingYear !== 'number' || Number.isNaN(r.DatingYear)) {
+        r.DatingYear = dr ? dr.min : null;
+      }
+    }
 
     // Manuscript-level derived facet indices.
     rebuildProductionUnitsCountIndex(safeRows);
@@ -4381,7 +4452,7 @@ async function loadDataFromParsedRows(headers, rows) {
         if (!contentDiv) return;
 
         const entries = [];
-        const dataKeys = Object.keys(data).filter(k => k !== "DatingYear" && k !== "_id" && k !== "Century" && k !== "Main text group" && k !== "Depository_abbr");
+        const dataKeys = Object.keys(data).filter(k => k !== "DatingYear" && k !== "DatingMinYear" && k !== "DatingMaxYear" && k !== "_id" && k !== "Century" && k !== "Main text group" && k !== "Depository_abbr");
 
         const modalOrder = (Array.isArray(DISPLAY_COLUMNS) && DISPLAY_COLUMNS.length > 0)
           ? DISPLAY_COLUMNS
